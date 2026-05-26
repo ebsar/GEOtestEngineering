@@ -1,0 +1,1029 @@
+:root {
+  --ink: #102033;
+  --muted: #526171;
+  --line: rgba(16, 32, 51, 0.14);
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-strong: rgba(255, 255, 255, 0.94);
+  --logo-blue: #12aeea;
+  --logo-yellow: #ffd018;
+  --logo-navy: #202078;
+  --accent: var(--logo-blue);
+  --accent-dark: var(--logo-navy);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family:
+    "Nunito Sans", "Avenir Next", Inter, ui-rounded, ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #ffffff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 20;
+  padding: 0;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px clamp(20px, 4vw, 64px);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 8px;
+  backdrop-filter: blur(14px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-width: 128px;
+}
+
+geotest-navbar-logo {
+  display: block;
+  width: clamp(126px, 12.5vw, 160px);
+}
+
+.brand-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+}
+
+.navbar-dot-icon .dot-blue,
+.navbar-dot-icon .dot-yellow {
+  stroke: #1d1d1d;
+  stroke-width: 1.45;
+}
+
+.navbar-logo-text {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 800;
+  letter-spacing: 0;
+  paint-order: stroke fill;
+  stroke: rgba(29, 29, 29, 0.82);
+  stroke-width: 0.9px;
+  stroke-linejoin: round;
+}
+
+.navbar-geotest-word {
+  fill: #202078;
+  font-size: 40px;
+}
+
+.navbar-engineering-word {
+  fill: #12a9d6;
+  font-size: 32px;
+}
+
+.navbar-logo-line {
+  fill: #ffd018;
+}
+
+.nav-panel {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 30px);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 1vw, 12px);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.nav-links a,
+.dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  color: #0c2531;
+  font: inherit;
+  font-size: 0.96rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.nav-links a:hover,
+.dropdown-trigger:hover,
+.nav-links a:focus-visible,
+.dropdown-trigger:focus-visible {
+  color: var(--logo-blue);
+  background: transparent;
+  outline: none;
+}
+
+.has-dropdown {
+  position: relative;
+}
+
+.dropdown-trigger svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  transition: transform 160ms ease;
+}
+
+.has-dropdown:hover .dropdown-menu,
+.has-dropdown:focus-within .dropdown-menu,
+.has-dropdown.is-open .dropdown-menu {
+  display: grid;
+}
+
+.has-dropdown:hover .dropdown-trigger svg,
+.has-dropdown:focus-within .dropdown-trigger svg,
+.has-dropdown.is-open .dropdown-trigger svg {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  display: none;
+  min-width: 315px;
+  padding: 8px;
+  margin: 0;
+  list-style: none;
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 18px 48px rgba(16, 32, 51, 0.18);
+}
+
+.dropdown-menu a {
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 42px;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 560;
+  white-space: normal;
+}
+
+.language-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 40px;
+  padding: 0 8px 0 12px;
+  color: #0c2531;
+  font-size: 0.9rem;
+  font-weight: 650;
+  border: 0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.58);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.language-picker select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  min-height: 30px;
+  padding: 0 10px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  border: 0;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.86);
+  cursor: pointer;
+}
+
+.language-picker select::-ms-expand {
+  display: none;
+}
+
+.language-picker:hover,
+.language-picker:focus-within {
+  color: var(--logo-blue);
+  background: transparent;
+}
+
+.nav-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid rgba(16, 32, 51, 0.14);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 19px;
+  height: 2px;
+  margin: 5px auto;
+  background: var(--ink);
+  border-radius: 999px;
+}
+
+.hero-section {
+  display: grid;
+  place-items: start center;
+  min-height: 53vh;
+  padding: 108px clamp(18px, 4vw, 56px) 24px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.hero-visual {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 1040px;
+  box-sizing: border-box;
+}
+
+.hero-tagline {
+  max-width: 96vw;
+  margin: 10px 0 0;
+  color: #102033;
+  font-size: clamp(1.35rem, 2.7vw, 2.25rem);
+  font-weight: 420;
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.hero-service-icons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 2.1vw, 24px);
+  align-items: center;
+  width: min(680px, 94vw);
+  padding: 0;
+  margin: 14px 0 0;
+  list-style: none;
+}
+
+.service-icon-item {
+  display: grid;
+  place-items: center;
+  min-height: 92px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  perspective: 500px;
+  --icon-start-x: 0;
+  --icon-start-y: 18px;
+  transform: translate(var(--icon-start-x), var(--icon-start-y)) scale(0.94);
+  animation: iconDirectionalBounce 720ms cubic-bezier(0.2, 0.78, 0.22, 1) both;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.service-icon-item:hover {
+  filter: saturate(1.06) contrast(1.03);
+  transform: translateY(-3px);
+}
+
+.service-icon-item:nth-child(1) {
+  --icon-start-x: -54px;
+  --icon-start-y: 0;
+  animation-delay: 2.62s;
+}
+
+.service-icon-item:nth-child(2) {
+  --icon-start-x: 0;
+  --icon-start-y: -54px;
+  animation-delay: 2.72s;
+}
+
+.service-icon-item:nth-child(3) {
+  --icon-start-x: 0;
+  --icon-start-y: 54px;
+  animation-delay: 2.82s;
+}
+
+.service-icon-item:nth-child(4) {
+  --icon-start-x: -54px;
+  --icon-start-y: 0;
+  animation-delay: 2.92s;
+}
+
+.service-icon {
+  display: block;
+  width: 82px;
+  height: 82px;
+  overflow: visible;
+  filter:
+    drop-shadow(0 16px 16px rgba(29, 29, 29, 0.18))
+    drop-shadow(0 4px 0 rgba(255, 255, 255, 0.68));
+  transform: rotateX(0.01deg);
+  transition: transform 180ms ease;
+}
+
+.service-image-icon {
+  width: 104px;
+  height: 68px;
+  border-radius: 10px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.service-icon-item:hover .service-icon {
+  transform: rotateX(0.01deg) scale(1.045);
+}
+
+.what-we-do-section {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 760px;
+  padding: clamp(84px, 12vw, 138px) clamp(20px, 5vw, 72px);
+  overflow: hidden;
+  color: #ffffff;
+}
+
+.what-we-do-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("public/images/what-we-do-background.png") center / cover no-repeat;
+  transform: none;
+  transform-origin: bottom center;
+  will-change: transform, opacity, filter;
+  z-index: 0;
+}
+
+.what-we-do-content {
+  position: relative;
+  z-index: 1;
+  width: min(980px, calc(100vw - clamp(40px, 10vw, 144px)));
+  margin: 0 auto;
+  text-align: center;
+}
+
+.motion-ready .what-we-do-section::before {
+  opacity: 0;
+  filter: blur(5px);
+  transform: translateY(26%) scale(1.04);
+}
+
+.motion-ready .what-we-do-section .what-we-do-content h2,
+.motion-ready .what-we-do-section .what-we-do-copy {
+  opacity: 0;
+  transform: translateY(34px);
+}
+
+.motion-ready .what-we-do-section.is-visible::before {
+  animation: whatImageRise 820ms cubic-bezier(0.18, 0.82, 0.24, 1) both;
+}
+
+.motion-ready .what-we-do-section.is-visible .what-we-do-content h2 {
+  animation: whatTextRise 560ms cubic-bezier(0.2, 0.78, 0.22, 1) 560ms both;
+}
+
+.motion-ready .what-we-do-section.is-visible .what-we-do-copy {
+  animation: whatTextRise 620ms cubic-bezier(0.2, 0.78, 0.22, 1) 720ms both;
+}
+
+.what-we-do-content h2 {
+  margin: 0 0 28px;
+  font-size: clamp(2.6rem, 6vw, 5.7rem);
+  font-weight: 760;
+  line-height: 0.96;
+  letter-spacing: 0;
+  text-shadow: 0 8px 34px rgba(0, 0, 0, 0.45);
+}
+
+.what-we-do-copy {
+  display: grid;
+  gap: 20px;
+  width: min(890px, 100%);
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.what-we-do-copy p {
+  margin: 0;
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  font-weight: 430;
+  line-height: 1.78;
+  text-wrap: pretty;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.cutaway-back {
+  fill: url("#drillSoil");
+}
+
+.soil-glow {
+  fill: url("#soilGlow");
+  mix-blend-mode: screen;
+}
+
+.cutaway-front {
+  fill: #8a6040;
+}
+
+.excavation-shadow {
+  fill: rgba(29, 29, 29, 0.16);
+}
+
+.drill-steel,
+.central-pipe {
+  fill: url("#steelDrill");
+  stroke: #1d1d1d;
+  stroke-linejoin: round;
+  stroke-width: 2.1;
+}
+
+.foundation-slab {
+  fill: url("#slabSteel");
+  stroke: #1d1d1d;
+  stroke-linejoin: round;
+  stroke-width: 2.1;
+}
+
+.central-pipe {
+  fill: url("#anchorSteel");
+}
+
+.drill-highlight,
+.foundation-highlight,
+.central-pipe-core {
+  fill: rgba(255, 255, 255, 0.28);
+}
+
+.drill-rib,
+.ground-line-icon,
+.slope-slip-one,
+.slope-slip-two,
+.slope-crack,
+.soil-speck,
+.anchor-top,
+.anchor-bar,
+.anchor-tie {
+  fill: none;
+  stroke: #1d1d1d;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.drill-rib {
+  stroke: rgba(29, 29, 29, 0.78);
+}
+
+.ground-line-icon {
+  stroke-width: 2.2;
+}
+
+.slope-ground {
+  fill: url("#slopeSoftHard");
+}
+
+.slope-light {
+  fill: url("#slopeLight");
+  mix-blend-mode: screen;
+}
+
+.slope-slip-one,
+.slope-slip-two {
+  stroke-width: 3.2;
+}
+
+.slope-crack {
+  stroke-width: 2.8;
+}
+
+.soil-speck {
+  stroke: #ffffff;
+  stroke-width: 3.2;
+}
+
+.foundation-soil {
+  fill: url("#foundationSoil");
+}
+
+.foundation-pile {
+  fill: none;
+  stroke: #6d7478;
+  stroke-linecap: square;
+  stroke-width: 13.5;
+}
+
+.foundation-soil-line {
+  fill: none;
+  stroke: rgba(29, 29, 29, 0.12);
+  stroke-width: 2;
+}
+
+.anchor-soil {
+  fill: url("#anchorSoil");
+}
+
+.anchor-bar {
+  stroke-width: 3.2;
+}
+
+.anchor-tie {
+  stroke-width: 2.8;
+}
+
+geotest-logo-hero-reveal {
+  display: block;
+  width: min(340px, 42vw);
+  aspect-ratio: 1040 / 430;
+  contain: layout paint;
+  transform: none;
+}
+
+.geotest-hero-reveal {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  isolation: isolate;
+  animation: finalLogoSettle 360ms cubic-bezier(0.2, 0.8, 0.25, 1.08) 2.42s both;
+}
+
+.geotest-hero-logo-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hero-dots-block {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  animation: heroDotsMoveLeft 560ms cubic-bezier(0.19, 0.82, 0.22, 1) 1.12s both;
+}
+
+.hero-logo-dot {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: blur(5px);
+  animation: heroDotPop 330ms cubic-bezier(0.18, 0.82, 0.22, 1.18) var(--delay) both;
+}
+
+.hero-logo-dot {
+  stroke: #1d1d1d;
+  stroke-width: 3;
+}
+
+.dot-blue {
+  fill: #202078;
+}
+
+.dot-yellow {
+  fill: #ffd018;
+}
+
+.hero-wordmark-block {
+  opacity: 1;
+}
+
+.hero-geotest-word,
+.hero-engineering-word {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: left center;
+  filter: blur(5px);
+}
+
+.hero-geotest-word {
+  animation: heroTextReveal 420ms cubic-bezier(0.2, 0.78, 0.2, 1) 1.72s both;
+}
+
+.hero-engineering-word {
+  animation: heroTextReveal 430ms cubic-bezier(0.2, 0.78, 0.2, 1) 2.16s both;
+}
+
+.hero-logo-text {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 800;
+  letter-spacing: 0;
+  paint-order: stroke fill;
+  stroke: #1d1d1d;
+  stroke-width: 2.6px;
+  stroke-linejoin: round;
+}
+
+.hero-geotest-word {
+  fill: #202078;
+  font-size: 125px;
+}
+
+.geo-text {
+  font-weight: 900;
+}
+
+.test-text {
+  font-style: italic;
+  font-weight: 760;
+}
+
+.hero-engineering-word {
+  fill: #12a9d6;
+  font-size: 104px;
+}
+
+.hero-orange-divider {
+  fill: #ffd018;
+  filter: none;
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: heroLineDraw 360ms cubic-bezier(0.2, 0.76, 0.24, 1) 1.98s both;
+}
+
+@keyframes heroDotPop {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: scale(0);
+  }
+
+  72% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1.12);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+@keyframes heroDotsMoveLeft {
+  0% {
+    transform: translateX(300px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes heroTextReveal {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateX(-18px) scale(0.985);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes heroLineDraw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes finalLogoSettle {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.004);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes iconDirectionalBounce {
+  0% {
+    opacity: 0;
+    transform: translate(var(--icon-start-x), var(--icon-start-y)) scale(0.94);
+  }
+
+  62% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1.045);
+  }
+
+  82% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes whatImageRise {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(26%) scale(1.04);
+  }
+
+  68% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(-1.4%) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes whatTextRise {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(34px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 920px) {
+  .site-header {
+    padding: 0;
+  }
+
+  .navbar {
+    position: relative;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    left: 0;
+    display: none;
+    align-items: stretch;
+    padding: 14px;
+    background: var(--surface-strong);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 18px 44px rgba(16, 32, 51, 0.2);
+  }
+
+  .navbar.is-open .nav-panel {
+    display: grid;
+    gap: 12px;
+  }
+
+  .nav-links {
+    display: grid;
+    gap: 4px;
+  }
+
+  .nav-links a,
+  .dropdown-trigger {
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 10px;
+  }
+
+  .dropdown-menu {
+    position: static;
+    min-width: 0;
+    margin: 4px 0 8px;
+    box-shadow: none;
+  }
+
+  .language-picker {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-section {
+    min-height: 53vh;
+    padding-top: 102px;
+    padding-bottom: 20px;
+  }
+
+  .hero-visual {
+    padding: 0 18px;
+  }
+
+  geotest-logo-hero-reveal {
+    width: min(58vw, 300px);
+    justify-self: center;
+    transform: none;
+  }
+
+  .hero-tagline {
+    margin-top: 8px;
+    font-size: clamp(1.05rem, 4.8vw, 1.8rem);
+  }
+
+  .hero-service-icons {
+    width: min(540px, 94vw);
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .service-icon-item {
+    min-height: 78px;
+  }
+
+  .service-icon {
+    width: 68px;
+    height: 68px;
+  }
+
+  .service-image-icon {
+    width: 92px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-section {
+    min-height: auto;
+    justify-items: center;
+    padding-right: 20px;
+    padding-bottom: 14px;
+    padding-left: 20px;
+  }
+
+  .hero-visual {
+    justify-self: center;
+    width: min(100%, 390px);
+    margin-inline: auto;
+    padding: 14px 18px 8px;
+  }
+
+  .brand {
+    min-width: 120px;
+  }
+
+  .brand-logo {
+    width: 100%;
+    height: auto;
+  }
+
+  geotest-navbar-logo {
+    width: 123px;
+  }
+
+  geotest-logo-hero-reveal {
+    width: min(66vw, 260px);
+    margin-inline: auto;
+    transform: none;
+  }
+
+  .hero-tagline {
+    margin: 14px 0 10px;
+    max-width: 100%;
+    font-size: clamp(1rem, 5vw, 1.45rem);
+  }
+
+  .hero-service-icons {
+    width: min(340px, 100%);
+    gap: 6px;
+    margin-top: 0;
+  }
+
+  .service-icon-item {
+    min-height: 70px;
+  }
+
+  .service-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .service-image-icon {
+    width: 74px;
+    height: 52px;
+  }
+
+  .what-we-do-section {
+    min-height: 720px;
+    padding: 76px 18px;
+  }
+
+  .what-we-do-copy {
+    padding: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .geotest-hero-reveal,
+  .hero-dots-block,
+  .hero-logo-dot,
+  .hero-geotest-word,
+  .hero-engineering-word,
+  .hero-orange-divider,
+  .service-icon-item,
+  .what-we-do-section::before,
+  .what-we-do-content h2,
+  .what-we-do-copy {
+    animation: none !important;
+  }
+
+  .hero-dots-block {
+    transform: translateX(0);
+  }
+
+  .hero-logo-dot,
+  .hero-geotest-word,
+  .hero-engineering-word {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+
+  .hero-orange-divider {
+    transform: scaleX(1);
+  }
+
+  .service-icon-item {
+    opacity: 1;
+    transform: none;
+  }
+
+  .motion-ready .what-we-do-section::before,
+  .motion-ready .what-we-do-section .what-we-do-content h2,
+  .motion-ready .what-we-do-section .what-we-do-copy {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
