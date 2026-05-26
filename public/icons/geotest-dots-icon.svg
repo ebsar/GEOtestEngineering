@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="GEOtest dot icon">
+  <defs>
+    <filter id="dotShadow" x="-18%" y="-18%" width="136%" height="136%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.3" flood-color="#1d1d1d" flood-opacity="0.18" />
+    </filter>
+  </defs>
+  <g transform="translate(39 19)" filter="url(#dotShadow)">
+    <circle cx="24" cy="24" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="50" cy="24" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="76" cy="24" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="102" cy="24" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+
+    <circle cx="24" cy="50" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="50" cy="50" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="76" cy="50" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="102" cy="50" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+
+    <circle cx="24" cy="76" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="50" cy="76" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="76" cy="76" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="102" cy="76" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="128" cy="76" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+
+    <circle cx="24" cy="102" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="50" cy="102" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="76" cy="102" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="102" cy="102" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="128" cy="102" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="154" cy="102" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+
+    <circle cx="24" cy="128" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="50" cy="128" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="76" cy="128" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="102" cy="128" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="128" cy="128" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="154" cy="128" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+
+    <circle cx="24" cy="154" r="11" fill="#fff200" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="50" cy="154" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="76" cy="154" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="102" cy="154" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="128" cy="154" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+
+    <circle cx="128" cy="180" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+    <circle cx="154" cy="206" r="11" fill="#2c2b91" stroke="#1d1d1d" stroke-width="2" />
+  </g>
+</svg>

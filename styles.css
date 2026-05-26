@@ -920,7 +920,7 @@ geotest-logo-hero-reveal {
     justify-self: center;
     width: min(100%, 390px);
     margin-inline: auto;
-    padding: 14px 18px 8px;
+    padding: 14px 18px 10%;
   }
 
   .brand {
