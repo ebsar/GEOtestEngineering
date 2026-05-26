@@ -911,6 +911,7 @@ geotest-logo-hero-reveal {
   .hero-section {
     min-height: auto;
     justify-items: center;
+    padding-top: 132px;
     padding-right: 20px;
     padding-bottom: 14px;
     padding-left: 20px;
@@ -919,7 +920,7 @@ geotest-logo-hero-reveal {
   .hero-visual {
     justify-self: center;
     width: min(100%, 390px);
-    margin-inline: auto;
+    margin: 0 auto;
     padding: 14px 18px 10%;
   }
 
