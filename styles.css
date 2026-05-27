@@ -48,10 +48,10 @@ a {
   width: 100%;
   margin: 0 auto;
   padding: 10px clamp(20px, 4vw, 64px);
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  border-radius: 8px;
-  backdrop-filter: blur(14px);
+  background: #ffffff;
+  border: 1px solid rgba(16, 32, 51, 0.12);
+  border-radius: 0;
+  box-shadow: 0 10px 28px rgba(16, 32, 51, 0.06);
 }
 
 .brand {
@@ -292,6 +292,10 @@ geotest-navbar-logo {
   letter-spacing: 0;
   text-align: center;
   white-space: nowrap;
+  opacity: 0;
+  filter: blur(5px);
+  transform: translateY(18px);
+  animation: heroTaglineReveal 520ms cubic-bezier(0.2, 0.78, 0.22, 1) 2.52s both;
 }
 
 .hero-service-icons {
@@ -332,25 +336,25 @@ geotest-navbar-logo {
 .service-icon-item:nth-child(1) {
   --icon-start-x: -54px;
   --icon-start-y: 0;
-  animation-delay: 2.62s;
+  animation-delay: 2.92s;
 }
 
 .service-icon-item:nth-child(2) {
   --icon-start-x: 0;
   --icon-start-y: -54px;
-  animation-delay: 2.72s;
+  animation-delay: 3.02s;
 }
 
 .service-icon-item:nth-child(3) {
   --icon-start-x: 0;
   --icon-start-y: 54px;
-  animation-delay: 2.82s;
+  animation-delay: 3.12s;
 }
 
 .service-icon-item:nth-child(4) {
   --icon-start-x: -54px;
   --icon-start-y: 0;
-  animation-delay: 2.92s;
+  animation-delay: 3.22s;
 }
 
 .service-icon {
@@ -459,6 +463,68 @@ geotest-navbar-logo {
   line-height: 1.78;
   text-wrap: pretty;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.recognition-section {
+  display: grid;
+  place-items: center;
+  padding: clamp(72px, 8vw, 118px) clamp(20px, 5vw, 72px);
+  background: #ffffff;
+}
+
+.recognition-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
+  align-items: stretch;
+  width: min(1120px, 100%);
+  min-height: 380px;
+  filter: drop-shadow(0 18px 42px rgba(16, 32, 51, 0.08));
+}
+
+.recognition-media {
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #d8c7ad;
+  border-radius: 10px 0 0 10px;
+}
+
+.recognition-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.012);
+}
+
+.recognition-copy {
+  display: grid;
+  align-content: center;
+  padding: clamp(44px, 5vw, 72px) clamp(34px, 4.8vw, 68px);
+  background: #eeeeef;
+  border-radius: 0 10px 10px 0;
+}
+
+.recognition-copy h2 {
+  margin: 0 0 12px;
+  color: #050608;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 780;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.recognition-copy p {
+  max-width: 55ch;
+  margin: 0;
+  color: #11151b;
+  font-size: clamp(1rem, 1.45vw, 1.16rem);
+  font-weight: 420;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
 }
 
 .cutaway-back {
@@ -737,6 +803,26 @@ geotest-logo-hero-reveal {
   }
 }
 
+@keyframes heroTaglineReveal {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(18px) scale(0.985);
+  }
+
+  72% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(-2px) scale(1.005);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
 @keyframes finalLogoSettle {
   0% {
     transform: scale(1);
@@ -853,14 +939,40 @@ geotest-logo-hero-reveal {
   }
 
   .dropdown-menu {
-    position: static;
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    left: 0;
+    z-index: 4;
     min-width: 0;
-    margin: 4px 0 8px;
-    box-shadow: none;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(16, 32, 51, 0.12);
+    box-shadow: 0 18px 42px rgba(16, 32, 51, 0.18);
+    backdrop-filter: blur(12px);
   }
 
   .language-picker {
     justify-content: space-between;
+  }
+
+  .recognition-card {
+    grid-template-columns: 1fr;
+    width: min(680px, 100%);
+    min-height: 0;
+  }
+
+  .recognition-media {
+    min-height: 260px;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .recognition-media img {
+    min-height: 260px;
+  }
+
+  .recognition-copy {
+    border-radius: 0 0 10px 10px;
   }
 }
 
@@ -905,15 +1017,24 @@ geotest-logo-hero-reveal {
     width: 92px;
     height: 60px;
   }
+
+  .recognition-section {
+    padding: 56px 18px;
+  }
+
+  .recognition-copy {
+    padding: 36px 26px 40px;
+  }
 }
 
 @media (max-width: 520px) {
   .hero-section {
-    min-height: auto;
+    min-height: 68svh;
     justify-items: center;
-    padding-top: 132px;
+    align-content: center;
+    padding-top: 118px;
     padding-right: 20px;
-    padding-bottom: 14px;
+    padding-bottom: 56px;
     padding-left: 20px;
   }
 
@@ -921,11 +1042,11 @@ geotest-logo-hero-reveal {
     justify-self: center;
     width: min(100%, 390px);
     margin: 0 auto;
-    padding: 14px 18px 10%;
+    padding: 18px 18px 16%;
   }
 
   .brand {
-    min-width: 120px;
+    min-width: 168px;
   }
 
   .brand-logo {
@@ -934,7 +1055,7 @@ geotest-logo-hero-reveal {
   }
 
   geotest-navbar-logo {
-    width: 123px;
+    width: 168px;
   }
 
   geotest-logo-hero-reveal {
@@ -969,9 +1090,49 @@ geotest-logo-hero-reveal {
     height: 52px;
   }
 
+  .recognition-section {
+    padding: 42px 16px;
+  }
+
+  .recognition-media,
+  .recognition-media img {
+    min-height: 230px;
+  }
+
+  .recognition-copy {
+    padding: 30px 22px 34px;
+  }
+
+  .recognition-copy h2 {
+    font-size: clamp(1.75rem, 9vw, 2.35rem);
+  }
+
+  .recognition-copy p {
+    font-size: 0.98rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
   .what-we-do-section {
     min-height: 720px;
     padding: 76px 18px;
+  }
+
+  .what-we-do-section::before {
+    background-position: center top;
+    background-size: auto 100%;
+    filter: saturate(1.1) contrast(1.08);
+  }
+
+  .what-we-do-section::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      linear-gradient(180deg, rgba(3, 7, 12, 0.04), rgba(3, 7, 12, 0.34) 62%, rgba(3, 7, 12, 0.58)),
+      radial-gradient(circle at 50% 26%, rgba(255, 255, 255, 0.12), transparent 34%);
+    pointer-events: none;
   }
 
   .what-we-do-copy {
@@ -992,6 +1153,7 @@ geotest-logo-hero-reveal {
   .hero-geotest-word,
   .hero-engineering-word,
   .hero-orange-divider,
+  .hero-tagline,
   .service-icon-item,
   .what-we-do-section::before,
   .what-we-do-content h2,
@@ -1005,7 +1167,8 @@ geotest-logo-hero-reveal {
 
   .hero-logo-dot,
   .hero-geotest-word,
-  .hero-engineering-word {
+  .hero-engineering-word,
+  .hero-tagline {
     opacity: 1;
     filter: none;
     transform: none;
