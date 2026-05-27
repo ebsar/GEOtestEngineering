@@ -49,7 +49,7 @@ a {
   margin: 0 auto;
   padding: 10px clamp(20px, 4vw, 64px);
   background: #ffffff;
-  border: 1px solid rgba(16, 32, 51, 0.12);
+  border: 0;
   border-radius: 0;
   box-shadow: 0 10px 28px rgba(16, 32, 51, 0.06);
 }
@@ -1116,23 +1116,6 @@ geotest-logo-hero-reveal {
   .what-we-do-section {
     min-height: 720px;
     padding: 76px 18px;
-  }
-
-  .what-we-do-section::before {
-    background-position: center top;
-    background-size: auto 100%;
-    filter: saturate(1.1) contrast(1.08);
-  }
-
-  .what-we-do-section::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background:
-      linear-gradient(180deg, rgba(3, 7, 12, 0.04), rgba(3, 7, 12, 0.34) 62%, rgba(3, 7, 12, 0.58)),
-      radial-gradient(circle at 50% 26%, rgba(255, 255, 255, 0.12), transparent 34%);
-    pointer-events: none;
   }
 
   .what-we-do-copy {
