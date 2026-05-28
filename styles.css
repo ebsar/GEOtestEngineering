@@ -877,9 +877,9 @@ geotest-navbar-logo {
 
 .site-footer {
   padding: 22px clamp(20px, 5vw, 72px) 18px;
-  color: #102033;
-  background: #ffffff;
-  border-top: 1px solid rgba(16, 32, 51, 0.1);
+  color: #ffffff;
+  background: #111f35;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer-main {
@@ -920,7 +920,7 @@ geotest-navbar-logo {
 
 .footer-nav a:hover,
 .footer-nav a:focus-visible {
-  color: var(--logo-blue);
+  color: #12a9d6;
   outline: none;
 }
 
@@ -930,10 +930,10 @@ geotest-navbar-logo {
   justify-content: center;
   min-height: 38px;
   padding: 0 18px;
-  color: #ffffff;
+  color: #111f35;
   font-size: 0.92rem;
   font-weight: 700;
-  background: var(--logo-navy);
+  background: #ffd018;
   border-radius: 6px;
   white-space: nowrap;
 }
@@ -949,7 +949,7 @@ geotest-navbar-logo {
 .footer-copy {
   width: min(1120px, 100%);
   margin: 10px auto 0;
-  color: #526171;
+  color: rgba(255, 255, 255, 0.72);
   font-size: 0.82rem;
   font-weight: 420;
   text-align: center;
