@@ -373,9 +373,13 @@ geotest-navbar-logo {
 .service-image-icon {
   width: 104px;
   height: 68px;
-  border-radius: 10px;
+  border-radius: 12px;
+  overflow: hidden;
   object-fit: cover;
   object-position: center;
+  clip-path: inset(0 round 12px);
+  transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(#ffffff, #000000);
 }
 
 .service-icon-item:hover .service-icon {
@@ -830,7 +834,7 @@ geotest-navbar-logo {
 
 .faq-item summary {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr);
+  grid-template-columns: 24px minmax(0, 1fr);
   gap: 12px;
   align-items: center;
   min-height: 54px;
@@ -849,21 +853,30 @@ geotest-navbar-logo {
 }
 
 .faq-item summary::before {
-  content: "+";
+  content: "";
   display: grid;
   place-items: center;
-  width: 22px;
-  height: 22px;
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1;
-  background: #25282d;
+  align-self: center;
+  justify-self: center;
+  width: 24px;
+  height: 24px;
+  background-color: #25282d;
+  background-image:
+    linear-gradient(#ffffff, #ffffff),
+    linear-gradient(#ffffff, #ffffff);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 12px 3px, 3px 12px;
   border-radius: 50%;
+  transform: rotate(0deg);
+  transition:
+    background-color 180ms ease,
+    transform 220ms cubic-bezier(0.2, 0.78, 0.22, 1);
 }
 
 .faq-item[open] summary::before {
-  content: "-";
+  background-color: var(--logo-navy);
+  transform: rotate(45deg);
 }
 
 .faq-item p {
@@ -875,11 +888,264 @@ geotest-navbar-logo {
   line-height: 1.5;
 }
 
+@media (min-width: 761px) {
+  .faq-list {
+    overflow: visible;
+  }
+
+  .faq-item {
+    position: relative;
+    overflow: visible;
+  }
+
+  .faq-item[open] {
+    z-index: 6;
+  }
+
+  .faq-item p {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
+    margin: 0;
+    padding: 18px 20px 20px 52px;
+    background: #ffffff;
+    border: 1px solid rgba(16, 32, 51, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 18px 42px rgba(16, 32, 51, 0.16);
+  }
+}
+
+.contact-section {
+  padding: clamp(76px, 8vw, 118px) clamp(20px, 5vw, 72px);
+  background:
+    linear-gradient(135deg, rgba(16, 32, 51, 0.04), rgba(215, 200, 173, 0.28)),
+    #ffffff;
+  color: #102033;
+}
+
+.contact-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+  gap: clamp(42px, 6vw, 76px);
+  align-items: center;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.contact-copy {
+  display: grid;
+  align-content: start;
+}
+
+.contact-kicker {
+  width: max-content;
+  margin: 0 0 18px;
+  padding: 8px 13px;
+  color: var(--logo-navy);
+  font-size: 0.82rem;
+  font-weight: 760;
+  line-height: 1;
+  text-transform: uppercase;
+  background: rgba(255, 208, 24, 0.34);
+  border-radius: 999px;
+}
+
+.contact-copy h2 {
+  max-width: 10.8ch;
+  margin: 0;
+  color: #071828;
+  font-size: clamp(2.35rem, 5vw, 4.6rem);
+  font-weight: 780;
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.contact-copy > p:not(.contact-kicker) {
+  max-width: 55ch;
+  margin: 24px 0 0;
+  color: #3f4d59;
+  font-size: clamp(1rem, 1.35vw, 1.14rem);
+  font-weight: 420;
+  line-height: 1.68;
+}
+
+.contact-motion {
+  position: relative;
+  width: min(430px, 100%);
+  height: 160px;
+  margin-top: 36px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0 26%, transparent 26%),
+    linear-gradient(180deg, #7c5a3b 0 34%, #a77d55 34% 58%, #55473c 58% 100%);
+  border: 1px solid rgba(16, 32, 51, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 20px 54px rgba(16, 32, 51, 0.11);
+}
+
+.contact-layer,
+.contact-core,
+.contact-scan,
+.contact-point {
+  position: absolute;
+  display: block;
+}
+
+.contact-layer {
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.layer-one {
+  top: 70px;
+}
+
+.layer-two {
+  top: 105px;
+}
+
+.layer-three {
+  top: 133px;
+}
+
+.contact-core {
+  top: 38px;
+  left: 50%;
+  width: 16px;
+  height: 108px;
+  background: linear-gradient(90deg, #68757f, #f8f8f8 48%, #6b747a);
+  border: 1px solid rgba(29, 29, 29, 0.28);
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+
+.contact-scan {
+  top: 40px;
+  left: calc(50% - 56px);
+  width: 112px;
+  height: 112px;
+  border: 1px solid rgba(18, 169, 214, 0.5);
+  border-radius: 50%;
+  opacity: 0;
+  animation: contactScanPulse 2.8s ease-out infinite;
+}
+
+.contact-point {
+  width: 8px;
+  height: 8px;
+  background: #ffd018;
+  border: 2px solid #1d1d1d;
+  border-radius: 50%;
+  animation: contactPointFloat 2.4s ease-in-out infinite;
+}
+
+.point-one {
+  top: 80px;
+  left: 26%;
+}
+
+.point-two {
+  top: 116px;
+  left: 62%;
+  animation-delay: 0.28s;
+}
+
+.point-three {
+  top: 136px;
+  left: 78%;
+  animation-delay: 0.52s;
+}
+
+.contact-form {
+  display: grid;
+  gap: 18px;
+  padding: clamp(28px, 4vw, 44px);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(16, 32, 51, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 24px 70px rgba(16, 32, 51, 0.14);
+  backdrop-filter: blur(14px);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 8px;
+  color: #102033;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  color: #102033;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 420;
+  border: 1px solid rgba(16, 32, 51, 0.16);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.94);
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  border-color: rgba(18, 169, 214, 0.72);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(18, 169, 214, 0.12);
+}
+
+.contact-form button {
+  min-height: 52px;
+  margin-top: 4px;
+  color: #ffffff;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 760;
+  border: 0;
+  border-radius: 7px;
+  background: var(--logo-navy);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.contact-form button:hover,
+.contact-form button:focus-visible {
+  background: var(--logo-blue);
+  outline: none;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(18, 169, 214, 0.22);
+}
+
 .site-footer {
   padding: 22px clamp(20px, 5vw, 72px) 18px;
-  color: #ffffff;
-  background: #111f35;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #102033;
+  background: #ffffff;
+  border-top: 1px solid rgba(16, 32, 51, 0.1);
 }
 
 .footer-main {
@@ -920,7 +1186,7 @@ geotest-navbar-logo {
 
 .footer-nav a:hover,
 .footer-nav a:focus-visible {
-  color: #12a9d6;
+  color: var(--logo-blue);
   outline: none;
 }
 
@@ -930,10 +1196,10 @@ geotest-navbar-logo {
   justify-content: center;
   min-height: 38px;
   padding: 0 18px;
-  color: #111f35;
+  color: #ffffff;
   font-size: 0.92rem;
   font-weight: 700;
-  background: #ffd018;
+  background: var(--logo-navy);
   border-radius: 6px;
   white-space: nowrap;
 }
@@ -949,7 +1215,7 @@ geotest-navbar-logo {
 .footer-copy {
   width: min(1120px, 100%);
   margin: 10px auto 0;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(16, 32, 51, 0.7);
   font-size: 0.82rem;
   font-weight: 420;
   text-align: center;
@@ -1287,6 +1553,33 @@ geotest-logo-hero-reveal {
   }
 }
 
+@keyframes contactScanPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.45);
+  }
+
+  22% {
+    opacity: 0.68;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+@keyframes contactPointFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
 @keyframes whatImageRise {
   0% {
     opacity: 0;
@@ -1453,6 +1746,18 @@ geotest-logo-hero-reveal {
     order: 3;
   }
 
+  .contact-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-copy h2 {
+    max-width: 14ch;
+  }
+
+  .contact-motion {
+    width: 100%;
+  }
+
   .service-overview-item {
     grid-template-columns: 66px minmax(0, 1fr);
     gap: 20px;
@@ -1579,6 +1884,14 @@ geotest-logo-hero-reveal {
 
   .site-footer {
     padding: 20px 22px 16px;
+  }
+
+  .contact-section {
+    padding: 58px 22px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1790,6 +2103,31 @@ geotest-logo-hero-reveal {
     font-size: 0.78rem;
   }
 
+  .contact-section {
+    padding: 48px 18px;
+  }
+
+  .contact-copy h2 {
+    max-width: 12ch;
+    font-size: clamp(2.05rem, 10vw, 3rem);
+  }
+
+  .contact-copy > p:not(.contact-kicker) {
+    margin-top: 18px;
+    font-size: 0.98rem;
+    line-height: 1.56;
+  }
+
+  .contact-motion {
+    height: 132px;
+    margin-top: 28px;
+  }
+
+  .contact-form {
+    gap: 15px;
+    padding: 24px 18px;
+  }
+
   .what-we-do-section {
     min-height: 720px;
     padding: 76px 18px;
@@ -1815,6 +2153,8 @@ geotest-logo-hero-reveal {
   .hero-orange-divider,
   .hero-tagline,
   .service-icon-item,
+  .contact-scan,
+  .contact-point,
   .what-we-do-section::before,
   .what-we-do-content h2,
   .what-we-do-copy {

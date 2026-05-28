@@ -372,7 +372,68 @@
       </div>
     </section>
 
-    <footer class="site-footer" id="contacts" aria-label="Footer">
+    <section class="contact-section" id="contacts" aria-labelledby="contact-title">
+      <div class="contact-inner">
+        <div class="contact-copy">
+          <p class="contact-kicker" data-i18n="contact.kicker">Contact GEOtest</p>
+          <h2 id="contact-title" data-i18n="contact.title">Start your geotechnical project with clarity.</h2>
+          <p data-i18n="contact.text">
+            Send us the project location, scope, and available documentation. We
+            will review the conditions and respond with the most practical next
+            step for investigation, design, supervision, or consulting.
+          </p>
+
+          <div class="contact-motion" aria-hidden="true">
+            <span class="contact-scan"></span>
+            <span class="contact-core"></span>
+            <span class="contact-layer layer-one"></span>
+            <span class="contact-layer layer-two"></span>
+            <span class="contact-layer layer-three"></span>
+            <span class="contact-point point-one"></span>
+            <span class="contact-point point-two"></span>
+            <span class="contact-point point-three"></span>
+          </div>
+        </div>
+
+        <form class="contact-form" action="mailto:info@geotest.engineering" method="post" enctype="text/plain">
+          <div class="form-row">
+            <label>
+              <span data-i18n="contact.name">Name</span>
+              <input type="text" name="name" autocomplete="name" required />
+            </label>
+            <label>
+              <span data-i18n="contact.email">Email</span>
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+          </div>
+
+          <label>
+            <span data-i18n="contact.service">Service</span>
+            <select name="service" required>
+              <option value="" data-i18n="contact.service.placeholder">Choose service</option>
+              <option value="design" data-i18n="overview.design">Designing</option>
+              <option value="supervision" data-i18n="overview.supervision">Supervision</option>
+              <option value="consulting" data-i18n="overview.consulting">Consulting</option>
+              <option value="investigation" data-i18n="overview.geometric">Geometric Investigation</option>
+            </select>
+          </label>
+
+          <label>
+            <span data-i18n="contact.location">Project location</span>
+            <input type="text" name="location" autocomplete="street-address" />
+          </label>
+
+          <label>
+            <span data-i18n="contact.message">Project details</span>
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+
+          <button type="submit" data-i18n="contact.submit">Send request</button>
+        </form>
+      </div>
+    </section>
+
+    <footer class="site-footer" aria-label="Footer">
       <div class="footer-main">
         <a class="footer-brand" href="#home" aria-label="GEOtest Engineering home">
           <geotest-navbar-logo></geotest-navbar-logo>
