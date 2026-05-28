@@ -617,6 +617,101 @@ geotest-navbar-logo {
   object-position: center;
 }
 
+.more-about-section {
+  padding: clamp(76px, 8vw, 118px) clamp(20px, 5vw, 72px);
+  background: #eeeeef;
+  color: #050608;
+}
+
+.more-about-inner {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.more-about-inner h2 {
+  margin: 0 0 clamp(42px, 5vw, 62px);
+  color: #050608;
+  font-size: clamp(2.8rem, 5.8vw, 5.05rem);
+  font-weight: 650;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.more-about-layout {
+  display: grid;
+  grid-template-columns: minmax(330px, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(42px, 6vw, 72px);
+  align-items: center;
+}
+
+.more-about-list {
+  display: grid;
+  gap: 24px;
+}
+
+.more-about-item {
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.more-about-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 76px;
+  padding: 0 22px;
+  color: #24262b;
+  font-size: clamp(1.12rem, 1.65vw, 1.45rem);
+  font-weight: 650;
+  line-height: 1.18;
+  list-style: none;
+  cursor: pointer;
+}
+
+.more-about-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.more-about-item summary::after {
+  content: "+";
+  flex: 0 0 auto;
+  color: #2c2b91;
+  font-size: 1.2rem;
+  font-weight: 650;
+}
+
+.more-about-item[open] summary::after {
+  content: "-";
+}
+
+.more-about-item p {
+  margin: -8px 0 0;
+  padding: 0 22px 22px;
+  color: #3d424a;
+  font-size: 0.98rem;
+  font-weight: 420;
+  line-height: 1.52;
+}
+
+.more-about-media {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #d6c3a0;
+}
+
+.more-about-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 790 / 528;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
 .cutaway-back {
   fill: url("#drillSoil");
 }
@@ -1069,6 +1164,14 @@ geotest-logo-hero-reveal {
     column-gap: 44px;
   }
 
+  .more-about-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .more-about-media {
+    order: -1;
+  }
+
   .service-overview-item {
     grid-template-columns: 66px minmax(0, 1fr);
     gap: 20px;
@@ -1161,6 +1264,18 @@ geotest-logo-hero-reveal {
 
   .services-overview-media img {
     aspect-ratio: 16 / 7;
+  }
+
+  .more-about-section {
+    padding: 58px 22px;
+  }
+
+  .more-about-inner h2 {
+    text-align: center;
+  }
+
+  .more-about-list {
+    gap: 18px;
   }
 }
 
@@ -1284,6 +1399,25 @@ geotest-logo-hero-reveal {
     margin-left: -18px;
     margin-right: -18px;
     border-radius: 8px 8px 0 0;
+  }
+
+  .more-about-section {
+    padding: 48px 18px;
+  }
+
+  .more-about-inner h2 {
+    font-size: clamp(2.25rem, 11vw, 3.2rem);
+  }
+
+  .more-about-item summary {
+    min-height: 68px;
+    padding: 0 18px;
+    font-size: 1.06rem;
+  }
+
+  .more-about-item p {
+    padding: 0 18px 20px;
+    font-size: 0.94rem;
   }
 
   .what-we-do-section {
