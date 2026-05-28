@@ -23,7 +23,8 @@
       content="Professional geotechnical engineering services for investigation, design, supervision, consulting, and monitoring."
     />
     <meta name="twitter:image" content="public/icons/geotest-dots-icon.svg" />
-    <link rel="icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="shortcut icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -297,6 +298,98 @@
         </div>
       </div>
     </section>
+
+    <section class="custom-project-section" id="projects" aria-labelledby="custom-project-title">
+      <div class="custom-project-inner">
+        <div class="custom-project-top">
+          <figure class="custom-project-media">
+            <img
+              src="public/images/car-project.jpg"
+              alt="SMGE Studio branded field vehicle"
+              loading="lazy"
+              width="2560"
+              height="1920"
+            />
+          </figure>
+
+          <div class="custom-project-copy">
+            <h2 id="custom-project-title" data-i18n="custom.title">Project Development Tailored To Your Needs</h2>
+            <div class="custom-project-note">
+              <p data-i18n="custom.text">
+                GEOtest Engineering develops technical solutions tailored to your
+                needs. We carefully consider your ideas and requirements, turning
+                them into feasible and efficient solutions customized to the
+                specifics of each project.
+              </p>
+            </div>
+            <a class="custom-project-button" href="#contacts" data-i18n="custom.button">Free consulting</a>
+          </div>
+        </div>
+
+        <div class="faq-layout" aria-labelledby="faq-title">
+          <h2 id="faq-title" data-i18n="faq.title">Frequently Asked Questions</h2>
+
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary data-i18n="faq.report.title">What is a geotechnical report?</summary>
+              <p data-i18n="faq.report.text">
+                A geotechnical report summarizes the soil, rock, groundwater, and
+                foundation conditions of a site and gives technical recommendations
+                for safe design and construction.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary data-i18n="faq.required.title">When is a geotechnical report required, and when is a geotechnical project needed?</summary>
+              <p data-i18n="faq.required.text">
+                A report is usually needed before design or construction when soil
+                conditions must be confirmed. A geotechnical project is needed when
+                technical solutions such as foundations, retaining systems, slopes,
+                or anchors must be designed.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary data-i18n="faq.anchor.title">What is a geotechnical anchor, and do I need the neighbor's consent for the installation of geotechnical anchors?</summary>
+              <p data-i18n="faq.anchor.text">
+                A geotechnical anchor transfers load into stable ground to support
+                retaining structures or slopes. Consent depends on the project
+                position, property boundary, local regulations, and whether anchors
+                pass under neighboring land.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary data-i18n="faq.contact.title">How can I contact you?</summary>
+              <p data-i18n="faq.contact.text">
+                Use the contact section to send project information, location, and
+                available documentation. We will review it and respond with the next
+                practical steps.
+              </p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer" id="contacts" aria-label="Footer">
+      <div class="footer-main">
+        <a class="footer-brand" href="#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="#home" data-i18n="nav.home">Home</a>
+          <a href="#services" data-i18n="nav.services">Services</a>
+          <a href="#projects" data-i18n="nav.projects">Projects</a>
+          <a href="#about-us" data-i18n="nav.about">About Us</a>
+        </nav>
+
+        <a class="footer-contact" href="mailto:info@geotest.engineering" data-i18n="footer.contact">Contact now</a>
+      </div>
+
+      <p class="footer-copy" data-i18n="footer.copy">© 2026 GEOtest Engineering. All rights reserved.</p>
+    </footer>
 
     <script src="script.js?v=20260526-dots"></script>
   </body>
