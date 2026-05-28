@@ -279,6 +279,7 @@ geotest-navbar-logo {
   place-items: center;
   width: 100%;
   max-width: 1040px;
+  margin-top: clamp(34px, 5vw, 64px);
   box-sizing: border-box;
 }
 
@@ -1093,6 +1094,7 @@ geotest-logo-hero-reveal {
 
   .hero-visual {
     padding: 0 18px;
+    margin-top: 0;
   }
 
   geotest-logo-hero-reveal {
