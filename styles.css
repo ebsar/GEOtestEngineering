@@ -924,6 +924,17 @@ geotest-navbar-logo {
   color: #102033;
 }
 
+.contact-page-main {
+  padding-top: 88px;
+  background: #ffffff;
+}
+
+.contact-page-section {
+  min-height: calc(100vh - 88px);
+  display: grid;
+  align-items: center;
+}
+
 .contact-inner {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
@@ -951,6 +962,7 @@ geotest-navbar-logo {
   border-radius: 999px;
 }
 
+.contact-copy h1,
 .contact-copy h2 {
   max-width: 10.8ch;
   margin: 0;
@@ -2107,6 +2119,7 @@ geotest-logo-hero-reveal {
     padding: 48px 18px;
   }
 
+  .contact-copy h1,
   .contact-copy h2 {
     max-width: 12ch;
     font-size: clamp(2.05rem, 10vw, 3rem);
