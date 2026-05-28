@@ -154,14 +154,14 @@ class GeotestNavbarLogo extends HTMLElement {
     });
 
     this.innerHTML = `
-      <svg class="brand-logo" viewBox="0 0 310 170" role="img" aria-label="GEOtest Engineering">
+      <svg class="brand-logo" viewBox="0 0 390 170" role="img" aria-label="GEOtest Engineering">
         <g class="navbar-dot-icon">
           ${dots}
         </g>
         <text class="navbar-logo-text navbar-geotest-word" x="145" y="68">
           <tspan class="geo-text">GEO</tspan><tspan class="test-text">test</tspan>
         </text>
-        <rect class="navbar-logo-line" x="147" y="78" width="134" height="5" rx="1" />
+        <rect class="navbar-logo-line" x="147" y="78" width="178" height="5" rx="1" />
         <text class="navbar-logo-text navbar-engineering-word" x="148" y="118">Engineering</text>
       </svg>
     `;

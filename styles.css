@@ -527,6 +527,95 @@ geotest-navbar-logo {
   letter-spacing: 0.02em;
 }
 
+.services-overview-section {
+  padding: clamp(64px, 7vw, 104px) clamp(20px, 5vw, 72px) 0;
+  background: #ffffff;
+  color: #050608;
+}
+
+.services-overview-inner {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.services-overview-inner h2 {
+  margin: 0 0 clamp(34px, 4.8vw, 58px);
+  color: #050608;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 780;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.services-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: clamp(78px, 11vw, 170px);
+  row-gap: clamp(34px, 4.3vw, 54px);
+  width: min(1020px, 100%);
+}
+
+.service-overview-item {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  align-items: center;
+  gap: 26px;
+}
+
+.service-overview-icon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  color: #ffffff;
+  background: #cdbf9f;
+  border-radius: 50%;
+}
+
+.service-overview-icon svg {
+  display: block;
+  width: 42px;
+  height: 42px;
+}
+
+.service-overview-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.15;
+}
+
+.service-overview-item h3 {
+  margin: 0;
+  max-width: 25ch;
+  color: #050608;
+  font-size: clamp(1.25rem, 1.75vw, 1.6rem);
+  font-weight: 520;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.services-overview-media {
+  width: min(1050px, 100%);
+  margin: clamp(52px, 6vw, 74px) auto 0;
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+  background: #d9d2c7;
+}
+
+.services-overview-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1458 / 516;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
 .cutaway-back {
   fill: url("#drillSoil");
 }
@@ -974,6 +1063,25 @@ geotest-logo-hero-reveal {
   .recognition-copy {
     border-radius: 0 0 10px 10px;
   }
+
+  .services-overview-grid {
+    column-gap: 44px;
+  }
+
+  .service-overview-item {
+    grid-template-columns: 66px minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .service-overview-icon {
+    width: 62px;
+    height: 62px;
+  }
+
+  .service-overview-icon svg {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 @media (max-width: 760px) {
@@ -1025,6 +1133,33 @@ geotest-logo-hero-reveal {
   .recognition-copy {
     padding: 36px 26px 40px;
   }
+
+  .services-overview-section {
+    padding: 58px 22px 0;
+  }
+
+  .services-overview-grid {
+    grid-template-columns: 1fr;
+    row-gap: 28px;
+    width: min(430px, 100%);
+  }
+
+  .services-overview-inner h2 {
+    margin-bottom: 34px;
+    font-size: clamp(2rem, 8vw, 3rem);
+    text-align: center;
+  }
+
+  .services-overview-media {
+    width: calc(100% + 20px);
+    margin-top: 42px;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  .services-overview-media img {
+    aspect-ratio: 16 / 7;
+  }
 }
 
 @media (max-width: 520px) {
@@ -1032,7 +1167,7 @@ geotest-logo-hero-reveal {
     min-height: 68svh;
     justify-items: center;
     align-content: center;
-    padding-top: 118px;
+    padding-top: 177px;
     padding-right: 20px;
     padding-bottom: 56px;
     padding-left: 20px;
@@ -1046,7 +1181,7 @@ geotest-logo-hero-reveal {
   }
 
   .brand {
-    min-width: 101px;
+    min-width: 176px;
   }
 
   .brand-logo {
@@ -1055,7 +1190,7 @@ geotest-logo-hero-reveal {
   }
 
   geotest-navbar-logo {
-    width: 101px;
+    width: 176px;
   }
 
   geotest-logo-hero-reveal {
@@ -1065,7 +1200,7 @@ geotest-logo-hero-reveal {
   }
 
   .hero-tagline {
-    margin: 14px 0 10px;
+    margin: 28px 0 22px;
     max-width: 100%;
     font-size: clamp(1rem, 5vw, 1.45rem);
   }
@@ -1111,6 +1246,42 @@ geotest-logo-hero-reveal {
     font-size: 0.98rem;
     line-height: 1.5;
     letter-spacing: 0.01em;
+  }
+
+  .services-overview-section {
+    padding: 48px 18px 0;
+  }
+
+  .services-overview-inner h2 {
+    font-size: clamp(1.85rem, 9vw, 2.35rem);
+  }
+
+  .service-overview-item {
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .service-overview-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .service-overview-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .service-overview-item h3 {
+    font-size: clamp(1.05rem, 5.4vw, 1.35rem);
+    line-height: 1;
+  }
+
+  .services-overview-media {
+    width: calc(100% + 36px);
+    margin-top: 36px;
+    margin-left: -18px;
+    margin-right: -18px;
+    border-radius: 8px 8px 0 0;
   }
 
   .what-we-do-section {
