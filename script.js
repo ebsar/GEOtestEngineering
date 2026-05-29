@@ -4,9 +4,36 @@ const dropdown = document.querySelector(".has-dropdown");
 const dropdownTrigger = document.querySelector(".dropdown-trigger");
 const languageSelect = document.querySelector("#language-select");
 
+const setToggleIcon = (isOpen) => {
+  const lines = navToggle ? Array.from(navToggle.querySelectorAll("span")) : [];
+
+  if (lines.length !== 3) {
+    return;
+  }
+
+  lines[0].style.transform = isOpen ? "translateY(7px) rotate(45deg)" : "";
+  lines[1].style.opacity = isOpen ? "0" : "";
+  lines[1].style.transform = isOpen ? "scaleX(0)" : "";
+  lines[2].style.transform = isOpen ? "translateY(-7px) rotate(-45deg)" : "";
+};
+
+const closeNavigation = () => {
+  navbar?.classList.remove("is-open");
+  navToggle?.classList.remove("is-active");
+  navToggle?.setAttribute("aria-expanded", "false");
+  navToggle?.setAttribute("aria-label", "Open navigation menu");
+  setToggleIcon(false);
+};
+
 navToggle?.addEventListener("click", () => {
   const isOpen = navbar.classList.toggle("is-open");
+  navToggle.classList.toggle("is-active", isOpen);
   navToggle.setAttribute("aria-expanded", String(isOpen));
+  navToggle.setAttribute(
+    "aria-label",
+    isOpen ? "Close navigation menu" : "Open navigation menu",
+  );
+  setToggleIcon(isOpen);
 });
 
 dropdownTrigger?.addEventListener("click", () => {
@@ -19,6 +46,28 @@ document.addEventListener("click", (event) => {
     dropdown?.classList.remove("is-open");
     dropdownTrigger?.setAttribute("aria-expanded", "false");
   }
+
+  if (
+    navbar?.classList.contains("is-open") &&
+    event.target instanceof Node &&
+    !navbar.contains(event.target)
+  ) {
+    closeNavigation();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeNavigation();
+    dropdown?.classList.remove("is-open");
+    dropdownTrigger?.setAttribute("aria-expanded", "false");
+  }
+});
+
+document.querySelectorAll(".nav-panel a").forEach((link) => {
+  link.addEventListener("click", () => {
+    closeNavigation();
+  });
 });
 
 const translations = {
@@ -73,6 +122,85 @@ const translations = {
     "contact.location": "Project location",
     "contact.message": "Project details",
     "contact.submit": "Send request",
+    "designing.title": "Designing",
+    "designing.intro": "Designing is a crucial step in ensuring a successful and safe construction project. GEOtest Engineering provides comprehensive geotechnical designing services, from conceptual solutions to complete execution projects.",
+    "designing.includes.title": "What does geotechnical designing include?",
+    "designing.includes.text": "Designing geotechnical structures is key to ensuring the stability and safety of buildings. GEOtest Engineering prepares the following types of geotechnical projects:",
+    "designing.includes.one": "Foundation structures",
+    "designing.includes.two": "Protection of construction pits",
+    "designing.includes.three": "Landslide remediation",
+    "designing.includes.four": "Retaining structures",
+    "designing.includes.five": "Improvement of foundation soil",
+    "designing.includes.six": "Underground structures",
+    "designing.standards": "During project development, we adhere to Croatian and European standards to ensure the highest quality levels. Our approach is based on advanced computational tools for geotechnical analysis, achieving precise results and maximum structural safety.",
+    "designing.choice.title": "Why choose GEOtest Engineering?",
+    "designing.choice.one": "Integrated approach to design - we address every project by considering all technical aspects and specific requirements.",
+    "designing.choice.two": "Continuous application of technological innovations - we stay up to date with the latest technologies and methods to improve our solutions.",
+    "designing.choice.three": "Use of advanced computational programs - professional software enables precise analyses and optimized solutions.",
+    "designing.choice.four": "A creative engineering approach that brings reliable, practical, and efficient results.",
+    "consulting.title": "Consulting in Geotechnical Engineering",
+    "consulting.intro": "Consulting in geotechnical engineering is crucial for the successful realization of construction projects, especially when dealing with complex challenges related to foundation design, soil stability, and excavation support. GEOtest Engineering provides specialized advisory services covering all aspects of planning, analysis, and control in geotechnics. Our expert team offers support throughout all project phases to ensure quality and safety in execution.",
+    "consulting.areas.title": "Areas of Consulting:",
+    "consulting.areas.one": "Foundation of structures",
+    "consulting.areas.two": "Excavation pits",
+    "consulting.areas.three": "Retaining structures",
+    "consulting.areas.four": "Soil improvement",
+    "consulting.areas.five": "Geotechnical supervision",
+    "consulting.experience": "As experts with extensive experience, we are dedicated to finding the best solutions for specific geotechnical challenges. Each project requires a precise analysis and adaptation of solutions to geotechnical conditions to achieve stability and long-term sustainability of the structure. Our consulting team employs state-of-the-art methods and software tools for detailed analysis and the development of optimal solutions.",
+    "consulting.approach.title": "Our approach:",
+    "consulting.approach.one": "Analysis of geotechnical conditions",
+    "consulting.approach.two": "Development of optimal solutions",
+    "consulting.approach.three": "Risk and cost assessment",
+    "consulting.approach.four": "Technical support during execution",
+    "consulting.approach.five": "Quality control",
+    "consulting.success": "The key to our success lies in an integrated and customized approach that enables the timely identification of issues and the proposal of effective measures to resolve them. Throughout each project, we ensure continuous communication with the client to tailor solutions to the project's specific requirements.",
+    "consulting.commitment": "GEOtest Engineering is committed to providing top-tier consulting services in geotechnical engineering. With years of experience and professional expertise, we enable the successful realization of projects while minimizing risks and optimizing costs.",
+    "geometric.title": "Geometric Investigation",
+    "geometric.intro": "Reliable design and high-quality construction depend on detailed and accurate investigation data. GEOtest Engineering performs field investigation, drilling, sampling, and documentation that give each project a clear technical basis before design and execution.",
+    "geometric.panel.one": "Our investigation process combines site inspection, core drilling, sample collection, geological interpretation, and practical reporting. We collect the information needed to understand soil behavior, groundwater conditions, bearing capacity, and slope stability.",
+    "geometric.panel.two": "Geometric and geotechnical investigation may include:",
+    "geometric.scope.one": "Core drilling and soil sampling",
+    "geometric.scope.two": "Manual drilling for slopes and inaccessible terrain",
+    "geometric.scope.three": "Field documentation and laboratory sample preparation",
+    "geometric.scope.four": "Interpretation of soil, rock, groundwater, and stability indicators",
+    "geometric.includes.title": "What do investigations include?",
+    "geometric.includes.text": "Investigation gives designers and investors reliable information about the ground. Through field work and professional interpretation, we determine the conditions that influence safe and efficient foundation and slope decisions.",
+    "geometric.includes.one": "Soil composition and properties",
+    "geometric.includes.two": "Bearing capacity of foundation soil",
+    "geometric.includes.three": "Groundwater level and site conditions",
+    "geometric.includes.four": "Slope stability and risk indicators",
+    "geometric.why.title": "Why are investigations essential?",
+    "geometric.why.text": "High-quality investigations enable better decisions for foundation design, slope stability, and protection of surrounding structures. They reduce uncertainty and help prevent unforeseen issues during construction.",
+    "supervision.title": "Supervision in Geotechnical Engineering",
+    "supervision.intro": "Reliable construction depends on continuous control, clear documentation, and timely technical decisions. GEOtest Engineering provides professional supervision of geotechnical works so execution follows the design, site conditions are properly interpreted, and quality remains stable throughout every project phase.",
+    "supervision.panel.one": "Our supervision process combines field observation, construction coordination, verification of performed works, and communication with designers, contractors, and investors. We monitor the critical details that influence safety, durability, and long-term performance.",
+    "supervision.panel.two": "Professional supervision in geotechnical engineering may include:",
+    "supervision.scope.one": "Control of foundation excavation and soil conditions",
+    "supervision.scope.two": "Monitoring of retaining structures, anchors, and slope works",
+    "supervision.scope.three": "Verification of site documentation and technical compliance",
+    "supervision.scope.four": "Coordination of corrective measures when ground conditions change",
+    "supervision.includes.title": "What does supervision include?",
+    "supervision.includes.text": "Supervision gives the construction team a reliable technical eye on site. Through regular checks and professional interpretation, we help confirm that the ground behavior, execution method, and design assumptions remain aligned.",
+    "supervision.includes.one": "Inspection of excavation levels and foundation preparation",
+    "supervision.includes.two": "Review of soil, groundwater, and stability indicators",
+    "supervision.includes.three": "Follow-up of geotechnical measures during construction",
+    "supervision.includes.four": "Clear reporting and practical technical recommendations",
+    "supervision.why.title": "Why is supervision essential?",
+    "supervision.why.text": "Site conditions can change quickly. Professional supervision reduces uncertainty, helps prevent delays and unsafe decisions, and protects the quality of the final structure from the first excavation to the completed work.",
+    "gtc.title": "GTC Compact",
+    "gtc.text.one": "The GTC Compact is a multifunctional drilling rig designed for professional use. It consists of a drilling unit and a hydraulic power pack, built as separate but coordinated units, allowing for greater flexibility and easier transport to challenging terrains.",
+    "gtc.text.two": "The machine is particularly suitable for geotechnical investigations on flat or gently sloping terrains, including:",
+    "gtc.use.one": "The head and the toe of a landslide",
+    "gtc.use.two": "Foundations for residential and industrial buildings",
+    "gtc.use.three": "Temporary excavation pits",
+    "gtc.use.four": "Industrial halls and similar structures",
+    "manual.title": "Manual drilling - slopes and landslides",
+    "manual.text.one": "GEOtest Engineering continues to utilize one of the most important, yet also one of the most demanding methods of investigation drilling: manual drilling. This method remains indispensable in situations involving steep terrains, active landslides, or locations that are inaccessible to machinery.",
+    "manual.text.two": "The manual drilling method is particularly suitable for investigations on terrains:",
+    "manual.use.one": "Landslide bodies",
+    "manual.use.two": "Terrain slopes greater than 15°",
+    "manual.use.three": "Inaccessible locations such as field roads, forested areas, and sites without access roads",
+    "manual.use.four": "Verification of depth to bedrock and validation of geophysical profiles and other investigation methods",
     "footer.contact": "Contact now",
     "footer.copy": "© 2026 GEOtest Engineering. All rights reserved.",
     "hero.tagline": "Where interactions with soil begins.",
@@ -132,6 +260,85 @@ const translations = {
     "contact.location": "Lokacioni i projektit",
     "contact.message": "Detajet e projektit",
     "contact.submit": "Dërgo kërkesën",
+    "designing.title": "Projektim",
+    "designing.intro": "Projektimi është hap i rëndësishëm për të siguruar një projekt ndërtimi të suksesshëm dhe të sigurt. GEOtest Engineering ofron shërbime të plota të projektimit gjeoteknik, nga zgjidhjet konceptuale deri te projektet e zbatimit.",
+    "designing.includes.title": "Çfarë përfshin projektimi gjeoteknik?",
+    "designing.includes.text": "Projektimi i strukturave gjeoteknike është kyç për stabilitetin dhe sigurinë e ndërtesave. GEOtest Engineering përgatit këto lloje projektesh gjeoteknike:",
+    "designing.includes.one": "Struktura themelesh",
+    "designing.includes.two": "Mbrojtje të gropave të ndërtimit",
+    "designing.includes.three": "Sanime të rrëshqitjeve të dheut",
+    "designing.includes.four": "Struktura mbajtëse",
+    "designing.includes.five": "Përmirësim të tokës së themeleve",
+    "designing.includes.six": "Struktura nëntokësore",
+    "designing.standards": "Gjatë zhvillimit të projektit, ne ndjekim standardet kroate dhe evropiane për të siguruar nivelin më të lartë të cilësisë. Qasja jonë bazohet në mjete të avancuara llogaritëse për analiza gjeoteknike, duke arritur rezultate të sakta dhe siguri maksimale strukturore.",
+    "designing.choice.title": "Pse të zgjidhni GEOtest Engineering?",
+    "designing.choice.one": "Qasje e integruar në projektim - çdo projekt trajtohet duke marrë parasysh aspektet teknike dhe kërkesat specifike.",
+    "designing.choice.two": "Zbatim i vazhdueshëm i inovacioneve teknologjike - ne ndjekim teknologjitë dhe metodat më të reja për të përmirësuar zgjidhjet tona.",
+    "designing.choice.three": "Përdorim i programeve të avancuara llogaritëse - softueri profesional mundëson analiza të sakta dhe zgjidhje të optimizuara.",
+    "designing.choice.four": "Qasje kreative inxhinierike që sjell rezultate të besueshme, praktike dhe efikase.",
+    "consulting.title": "Konsulencë në Inxhinieri Gjeoteknike",
+    "consulting.intro": "Konsulenca në inxhinieri gjeoteknike është thelbësore për realizimin e suksesshëm të projekteve të ndërtimit, sidomos kur trajtohen sfida komplekse që lidhen me projektimin e themeleve, stabilitetin e tokës dhe mbështetjen e gërmimeve. GEOtest Engineering ofron shërbime këshilluese të specializuara që mbulojnë planifikimin, analizën dhe kontrollin në gjeoteknikë. Ekipi ynë ofron mbështetje në të gjitha fazat e projektit për të siguruar cilësi dhe siguri në zbatim.",
+    "consulting.areas.title": "Fushat e konsulencës:",
+    "consulting.areas.one": "Themelet e strukturave",
+    "consulting.areas.two": "Gropa gërmimi",
+    "consulting.areas.three": "Struktura mbajtëse",
+    "consulting.areas.four": "Përmirësimi i tokës",
+    "consulting.areas.five": "Mbikëqyrja gjeoteknike",
+    "consulting.experience": "Si ekspertë me përvojë të gjerë, ne jemi të përkushtuar të gjejmë zgjidhjet më të mira për sfidat specifike gjeoteknike. Çdo projekt kërkon analizë të saktë dhe përshtatje të zgjidhjeve me kushtet gjeoteknike për të arritur stabilitet dhe qëndrueshmëri afatgjatë të strukturës. Ekipi ynë i konsulencës përdor metoda dhe mjete softuerike moderne për analiza të hollësishme dhe zhvillimin e zgjidhjeve optimale.",
+    "consulting.approach.title": "Qasja jonë:",
+    "consulting.approach.one": "Analiza e kushteve gjeoteknike",
+    "consulting.approach.two": "Zhvillimi i zgjidhjeve optimale",
+    "consulting.approach.three": "Vlerësimi i rrezikut dhe kostos",
+    "consulting.approach.four": "Mbështetje teknike gjatë zbatimit",
+    "consulting.approach.five": "Kontrolli i cilësisë",
+    "consulting.success": "Çelësi i suksesit tonë qëndron në një qasje të integruar dhe të përshtatur, e cila mundëson identifikimin në kohë të problemeve dhe propozimin e masave efektive për zgjidhjen e tyre. Gjatë çdo projekti, ne sigurojmë komunikim të vazhdueshëm me klientin për t'i përshtatur zgjidhjet me kërkesat specifike të projektit.",
+    "consulting.commitment": "GEOtest Engineering është e përkushtuar të ofrojë shërbime konsulence të nivelit të lartë në inxhinieri gjeoteknike. Me përvojë dhe ekspertizë profesionale, ne mundësojmë realizimin e suksesshëm të projekteve duke minimizuar rreziqet dhe optimizuar kostot.",
+    "geometric.title": "Hulumtim Gjeometrik",
+    "geometric.intro": "Projektimi i besueshëm dhe ndërtimi cilësor varen nga të dhëna të hollësishme dhe të sakta të hulumtimit. GEOtest Engineering kryen hulumtime në terren, shpime, marrje mostrash dhe dokumentim që i japin çdo projekti bazë të qartë teknike para projektimit dhe zbatimit.",
+    "geometric.panel.one": "Procesi ynë i hulumtimit kombinon inspektimin e lokacionit, shpimin me bërthamë, marrjen e mostrave, interpretimin gjeologjik dhe raportimin praktik. Ne mbledhim informacionin e nevojshëm për të kuptuar sjelljen e tokës, kushtet e ujërave nëntokësore, kapacitetin mbajtës dhe stabilitetin e shpatit.",
+    "geometric.panel.two": "Hulumtimi gjeometrik dhe gjeoteknik mund të përfshijë:",
+    "geometric.scope.one": "Shpime me bërthamë dhe marrje mostrash të tokës",
+    "geometric.scope.two": "Shpime manuale për shpate dhe terrene të paarritshme",
+    "geometric.scope.three": "Dokumentim në terren dhe përgatitje të mostrave laboratorike",
+    "geometric.scope.four": "Interpretim të treguesve të tokës, shkëmbinjve, ujërave nëntokësore dhe stabilitetit",
+    "geometric.includes.title": "Çfarë përfshijnë hulumtimet?",
+    "geometric.includes.text": "Hulumtimi u jep projektuesve dhe investitorëve informacion të besueshëm për terrenin. Përmes punës në terren dhe interpretimit profesional, ne përcaktojmë kushtet që ndikojnë në vendimet e sigurta dhe efikase për themelet dhe shpatet.",
+    "geometric.includes.one": "Përbërjen dhe vetitë e tokës",
+    "geometric.includes.two": "Kapacitetin mbajtës të tokës së themeleve",
+    "geometric.includes.three": "Nivelin e ujërave nëntokësore dhe kushtet e lokacionit",
+    "geometric.includes.four": "Stabilitetin e shpatit dhe treguesit e rrezikut",
+    "geometric.why.title": "Pse janë të rëndësishme hulumtimet?",
+    "geometric.why.text": "Hulumtimet cilësore mundësojnë vendime më të mira për projektimin e themeleve, stabilitetin e shpateve dhe mbrojtjen e strukturave përreth. Ato ulin pasigurinë dhe ndihmojnë në parandalimin e problemeve të paparashikuara gjatë ndërtimit.",
+    "supervision.title": "Mbikëqyrje në Inxhinieri Gjeoteknike",
+    "supervision.intro": "Ndërtimi i besueshëm varet nga kontrolli i vazhdueshëm, dokumentimi i qartë dhe vendimet teknike në kohë. GEOtest Engineering ofron mbikëqyrje profesionale të punimeve gjeoteknike që zbatimi të ndjekë projektin, kushtet e terrenit të interpretohen saktë dhe cilësia të mbetet e qëndrueshme në çdo fazë.",
+    "supervision.panel.one": "Procesi ynë i mbikëqyrjes kombinon vëzhgimin në terren, koordinimin e ndërtimit, verifikimin e punimeve të kryera dhe komunikimin me projektuesit, kontraktorët dhe investitorët. Ne monitorojmë detajet kritike që ndikojnë në sigurinë, qëndrueshmërinë dhe performancën afatgjatë.",
+    "supervision.panel.two": "Mbikëqyrja profesionale në inxhinieri gjeoteknike mund të përfshijë:",
+    "supervision.scope.one": "Kontrollin e gërmimit të themeleve dhe kushteve të tokës",
+    "supervision.scope.two": "Monitorimin e strukturave mbajtëse, ankorëve dhe punimeve në shpate",
+    "supervision.scope.three": "Verifikimin e dokumentacionit dhe përputhshmërisë teknike",
+    "supervision.scope.four": "Koordinimin e masave korrigjuese kur ndryshojnë kushtet e terrenit",
+    "supervision.includes.title": "Çfarë përfshin mbikëqyrja?",
+    "supervision.includes.text": "Mbikëqyrja i jep ekipit të ndërtimit një kontroll teknik të besueshëm në terren. Përmes verifikimeve të rregullta dhe interpretimit profesional, ne ndihmojmë që sjellja e tokës, metoda e zbatimit dhe supozimet e projektit të mbeten të harmonizuara.",
+    "supervision.includes.one": "Inspektimin e niveleve të gërmimit dhe përgatitjes së themeleve",
+    "supervision.includes.two": "Shqyrtimin e treguesve të tokës, ujërave nëntokësore dhe stabilitetit",
+    "supervision.includes.three": "Ndjekjen e masave gjeoteknike gjatë ndërtimit",
+    "supervision.includes.four": "Raportim të qartë dhe rekomandime teknike praktike",
+    "supervision.why.title": "Pse është e rëndësishme mbikëqyrja?",
+    "supervision.why.text": "Kushtet në terren mund të ndryshojnë shpejt. Mbikëqyrja profesionale ul pasigurinë, ndihmon në parandalimin e vonesave dhe vendimeve të pasigurta, si dhe mbron cilësinë e strukturës përfundimtare nga gërmimi i parë deri te punimi i përfunduar.",
+    "gtc.title": "GTC Compact",
+    "gtc.text.one": "GTC Compact është një pajisje shumëfunksionale shpimi e projektuar për përdorim profesional. Ajo përbëhet nga njësia e shpimit dhe paketa hidraulike e fuqisë, të ndërtuara si njësi të ndara por të koordinuara, duke mundësuar fleksibilitet më të madh dhe transport më të lehtë në terrene sfiduese.",
+    "gtc.text.two": "Makineria është veçanërisht e përshtatshme për hulumtime gjeoteknike në terrene të sheshta ose me pjerrësi të lehtë, duke përfshirë:",
+    "gtc.use.one": "Kokën dhe fundin e rrëshqitjes së dheut",
+    "gtc.use.two": "Themelet për ndërtesa banimi dhe industriale",
+    "gtc.use.three": "Gropa të përkohshme gërmimi",
+    "gtc.use.four": "Salla industriale dhe struktura të ngjashme",
+    "manual.title": "Shpimi manual - shpate dhe rrëshqitje dheu",
+    "manual.text.one": "GEOtest Engineering vazhdon të përdorë një nga metodat më të rëndësishme, por edhe më kërkuese të shpimit hulumtues: shpimin manual. Kjo metodë mbetet e domosdoshme në situata me terrene të pjerrëta, rrëshqitje aktive ose lokacione të paarritshme për makineri.",
+    "manual.text.two": "Metoda e shpimit manual është veçanërisht e përshtatshme për hulumtime në terrene:",
+    "manual.use.one": "Trupa të rrëshqitjeve të dheut",
+    "manual.use.two": "Shpate terreni më të mëdha se 15°",
+    "manual.use.three": "Lokacione të paarritshme si rrugë fushe, zona pyjore dhe vende pa rrugë qasjeje",
+    "manual.use.four": "Verifikim i thellësisë deri në shkëmb dhe validim i profileve gjeofizike dhe metodave të tjera hulumtuese",
     "footer.contact": "Kontakto tani",
     "footer.copy": "© 2026 GEOtest Engineering. Të gjitha të drejtat e rezervuara.",
     "hero.tagline": "Aty ku bashkëveprimi me tokën fillon.",

@@ -4,9 +4,13 @@
   --line: rgba(16, 32, 51, 0.14);
   --surface: rgba(255, 255, 255, 0.72);
   --surface-strong: rgba(255, 255, 255, 0.94);
-  --logo-blue: #12aeea;
-  --logo-yellow: #ffd018;
-  --logo-navy: #202078;
+  --logo-blue: #12a9d6;
+  --logo-yellow: #fff200;
+  --logo-navy: #2c2b91;
+  --logo-outline: #1d1d1d;
+  --logo-yellow-soft: #fff6a8;
+  --logo-blue-soft: rgba(18, 169, 214, 0.08);
+  --logo-navy-soft: rgba(44, 43, 145, 0.1);
   --accent: var(--logo-blue);
   --accent-dark: var(--logo-navy);
 }
@@ -91,17 +95,17 @@ geotest-navbar-logo {
 }
 
 .navbar-geotest-word {
-  fill: #202078;
+  fill: var(--logo-navy);
   font-size: 40px;
 }
 
 .navbar-engineering-word {
-  fill: #12a9d6;
+  fill: var(--logo-blue);
   font-size: 32px;
 }
 
 .navbar-logo-line {
-  fill: #ffd018;
+  fill: var(--logo-yellow);
 }
 
 .nav-panel {
@@ -254,6 +258,10 @@ geotest-navbar-logo {
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.65);
   cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .nav-toggle span {
@@ -263,6 +271,39 @@ geotest-navbar-logo {
   margin: 5px auto;
   background: var(--ink);
   border-radius: 999px;
+  transform-origin: center;
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.78, 0.22, 1),
+    opacity 160ms ease,
+    background-color 180ms ease;
+}
+
+.nav-toggle.is-active,
+.nav-toggle[aria-expanded="true"] {
+  border-color: rgba(44, 43, 145, 0.2);
+  background: rgba(18, 169, 214, 0.08);
+  box-shadow: 0 10px 28px rgba(18, 169, 214, 0.12);
+}
+
+.nav-toggle.is-active span,
+.nav-toggle[aria-expanded="true"] span {
+  background: var(--logo-navy);
+}
+
+.nav-toggle.is-active span:nth-child(1),
+.nav-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.is-active span:nth-child(2),
+.nav-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.nav-toggle.is-active span:nth-child(3),
+.nav-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .hero-section {
@@ -440,10 +481,10 @@ geotest-navbar-logo {
 }
 
 .what-we-do-content h2 {
-  margin: 0 0 28px;
+  margin: 0 0 20px;
   font-size: clamp(2.6rem, 6vw, 5.7rem);
   font-weight: 760;
-  line-height: 0.96;
+  line-height: 0.9;
   letter-spacing: 0;
   text-shadow: 0 8px 34px rgba(0, 0, 0, 0.45);
 }
@@ -478,19 +519,23 @@ geotest-navbar-logo {
 }
 
 .recognition-card {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
   align-items: stretch;
   width: min(1120px, 100%);
   min-height: 380px;
-  filter: drop-shadow(0 18px 42px rgba(16, 32, 51, 0.08));
+  border-radius: 12px;
+  box-shadow:
+    0 30px 80px rgba(16, 32, 51, 0.14),
+    0 10px 24px rgba(44, 43, 145, 0.08);
 }
 
 .recognition-media {
   min-height: 100%;
   margin: 0;
   overflow: hidden;
-  background: #d8c7ad;
+  background: var(--logo-yellow-soft);
   border-radius: 10px 0 0 10px;
 }
 
@@ -508,16 +553,16 @@ geotest-navbar-logo {
   display: grid;
   align-content: center;
   padding: clamp(44px, 5vw, 72px) clamp(34px, 4.8vw, 68px);
-  background: #eeeeef;
+  background: #eef7fb;
   border-radius: 0 10px 10px 0;
 }
 
 .recognition-copy h2 {
-  margin: 0 0 12px;
+  margin: 0 0 8px;
   color: #050608;
   font-size: clamp(2rem, 3.6vw, 3rem);
   font-weight: 780;
-  line-height: 1;
+  line-height: 0.92;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -544,11 +589,11 @@ geotest-navbar-logo {
 }
 
 .services-overview-inner h2 {
-  margin: 0 0 clamp(34px, 4.8vw, 58px);
+  margin: 0 0 clamp(24px, 3.4vw, 42px);
   color: #050608;
   font-size: clamp(2rem, 3.6vw, 3rem);
   font-weight: 780;
-  line-height: 1;
+  line-height: 0.9;
   letter-spacing: 0;
   text-transform: uppercase;
   white-space: nowrap;
@@ -569,20 +614,42 @@ geotest-navbar-logo {
   gap: 26px;
 }
 
+.service-overview-link {
+  border-radius: 8px;
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.service-overview-link:hover,
+.service-overview-link:focus-visible {
+  background: var(--logo-blue-soft);
+  outline: none;
+  transform: translateY(-2px);
+}
+
 .service-overview-icon {
   display: grid;
   place-items: center;
   width: 72px;
   height: 72px;
-  color: #ffffff;
-  background: #cdbf9f;
+  color: var(--logo-yellow);
+  background: var(--logo-navy);
+  border: 2px solid var(--logo-outline);
   border-radius: 50%;
+  box-shadow: 0 12px 28px rgba(44, 43, 145, 0.18);
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .service-overview-icon svg {
   display: block;
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
+  filter: drop-shadow(0 1px 0 rgba(29, 29, 29, 0.28));
 }
 
 .service-overview-icon path {
@@ -590,7 +657,16 @@ geotest-navbar-logo {
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 2.15;
+  stroke-width: 2.55;
+  vector-effect: non-scaling-stroke;
+}
+
+.service-overview-link:hover .service-overview-icon,
+.service-overview-link:focus-visible .service-overview-icon {
+  color: var(--logo-navy);
+  background: var(--logo-yellow);
+  transform: scale(1.04);
+  box-shadow: 0 14px 32px rgba(255, 242, 0, 0.22);
 }
 
 .service-overview-item h3 {
@@ -609,7 +685,7 @@ geotest-navbar-logo {
   margin: clamp(52px, 6vw, 74px) auto 0;
   overflow: hidden;
   border-radius: 10px 10px 0 0;
-  background: #d9d2c7;
+  background: var(--logo-yellow-soft);
 }
 
 .services-overview-media img {
@@ -623,7 +699,7 @@ geotest-navbar-logo {
 
 .more-about-section {
   padding: clamp(76px, 8vw, 118px) clamp(20px, 5vw, 72px);
-  background: #eeeeef;
+  background: #eef7fb;
   color: #050608;
 }
 
@@ -633,11 +709,11 @@ geotest-navbar-logo {
 }
 
 .more-about-inner h2 {
-  margin: 0 0 clamp(42px, 5vw, 62px);
+  margin: 0 0 clamp(28px, 3.6vw, 46px);
   color: #050608;
   font-size: clamp(2.8rem, 5.8vw, 5.05rem);
   font-weight: 650;
-  line-height: 0.95;
+  line-height: 0.88;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -655,9 +731,48 @@ geotest-navbar-logo {
 }
 
 .more-about-item {
+  position: relative;
   overflow: hidden;
   background: #ffffff;
   border-radius: 10px;
+  isolation: isolate;
+  box-shadow: 0 10px 26px rgba(16, 32, 51, 0);
+  transition:
+    background-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms cubic-bezier(0.2, 0.78, 0.22, 1);
+}
+
+.more-about-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(18, 169, 214, 0.1), rgba(255, 242, 0, 0.12)),
+    #ffffff;
+  opacity: 0;
+  transform: scaleX(0.72);
+  transform-origin: left center;
+  transition:
+    opacity 220ms ease,
+    transform 260ms cubic-bezier(0.2, 0.78, 0.22, 1);
+}
+
+.more-about-item:hover,
+.more-about-item:focus-within {
+  background: #f7fcff;
+  box-shadow:
+    0 18px 44px rgba(18, 169, 214, 0.14),
+    0 6px 16px rgba(44, 43, 145, 0.08);
+  transform: translateY(-4px);
+}
+
+.more-about-item:hover::before,
+.more-about-item:focus-within::before {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .more-about-item summary {
@@ -673,6 +788,15 @@ geotest-navbar-logo {
   line-height: 1.18;
   list-style: none;
   cursor: pointer;
+  transition:
+    color 180ms ease,
+    padding-left 220ms cubic-bezier(0.2, 0.78, 0.22, 1);
+}
+
+.more-about-item:hover summary,
+.more-about-item:focus-within summary {
+  color: var(--logo-navy);
+  padding-left: 28px;
 }
 
 .more-about-item summary::-webkit-details-marker {
@@ -685,10 +809,20 @@ geotest-navbar-logo {
   color: #2c2b91;
   font-size: 1.2rem;
   font-weight: 650;
+  transition:
+    color 180ms ease,
+    transform 220ms cubic-bezier(0.2, 0.78, 0.22, 1);
+}
+
+.more-about-item:hover summary::after,
+.more-about-item:focus-within summary::after {
+  color: var(--logo-blue);
+  transform: rotate(90deg) scale(1.08);
 }
 
 .more-about-item[open] summary::after {
   content: "-";
+  transform: rotate(180deg) scale(1.08);
 }
 
 .more-about-item p {
@@ -704,7 +838,7 @@ geotest-navbar-logo {
   margin: 0;
   overflow: hidden;
   border-radius: 10px;
-  background: #d6c3a0;
+  background: var(--logo-yellow-soft);
 }
 
 .more-about-media img {
@@ -738,7 +872,7 @@ geotest-navbar-logo {
   margin: 0;
   overflow: hidden;
   border-radius: 2px;
-  background: #e6e1d8;
+  background: var(--logo-blue-soft);
 }
 
 .custom-project-media img {
@@ -764,7 +898,7 @@ geotest-navbar-logo {
   color: #050608;
   font-size: clamp(2rem, 3.6vw, 3rem);
   font-weight: 780;
-  line-height: 0.92;
+  line-height: 0.88;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -773,7 +907,7 @@ geotest-navbar-logo {
   width: min(410px, 100%);
   margin-top: clamp(62px, 8vw, 92px);
   padding: clamp(28px, 3.2vw, 42px);
-  background: #eeeeef;
+  background: #eef7fb;
   border-radius: 10px;
 }
 
@@ -797,7 +931,7 @@ geotest-navbar-logo {
   font-size: 1rem;
   font-weight: 680;
   line-height: 1;
-  background: #cdbf9f;
+  background: var(--logo-navy);
   border-radius: 10px;
   transition:
     background-color 160ms ease,
@@ -807,8 +941,8 @@ geotest-navbar-logo {
 
 .custom-project-button:hover,
 .custom-project-button:focus-visible {
-  color: #ffffff;
-  background: var(--logo-blue);
+  color: var(--logo-navy);
+  background: var(--logo-yellow);
   outline: none;
   transform: translateY(-2px);
 }
@@ -827,12 +961,48 @@ geotest-navbar-logo {
 }
 
 .faq-item {
+  position: relative;
   overflow: hidden;
-  background: #eeeeef;
+  background: #eef7fb;
   border-radius: 10px;
+  isolation: isolate;
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.faq-item[open] {
+  background: #f6fbff;
+  box-shadow: 0 14px 32px rgba(18, 169, 214, 0.1);
+}
+
+.faq-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      circle at 31px 27px,
+      rgba(255, 255, 255, 0.88) 0 12%,
+      rgba(238, 247, 251, 0.78) 26%,
+      rgba(255, 242, 0, 0.12) 48%,
+      rgba(255, 255, 255, 0) 72%
+    );
+  filter: blur(8px) saturate(1.02);
+  transform: scale(0.12);
+  transform-origin: 31px 27px;
+}
+
+.faq-item[open]::after {
+  animation: faqLiquidBloom 520ms cubic-bezier(0.16, 0.88, 0.28, 1) both;
 }
 
 .faq-item summary {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
   gap: 12px;
@@ -875,11 +1045,19 @@ geotest-navbar-logo {
 }
 
 .faq-item[open] summary::before {
-  background-color: var(--logo-navy);
-  transform: rotate(45deg);
+  opacity: 0;
+  background-image: none;
+  transform: scale(0.72);
+}
+
+.faq-item[open] summary,
+.faq-item[open] p {
+  color: var(--ink);
 }
 
 .faq-item p {
+  position: relative;
+  z-index: 1;
   margin: -2px 0 0;
   padding: 0 18px 20px 52px;
   color: #3d424a;
@@ -894,7 +1072,6 @@ geotest-navbar-logo {
   }
 
   .faq-item {
-    position: relative;
     overflow: visible;
   }
 
@@ -914,12 +1091,40 @@ geotest-navbar-logo {
     border-radius: 10px;
     box-shadow: 0 18px 42px rgba(16, 32, 51, 0.16);
   }
+
+  .faq-item[open] p {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(238, 247, 251, 0.78)),
+      #f8fcff;
+    border-color: rgba(18, 169, 214, 0.14);
+    box-shadow: 0 18px 42px rgba(16, 32, 51, 0.12);
+  }
+}
+
+@keyframes faqLiquidBloom {
+  0% {
+    opacity: 0;
+    filter: blur(14px) saturate(0.92);
+    transform: scale(0.08);
+  }
+
+  62% {
+    opacity: 1;
+    filter: blur(6px) saturate(1.18);
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(8px) saturate(1.02);
+    transform: scale(1);
+  }
 }
 
 .contact-section {
   padding: clamp(76px, 8vw, 118px) clamp(20px, 5vw, 72px);
   background:
-    linear-gradient(135deg, rgba(16, 32, 51, 0.04), rgba(215, 200, 173, 0.28)),
+    linear-gradient(135deg, rgba(16, 32, 51, 0.04), rgba(255, 242, 0, 0.12)),
     #ffffff;
   color: #102033;
 }
@@ -933,6 +1138,302 @@ geotest-navbar-logo {
   min-height: calc(100vh - 88px);
   display: grid;
   align-items: center;
+}
+
+.service-detail-main {
+  padding-top: 94px;
+  color: #1f2328;
+  background: #ffffff;
+}
+
+.service-detail-inner {
+  width: min(1260px, calc(100% - clamp(40px, 12vw, 260px)));
+  margin: 0 auto;
+}
+
+.service-detail-intro {
+  padding: clamp(48px, 6vw, 72px) 0 clamp(46px, 5vw, 64px);
+}
+
+.service-detail-intro h1 {
+  max-width: 1100px;
+  margin: 0 0 18px;
+  color: #050608;
+  font-size: clamp(2.4rem, 4.6vw, 4.2rem);
+  font-weight: 560;
+  line-height: 0.9;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.service-detail-intro p,
+.service-detail-panel p,
+.service-detail-copy p {
+  margin: 0;
+  color: #25272c;
+  font-size: clamp(1.04rem, 1.35vw, 1.28rem);
+  font-weight: 420;
+  line-height: 1.38;
+  letter-spacing: 0.01em;
+}
+
+.service-detail-panel {
+  padding: clamp(50px, 6vw, 72px) 0;
+  background: #f7fbff;
+}
+
+.service-detail-panel .service-detail-inner {
+  display: grid;
+  gap: 22px;
+}
+
+.service-arrow-list {
+  display: grid;
+  gap: 13px;
+  padding: 0;
+  margin: 4px 0 0;
+  list-style: none;
+}
+
+.service-arrow-list li {
+  position: relative;
+  padding-left: 28px;
+  color: #25272c;
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  font-weight: 420;
+  line-height: 1.3;
+}
+
+.service-arrow-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.42em;
+  left: 3px;
+  width: 9px;
+  height: 9px;
+  border-top: 3px solid #050608;
+  border-right: 3px solid #050608;
+  transform: rotate(45deg);
+}
+
+.service-detail-split {
+  padding: clamp(62px, 7vw, 96px) 0 clamp(76px, 8vw, 116px);
+}
+
+.service-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(330px, 0.72fr);
+  gap: clamp(48px, 8vw, 110px);
+  align-items: center;
+}
+
+.service-detail-copy {
+  display: grid;
+  gap: 20px;
+}
+
+.service-detail-copy h2 {
+  margin: 0;
+  color: #050608;
+  font-size: clamp(1.28rem, 1.8vw, 1.62rem);
+  font-weight: 760;
+  line-height: 0.98;
+}
+
+.service-detail-copy h1 {
+  margin: 0 0 4px;
+  color: #050608;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 560;
+  line-height: 0.9;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.service-detail-copy .service-arrow-list + h2 {
+  margin-top: 38px;
+}
+
+.service-detail-media {
+  position: relative;
+  margin: 0;
+  justify-self: end;
+  width: min(430px, 100%);
+}
+
+.service-detail-media::before {
+  content: "";
+  position: absolute;
+  inset: 22% 14% 18% 22%;
+  background: var(--logo-yellow-soft);
+  border-radius: 14px;
+  transform: translate(-12%, 4%);
+  z-index: 0;
+}
+
+.service-detail-media img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 24px 42px rgba(16, 32, 51, 0.14));
+}
+
+.gtc-compact-section,
+.manual-drilling-section {
+  padding: clamp(58px, 7vw, 92px) 0;
+  background: #f7fbff;
+}
+
+.gtc-compact-grid {
+  display: grid;
+  grid-template-columns: minmax(330px, 0.88fr) minmax(0, 0.9fr);
+  gap: clamp(52px, 8vw, 118px);
+  align-items: center;
+}
+
+.gtc-compact-media {
+  margin: 0;
+}
+
+.gtc-compact-media img {
+  display: block;
+  width: min(520px, 100%);
+  height: auto;
+  margin: 0 auto;
+  filter: drop-shadow(0 24px 42px rgba(16, 32, 51, 0.08));
+}
+
+.gtc-compact-copy,
+.manual-drilling-copy {
+  display: grid;
+  gap: 20px;
+}
+
+.gtc-compact-copy h2,
+.manual-drilling-copy h2 {
+  margin: 0;
+  color: #050608;
+  font-size: clamp(1.28rem, 1.8vw, 1.62rem);
+  font-weight: 760;
+  line-height: 0.98;
+}
+
+.gtc-compact-copy p,
+.manual-drilling-copy p {
+  margin: 0;
+  color: #25272c;
+  font-size: clamp(1.02rem, 1.28vw, 1.2rem);
+  font-weight: 420;
+  line-height: 1.42;
+}
+
+.soil-core-gallery,
+.manual-gallery-section {
+  padding: clamp(58px, 7vw, 88px) 0;
+  background: #ffffff;
+}
+
+.soil-core-grid,
+.manual-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 4vw, 48px);
+}
+
+.soil-core-card,
+.manual-gallery-card {
+  margin: 0;
+  padding: clamp(20px, 2.4vw, 32px);
+  overflow: hidden;
+  background: var(--logo-yellow-soft);
+  border-radius: 10px;
+}
+
+.soil-core-card img,
+.manual-gallery-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+}
+
+.manual-drilling-section {
+  margin-top: 0;
+}
+
+.manual-drilling-copy {
+  max-width: 1040px;
+}
+
+.designing-detail-section {
+  padding-top: clamp(54px, 7vw, 82px);
+}
+
+.designing-detail-section .service-detail-grid {
+  grid-template-columns: minmax(0, 0.78fr) minmax(390px, 0.92fr);
+}
+
+.designing-detail-media {
+  width: min(620px, 100%);
+}
+
+.designing-detail-media::before {
+  inset: 8% 12% 22% 6%;
+  border-radius: 12px;
+  transform: translate(-8%, -12%);
+}
+
+.designing-detail-media img {
+  border-radius: 8px;
+}
+
+.consulting-detail-section {
+  padding-top: clamp(54px, 7vw, 82px);
+}
+
+.consulting-detail-section .service-detail-grid {
+  grid-template-columns: minmax(0, 0.74fr) minmax(390px, 0.9fr);
+}
+
+.consulting-detail-media {
+  width: min(620px, 100%);
+}
+
+.consulting-detail-media::before {
+  inset: 2% 18% 18% 0;
+  border-radius: 12px;
+  transform: translate(-9%, -14%);
+}
+
+.consulting-detail-media img {
+  border-radius: 8px;
+}
+
+.designing-choice-section {
+  padding: 0 0 clamp(68px, 8vw, 110px);
+  background: #ffffff;
+}
+
+.consulting-closing-section {
+  padding: 0 0 clamp(68px, 8vw, 110px);
+  background: #ffffff;
+}
+
+.consulting-closing-copy {
+  max-width: 1180px;
+}
+
+.designing-choice-section h2 {
+  margin: 0 0 20px;
+  color: #050608;
+  font-size: clamp(1.2rem, 1.8vw, 1.48rem);
+  font-weight: 760;
+  line-height: 0.98;
 }
 
 .contact-inner {
@@ -958,7 +1459,7 @@ geotest-navbar-logo {
   font-weight: 760;
   line-height: 1;
   text-transform: uppercase;
-  background: rgba(255, 208, 24, 0.34);
+  background: rgba(255, 242, 0, 0.34);
   border-radius: 999px;
 }
 
@@ -969,7 +1470,7 @@ geotest-navbar-logo {
   color: #071828;
   font-size: clamp(2.35rem, 5vw, 4.6rem);
   font-weight: 780;
-  line-height: 0.95;
+  line-height: 0.88;
   letter-spacing: 0;
 }
 
@@ -1048,8 +1549,8 @@ geotest-navbar-logo {
 .contact-point {
   width: 8px;
   height: 8px;
-  background: #ffd018;
-  border: 2px solid #1d1d1d;
+  background: var(--logo-yellow);
+  border: 2px solid var(--logo-outline);
   border-radius: 50%;
   animation: contactPointFloat 2.4s ease-in-out infinite;
 }
@@ -1394,11 +1895,11 @@ geotest-logo-hero-reveal {
 }
 
 .dot-blue {
-  fill: #202078;
+  fill: var(--logo-navy);
 }
 
 .dot-yellow {
-  fill: #ffd018;
+  fill: var(--logo-yellow);
 }
 
 .hero-wordmark-block {
@@ -1432,7 +1933,7 @@ geotest-logo-hero-reveal {
 }
 
 .hero-geotest-word {
-  fill: #202078;
+  fill: var(--logo-navy);
   font-size: 125px;
 }
 
@@ -1446,12 +1947,12 @@ geotest-logo-hero-reveal {
 }
 
 .hero-engineering-word {
-  fill: #12a9d6;
+  fill: var(--logo-blue);
   font-size: 104px;
 }
 
 .hero-orange-divider {
-  fill: #ffd018;
+  fill: var(--logo-yellow);
   filter: none;
   transform-box: fill-box;
   transform-origin: left center;
@@ -1644,18 +2145,32 @@ geotest-logo-hero-reveal {
     top: calc(100% + 10px);
     right: 0;
     left: 0;
-    display: none;
+    display: grid;
     align-items: stretch;
-    padding: 14px;
-    background: var(--surface-strong);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    box-shadow: 0 18px 44px rgba(16, 32, 51, 0.2);
+    gap: 12px;
+    padding: 14px clamp(20px, 4vw, 64px) 18px;
+    background: #ffffff;
+    border: 0;
+    border-top: 1px solid rgba(16, 32, 51, 0.08);
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 18px 44px rgba(16, 32, 51, 0.16);
+    max-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-10px);
+    visibility: hidden;
+    transition:
+      max-height 260ms cubic-bezier(0.2, 0.78, 0.22, 1),
+      transform 220ms cubic-bezier(0.2, 0.78, 0.22, 1),
+      visibility 0s linear 220ms;
   }
 
   .navbar.is-open .nav-panel {
-    display: grid;
-    gap: 12px;
+    max-height: 560px;
+    pointer-events: auto;
+    transform: translateY(0);
+    visibility: visible;
+    transition-delay: 0s;
   }
 
   .nav-links {
@@ -1693,6 +2208,9 @@ geotest-logo-hero-reveal {
     grid-template-columns: 1fr;
     width: min(680px, 100%);
     min-height: 0;
+    box-shadow:
+      0 24px 58px rgba(16, 32, 51, 0.16),
+      0 8px 20px rgba(44, 43, 145, 0.08);
   }
 
   .recognition-media {
@@ -1770,6 +2288,38 @@ geotest-logo-hero-reveal {
     width: 100%;
   }
 
+  .service-detail-inner {
+    width: min(760px, calc(100% - 44px));
+  }
+
+  .service-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .designing-detail-section .service-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .consulting-detail-section .service-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-detail-media {
+    justify-self: center;
+    order: -1;
+    width: min(390px, 100%);
+  }
+
+  .gtc-compact-grid,
+  .soil-core-grid,
+  .manual-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gtc-compact-media {
+    order: -1;
+  }
+
   .service-overview-item {
     grid-template-columns: 66px minmax(0, 1fr);
     gap: 20px;
@@ -1781,8 +2331,8 @@ geotest-logo-hero-reveal {
   }
 
   .service-overview-icon svg {
-    width: 36px;
-    height: 36px;
+    width: 43px;
+    height: 43px;
   }
 }
 
@@ -1848,8 +2398,9 @@ geotest-logo-hero-reveal {
   }
 
   .services-overview-inner h2 {
-    margin-bottom: 34px;
+    margin-bottom: 24px;
     font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 0.86;
     text-align: center;
   }
 
@@ -1869,6 +2420,8 @@ geotest-logo-hero-reveal {
   }
 
   .more-about-inner h2 {
+    margin-bottom: 30px;
+    line-height: 0.84;
     text-align: center;
   }
 
@@ -1883,6 +2436,7 @@ geotest-logo-hero-reveal {
   .custom-project-copy h2,
   .faq-layout h2 {
     font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 0.86;
     text-align: left;
   }
 
@@ -1985,6 +2539,7 @@ geotest-logo-hero-reveal {
 
   .recognition-copy h2 {
     font-size: clamp(1.75rem, 9vw, 2.35rem);
+    line-height: 0.9;
   }
 
   .recognition-copy p {
@@ -1999,6 +2554,8 @@ geotest-logo-hero-reveal {
 
   .services-overview-inner h2 {
     font-size: clamp(1.85rem, 9vw, 2.35rem);
+    margin-bottom: 24px;
+    line-height: 0.86;
   }
 
   .service-overview-item {
@@ -2012,8 +2569,8 @@ geotest-logo-hero-reveal {
   }
 
   .service-overview-icon svg {
-    width: 32px;
-    height: 32px;
+    width: 39px;
+    height: 39px;
   }
 
   .service-overview-item h3 {
@@ -2035,6 +2592,8 @@ geotest-logo-hero-reveal {
 
   .more-about-inner h2 {
     font-size: clamp(2.25rem, 11vw, 3.2rem);
+    margin-bottom: 26px;
+    line-height: 0.84;
   }
 
   .more-about-item summary {
@@ -2059,6 +2618,7 @@ geotest-logo-hero-reveal {
   .custom-project-copy h2,
   .faq-layout h2 {
     font-size: clamp(1.9rem, 9vw, 2.45rem);
+    line-height: 0.86;
   }
 
   .custom-project-note {
@@ -2139,6 +2699,59 @@ geotest-logo-hero-reveal {
   .contact-form {
     gap: 15px;
     padding: 24px 18px;
+  }
+
+  .service-detail-main {
+    padding-top: 102px;
+  }
+
+  .service-detail-inner {
+    width: min(100% - 36px, 620px);
+  }
+
+  .service-detail-intro {
+    padding-top: 36px;
+  }
+
+  .service-detail-intro h1 {
+    font-size: clamp(2rem, 10vw, 3rem);
+    margin-bottom: 14px;
+    line-height: 0.88;
+    letter-spacing: 0.06em;
+  }
+
+  .service-detail-intro p,
+  .service-detail-panel p,
+  .service-detail-copy p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .service-detail-panel {
+    padding: 42px 0;
+  }
+
+  .service-detail-split {
+    padding: 48px 0 64px;
+  }
+
+  .service-arrow-list li {
+    font-size: 0.98rem;
+  }
+
+  .gtc-compact-section,
+  .manual-drilling-section {
+    padding: 42px 0;
+  }
+
+  .soil-core-gallery,
+  .manual-gallery-section {
+    padding: 42px 0;
+  }
+
+  .soil-core-card,
+  .manual-gallery-card {
+    padding: 16px;
   }
 
   .what-we-do-section {
