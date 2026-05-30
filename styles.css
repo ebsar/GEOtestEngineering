@@ -990,13 +990,37 @@ geotest-navbar-logo {
   background:
     linear-gradient(120deg, rgba(255, 242, 0, 0.12) 0 18%, transparent 18% 100%),
     linear-gradient(135deg, #102033 0%, #2c2b91 58%, #0b84ad 100%);
+  background-size: 180% 180%;
+  animation: aboutDarkColorFlow 13s ease-in-out infinite alternate;
+}
+
+@keyframes aboutDarkColorFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 .about-work-section-light {
   color: var(--ink);
   background:
-    linear-gradient(120deg, rgba(18, 169, 214, 0.14) 0 22%, transparent 22% 100%),
-    linear-gradient(135deg, #fff9ba 0%, #eef9fd 100%);
+    linear-gradient(120deg, rgba(18, 169, 214, 0.06) 0 22%, transparent 22% 100%),
+    linear-gradient(135deg, #fbfeff 0%, #f1fbff 45%, #fffde9 100%);
+  background-size: 180% 180%;
+  animation: aboutLightColorFlow 12s ease-in-out infinite alternate;
+}
+
+@keyframes aboutLightColorFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 .about-work-grid {
@@ -1078,10 +1102,7 @@ geotest-navbar-logo {
 .about-partner-section {
   padding: clamp(58px, 7vw, 88px) 0;
   color: #ffffff;
-  background:
-    linear-gradient(90deg, rgba(255, 242, 0, 0.18) 0 1px, transparent 1px 100%),
-    linear-gradient(135deg, #2c2b91 0%, #102033 56%, #12a9d6 100%);
-  background-size: 72px 100%, auto;
+  background: #2c2b91;
 }
 
 .about-partner-inner {
@@ -1244,8 +1265,8 @@ geotest-navbar-logo {
 
 .faq-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.18fr) minmax(330px, 0.82fr);
-  gap: clamp(48px, 7vw, 86px);
+  grid-template-columns: 1fr;
+  gap: clamp(22px, 3vw, 34px);
   align-items: start;
   margin-top: clamp(76px, 8vw, 112px);
 }
@@ -1253,6 +1274,7 @@ geotest-navbar-logo {
 .faq-list {
   display: grid;
   gap: 16px;
+  width: 100%;
 }
 
 .faq-item {
@@ -3686,7 +3708,9 @@ geotest-logo-hero-reveal {
   .what-we-do-section::before,
   .what-we-do-content h2,
   .what-we-do-copy,
-  .about-structure-figure {
+  .about-structure-figure,
+  .about-work-section-dark,
+  .about-work-section-light {
     animation: none !important;
   }
 
@@ -3724,4 +3748,5 @@ geotest-logo-hero-reveal {
     opacity: 1;
     transform: none;
   }
+
 }
