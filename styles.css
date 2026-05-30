@@ -760,8 +760,12 @@ geotest-navbar-logo {
     transform 260ms cubic-bezier(0.2, 0.78, 0.22, 1);
 }
 
-.more-about-item:hover,
-.more-about-item:focus-within {
+.more-about-item:hover {
+  box-shadow: 0 14px 34px rgba(16, 32, 51, 0.08);
+  transform: translateY(-4px);
+}
+
+.more-about-item[open] {
   background: #f7fcff;
   box-shadow:
     0 18px 44px rgba(18, 169, 214, 0.14),
@@ -769,8 +773,7 @@ geotest-navbar-logo {
   transform: translateY(-4px);
 }
 
-.more-about-item:hover::before,
-.more-about-item:focus-within::before {
+.more-about-item[open]::before {
   opacity: 1;
   transform: scaleX(1);
 }
@@ -793,8 +796,7 @@ geotest-navbar-logo {
     padding-left 220ms cubic-bezier(0.2, 0.78, 0.22, 1);
 }
 
-.more-about-item:hover summary,
-.more-about-item:focus-within summary {
+.more-about-item[open] summary {
   color: var(--logo-navy);
   padding-left: 28px;
 }
@@ -814,14 +816,9 @@ geotest-navbar-logo {
     transform 220ms cubic-bezier(0.2, 0.78, 0.22, 1);
 }
 
-.more-about-item:hover summary::after,
-.more-about-item:focus-within summary::after {
-  color: var(--logo-blue);
-  transform: rotate(90deg) scale(1.08);
-}
-
 .more-about-item[open] summary::after {
   content: "-";
+  color: var(--logo-blue);
   transform: rotate(180deg) scale(1.08);
 }
 
@@ -848,6 +845,297 @@ geotest-navbar-logo {
   height: auto;
   object-fit: cover;
   object-position: center;
+}
+
+.about-page-main {
+  padding-top: 86px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.about-page-inner,
+.about-mission-inner {
+  width: min(1180px, calc(100% - 44px));
+  margin: 0 auto;
+}
+
+.about-intro-section {
+  padding: clamp(48px, 6vw, 76px) 0 clamp(54px, 5.8vw, 82px);
+}
+
+.about-logo-kicker {
+  margin: 0 0 36px;
+  color: rgba(44, 43, 145, 0.28);
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.about-intro-section h1 {
+  margin: 0 0 24px;
+  color: #050608;
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
+  font-weight: 560;
+  line-height: 1.02;
+  letter-spacing: 0;
+}
+
+.about-intro-section p:not(.about-logo-kicker) {
+  max-width: 1100px;
+  margin: 0;
+  color: #242c35;
+  font-size: clamp(1.02rem, 1.35vw, 1.22rem);
+  font-weight: 400;
+  line-height: 1.58;
+}
+
+.about-mission-section {
+  position: relative;
+  min-height: clamp(620px, 58vw, 760px);
+  padding: clamp(64px, 8vw, 92px) 0;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 72% 24%, rgba(255, 242, 0, 0.18), transparent 26%),
+    radial-gradient(circle at 70% 86%, rgba(18, 169, 214, 0.28), transparent 36%),
+    linear-gradient(135deg, #102033 0%, #2c2b91 100%);
+}
+
+.about-mission-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 242, 0, 0.12), transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 18%);
+}
+
+.about-mission-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(320px, 0.78fr);
+  align-items: start;
+  gap: clamp(44px, 7vw, 110px);
+}
+
+.about-mission-copy {
+  display: grid;
+  gap: clamp(54px, 7vw, 86px);
+  max-width: 580px;
+}
+
+.about-statement h2 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: clamp(2rem, 3.7vw, 3.15rem);
+  font-weight: 560;
+  line-height: 1.04;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.about-statement p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  font-weight: 400;
+  line-height: 1.58;
+}
+
+.about-structure-figure {
+  position: relative;
+  align-self: end;
+  justify-self: end;
+  width: min(520px, 100%);
+  margin: -150px 0 -92px;
+  animation: aboutStructureRise 900ms cubic-bezier(0.16, 0.88, 0.28, 1) 180ms both;
+}
+
+.about-structure-figure::before {
+  content: "";
+  position: absolute;
+  inset: 8% 8% auto;
+  height: 36%;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(255, 242, 0, 0.22), transparent 62%);
+  filter: blur(18px);
+}
+
+.about-structure-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  mix-blend-mode: screen;
+  opacity: 0.82;
+}
+
+@keyframes aboutStructureRise {
+  0% {
+    transform: translateY(160px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.about-work-section {
+  position: relative;
+  padding: clamp(64px, 8vw, 104px) 0;
+}
+
+.about-work-section-dark {
+  color: #ffffff;
+  background:
+    linear-gradient(120deg, rgba(255, 242, 0, 0.12) 0 18%, transparent 18% 100%),
+    linear-gradient(135deg, #102033 0%, #2c2b91 58%, #0b84ad 100%);
+}
+
+.about-work-section-light {
+  color: var(--ink);
+  background:
+    linear-gradient(120deg, rgba(18, 169, 214, 0.14) 0 22%, transparent 22% 100%),
+    linear-gradient(135deg, #fff9ba 0%, #eef9fd 100%);
+}
+
+.about-work-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.78fr);
+  gap: clamp(44px, 7vw, 92px);
+  align-items: center;
+}
+
+.about-work-copy {
+  max-width: 650px;
+}
+
+.about-work-copy h2,
+.about-partner-section h2 {
+  margin: 0 0 clamp(24px, 3vw, 36px);
+  font-size: clamp(2rem, 4vw, 3.45rem);
+  font-weight: 560;
+  line-height: 1.02;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.about-work-copy p {
+  margin: 0 0 18px;
+  font-size: clamp(1rem, 1.28vw, 1.16rem);
+  font-weight: 400;
+  line-height: 1.62;
+}
+
+.about-work-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.about-work-section-dark .about-work-copy p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.about-work-section-light .about-work-copy p {
+  color: #263544;
+}
+
+.about-work-copy strong {
+  font-weight: 680;
+}
+
+.about-work-media {
+  margin: 0;
+  justify-self: end;
+  overflow: hidden;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 24px 52px rgba(16, 32, 51, 0.2);
+}
+
+.about-work-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.about-work-media-wide {
+  width: min(520px, 100%);
+}
+
+.about-work-media-wide img {
+  aspect-ratio: 628 / 419;
+}
+
+.about-work-media-portrait {
+  width: min(360px, 100%);
+}
+
+.about-work-media-portrait img {
+  aspect-ratio: 406 / 541;
+}
+
+.about-partner-section {
+  padding: clamp(58px, 7vw, 88px) 0;
+  color: #ffffff;
+  background:
+    linear-gradient(90deg, rgba(255, 242, 0, 0.18) 0 1px, transparent 1px 100%),
+    linear-gradient(135deg, #2c2b91 0%, #102033 56%, #12a9d6 100%);
+  background-size: 72px 100%, auto;
+}
+
+.about-partner-inner {
+  max-width: 1120px;
+}
+
+.about-partner-section h2 {
+  max-width: 980px;
+}
+
+.about-partner-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+  gap: clamp(34px, 6vw, 84px);
+  align-items: start;
+}
+
+.about-partner-grid p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  font-weight: 400;
+  line-height: 1.62;
+}
+
+.about-partner-action {
+  display: grid;
+  justify-items: start;
+  gap: 24px;
+}
+
+.about-partner-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 8px;
+  background: var(--logo-yellow);
+  color: var(--logo-navy);
+  font-size: 0.98rem;
+  font-weight: 680;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms cubic-bezier(0.2, 0.78, 0.22, 1);
+}
+
+.about-partner-button:hover,
+.about-partner-button:focus-visible {
+  background: #fff78a;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+  transform: translateY(-2px);
 }
 
 .custom-project-section {
@@ -901,6 +1189,13 @@ geotest-navbar-logo {
   line-height: 0.88;
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+#custom-project-title {
+  max-width: 18ch;
+  font-size: clamp(1.6rem, 2.55vw, 2.25rem);
+  font-weight: 620;
+  line-height: 1.02;
 }
 
 .custom-project-note {
@@ -1064,41 +1359,6 @@ geotest-navbar-logo {
   font-size: 0.98rem;
   font-weight: 410;
   line-height: 1.5;
-}
-
-@media (min-width: 761px) {
-  .faq-list {
-    overflow: visible;
-  }
-
-  .faq-item {
-    overflow: visible;
-  }
-
-  .faq-item[open] {
-    z-index: 6;
-  }
-
-  .faq-item p {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    left: 0;
-    margin: 0;
-    padding: 18px 20px 20px 52px;
-    background: #ffffff;
-    border: 1px solid rgba(16, 32, 51, 0.1);
-    border-radius: 10px;
-    box-shadow: 0 18px 42px rgba(16, 32, 51, 0.16);
-  }
-
-  .faq-item[open] p {
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(238, 247, 251, 0.78)),
-      #f8fcff;
-    border-color: rgba(18, 169, 214, 0.14);
-    box-shadow: 0 18px 42px rgba(16, 32, 51, 0.12);
-  }
 }
 
 @keyframes faqLiquidBloom {
@@ -1654,6 +1914,282 @@ geotest-navbar-logo {
   box-shadow: 0 16px 34px rgba(18, 169, 214, 0.22);
 }
 
+.projects-page-main {
+  padding-top: 86px;
+  background: #ffffff;
+}
+
+.projects-hero {
+  padding: clamp(46px, 6vw, 72px) 22px clamp(34px, 4vw, 50px);
+}
+
+.projects-hero-inner {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.projects-hero h1 {
+  margin: 0 0 24px;
+  color: #050608;
+  font-size: clamp(3.4rem, 6vw, 5.2rem);
+  font-weight: 830;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.projects-hero p {
+  max-width: 1080px;
+  margin: 0;
+  color: #15191f;
+  font-size: clamp(1.05rem, 1.45vw, 1.35rem);
+  font-weight: 430;
+  line-height: 1.46;
+  letter-spacing: 0;
+}
+
+.project-filter-band {
+  display: grid;
+  place-items: center;
+  min-height: 162px;
+  padding: 34px 22px;
+  background:
+    linear-gradient(135deg, rgba(18, 169, 214, 0.08), rgba(255, 242, 0, 0.14)),
+    #f7fbff;
+}
+
+.project-filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.project-filter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 154px;
+  min-height: 52px;
+  padding: 0 26px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.96rem;
+  font-weight: 720;
+  letter-spacing: 0;
+  border: 1px solid rgba(18, 169, 214, 0.22);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(238, 247, 251, 0.92)),
+    #eef7fb;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(16, 32, 51, 0.06);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.project-filter:hover,
+.project-filter:focus-visible {
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.project-filter:not(.is-active):hover,
+.project-filter:not(.is-active):focus-visible {
+  color: var(--logo-navy);
+  border-color: rgba(255, 242, 0, 0.82);
+  background:
+    linear-gradient(135deg, rgba(255, 242, 0, 0.34), rgba(18, 169, 214, 0.12)),
+    #ffffff;
+  box-shadow: 0 16px 32px rgba(18, 169, 214, 0.1);
+}
+
+.project-filter.is-active {
+  color: #ffffff;
+  border-color: var(--logo-navy);
+  background:
+    linear-gradient(135deg, var(--logo-navy), #102033),
+    var(--logo-navy);
+  box-shadow: 0 16px 36px rgba(44, 43, 145, 0.18);
+}
+
+.project-list-section {
+  padding: clamp(82px, 8vw, 112px) 22px clamp(70px, 8vw, 104px);
+}
+
+.project-list-inner {
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+}
+
+.project-list-inner h2 {
+  margin: 0 auto 52px;
+  width: 100%;
+  max-width: 930px;
+  color: #050608;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-weight: 820;
+  line-height: 1.04;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.project-card {
+  display: grid;
+  grid-template-columns: minmax(330px, 0.95fr) minmax(360px, 0.9fr);
+  align-items: center;
+  gap: clamp(36px, 5vw, 64px);
+  padding: clamp(32px, 3.4vw, 46px);
+  background:
+    linear-gradient(135deg, rgba(18, 169, 214, 0.12), rgba(255, 242, 0, 0.18)),
+    #f7fbff;
+  border: 1px solid rgba(18, 169, 214, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 24px 70px rgba(16, 32, 51, 0.08);
+}
+
+.project-card.is-hidden {
+  display: none;
+}
+
+.project-copy-panel {
+  min-height: 100%;
+  padding: clamp(34px, 4vw, 52px);
+  color: #12161b;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(238, 247, 251, 0.92)),
+    #ffffff;
+  border: 1px solid rgba(18, 169, 214, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 18px 42px rgba(16, 32, 51, 0.06);
+}
+
+.project-copy-panel h3 {
+  margin: 0 0 18px;
+  color: #050608;
+  font-size: clamp(1.75rem, 2.3vw, 2.25rem);
+  font-weight: 810;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.project-copy-panel p {
+  margin: 0;
+  color: #14181e;
+  font-size: clamp(0.98rem, 1.12vw, 1.07rem);
+  font-weight: 430;
+  line-height: 1.42;
+  letter-spacing: 0;
+}
+
+.project-year {
+  margin-top: 30px !important;
+}
+
+.project-year strong {
+  font-weight: 840;
+}
+
+.project-slider {
+  position: relative;
+  align-self: center;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(255, 242, 0, 0.45);
+  border-radius: 14px;
+  box-shadow: 0 18px 42px rgba(18, 169, 214, 0.12);
+}
+
+.project-slide-track {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+}
+
+.project-slide {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.02);
+  transition:
+    opacity 260ms ease,
+    transform 420ms ease;
+}
+
+.project-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.project-slide-button {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: var(--logo-navy);
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 242, 0, 0.78);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.project-slide-button:hover,
+.project-slide-button:focus-visible {
+  outline: none;
+  color: #ffffff;
+  background: var(--logo-navy);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.project-slide-button svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.9;
+}
+
+.project-slide-prev {
+  left: 18px;
+}
+
+.project-slide-next {
+  right: 18px;
+}
+
+.project-empty-message {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 26px 28px;
+  color: #14181e;
+  font-size: 1.05rem;
+  font-weight: 620;
+  text-align: center;
+  background: #f3f3f3;
+  border-radius: 12px;
+}
+
 .site-footer {
   padding: 22px clamp(20px, 5vw, 72px) 18px;
   color: #102033;
@@ -2186,18 +2722,48 @@ geotest-logo-hero-reveal {
     padding: 0 10px;
   }
 
+  .has-dropdown {
+    position: static;
+  }
+
   .dropdown-menu {
-    position: absolute;
-    top: calc(100% + 4px);
-    right: 0;
-    left: 0;
-    z-index: 4;
+    position: static;
+    display: grid;
+    width: 100%;
     min-width: 0;
+    max-height: 0;
+    padding: 0;
     margin: 0;
-    background: rgba(255, 255, 255, 0.96);
-    border-color: rgba(16, 32, 51, 0.12);
-    box-shadow: 0 18px 42px rgba(16, 32, 51, 0.18);
-    backdrop-filter: blur(12px);
+    overflow: hidden;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    box-shadow: none;
+    opacity: 0;
+    transition:
+      max-height 220ms cubic-bezier(0.2, 0.78, 0.22, 1),
+      padding 180ms ease,
+      opacity 160ms ease;
+  }
+
+  .has-dropdown:hover .dropdown-menu {
+    max-height: 0;
+    padding: 0;
+    opacity: 0;
+  }
+
+  .has-dropdown.is-open .dropdown-menu,
+  .has-dropdown:focus-within .dropdown-menu {
+    max-height: 230px;
+    padding: 6px 0 2px;
+    opacity: 1;
+  }
+
+  .dropdown-menu a {
+    min-height: 40px;
+    padding: 0 16px;
+    background: var(--logo-blue-soft);
+    border-radius: 6px;
   }
 
   .language-picker {
@@ -2334,6 +2900,67 @@ geotest-logo-hero-reveal {
     width: 43px;
     height: 43px;
   }
+
+  .about-page-main {
+    padding-top: 74px;
+  }
+
+  .about-page-inner,
+  .about-mission-inner {
+    width: min(760px, calc(100% - 44px));
+  }
+
+  .about-mission-section {
+    min-height: auto;
+    padding-bottom: 0;
+  }
+
+  .about-mission-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .about-mission-copy {
+    max-width: 100%;
+  }
+
+  .about-structure-figure {
+    justify-self: center;
+    width: min(420px, 78vw);
+    margin: -22px 0 -34px;
+  }
+
+  .about-work-grid,
+  .about-partner-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-work-media {
+    justify-self: start;
+  }
+
+  .projects-page-main {
+    padding-top: 74px;
+  }
+
+  .projects-hero-inner,
+  .project-list-inner {
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .project-list-inner h2 {
+    width: 100%;
+    margin-bottom: 34px;
+  }
+
+  .project-card {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .project-slider {
+    order: -1;
+  }
 }
 
 @media (max-width: 760px) {
@@ -2458,6 +3085,80 @@ geotest-logo-hero-reveal {
 
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .about-intro-section {
+    padding: 46px 0 50px;
+  }
+
+  .about-logo-kicker {
+    margin-bottom: 24px;
+  }
+
+  .about-intro-section h1 {
+    font-size: clamp(2.35rem, 11vw, 3.5rem);
+  }
+
+  .about-mission-section {
+    padding-top: 54px;
+  }
+
+  .about-statement h2 {
+    font-size: clamp(1.75rem, 8vw, 2.45rem);
+  }
+
+  .about-work-section,
+  .about-partner-section {
+    padding: 56px 0;
+  }
+
+  .about-work-copy h2,
+  .about-partner-section h2 {
+    font-size: clamp(1.8rem, 9vw, 2.7rem);
+  }
+
+  .about-work-media-wide,
+  .about-work-media-portrait {
+    width: min(100%, 520px);
+  }
+
+  .projects-hero {
+    padding: 46px 22px 34px;
+  }
+
+  .projects-hero h1 {
+    font-size: clamp(3rem, 13vw, 4.6rem);
+  }
+
+  .project-filter-band {
+    min-height: auto;
+    padding: 28px 18px;
+  }
+
+  .project-filter-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: min(460px, 100%);
+  }
+
+  .project-filter {
+    min-width: 0;
+    min-height: 48px;
+    padding: 0 16px;
+    font-size: 0.88rem;
+  }
+
+  .project-list-section {
+    padding: 58px 18px 64px;
+  }
+
+  .project-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .project-copy-panel {
+    padding: 28px 24px;
   }
 }
 
@@ -2762,6 +3463,207 @@ geotest-logo-hero-reveal {
   .what-we-do-copy {
     padding: 0;
   }
+
+  .about-page-inner,
+  .about-mission-inner {
+    width: calc(100% - 36px);
+  }
+
+  .about-intro-section h1 {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+
+  .about-intro-section p:not(.about-logo-kicker),
+  .about-statement p {
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+
+  .about-mission-copy {
+    gap: 44px;
+  }
+
+  .about-structure-figure {
+    width: min(330px, 84vw);
+  }
+
+  .about-work-section,
+  .about-partner-section {
+    padding: 48px 0;
+  }
+
+  .about-work-copy p,
+  .about-partner-grid p {
+    font-size: 0.98rem;
+    line-height: 1.56;
+  }
+
+  .about-partner-button {
+    width: 100%;
+  }
+
+  .projects-hero {
+    padding: 38px 18px 30px;
+  }
+
+  .projects-hero h1 {
+    margin-bottom: 18px;
+    font-size: clamp(2.45rem, 13vw, 3.4rem);
+  }
+
+  .projects-hero p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .project-filter-list {
+    grid-template-columns: 1fr;
+  }
+
+  .project-list-inner h2 {
+    font-size: clamp(1.55rem, 8.2vw, 2.05rem);
+    line-height: 1.08;
+  }
+
+  .project-copy-panel {
+    padding: 24px 20px;
+  }
+
+  .project-copy-panel h3 {
+    font-size: 1.6rem;
+  }
+
+  .project-copy-panel p {
+    font-size: 0.94rem;
+  }
+
+  .project-slide-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .project-slide-prev {
+    left: 10px;
+  }
+
+  .project-slide-next {
+    right: 10px;
+  }
+}
+
+/* Site-wide typography refinement: lighter, smaller, clearer text. */
+.nav-links a,
+.dropdown-trigger,
+.language-picker,
+.language-picker select,
+.footer-nav,
+.footer-contact,
+.custom-project-button,
+.contact-form button,
+.project-filter {
+  font-weight: 560;
+}
+
+.hero-tagline,
+.recognition-copy h2,
+.services-overview-inner h2,
+.more-about-inner h2,
+.custom-project-copy h2,
+.faq-layout h2,
+.service-detail-intro h1,
+.service-detail-copy h1,
+.service-detail-copy h2,
+.designing-choice-section h2,
+.projects-hero h1,
+.project-list-inner h2 {
+  font-weight: 560;
+  line-height: 1.04;
+}
+
+.recognition-copy h2,
+.services-overview-inner h2,
+.more-about-inner h2 {
+  font-size: clamp(2rem, 4.6vw, 4rem);
+}
+
+.custom-project-copy h2,
+.faq-layout h2 {
+  font-size: clamp(1.75rem, 3vw, 2.45rem);
+}
+
+#custom-project-title {
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.service-detail-intro h1,
+.service-detail-copy h1 {
+  font-size: clamp(2rem, 3.7vw, 3.35rem);
+  font-weight: 520;
+  letter-spacing: 0.08em;
+}
+
+.service-detail-copy h2,
+.designing-choice-section h2 {
+  font-size: clamp(1.55rem, 2.6vw, 2.55rem);
+  font-weight: 540;
+}
+
+.projects-hero h1 {
+  margin-bottom: 18px;
+  font-size: clamp(2.3rem, 7vw, 4rem);
+  font-weight: 560;
+  line-height: 1.02;
+}
+
+.projects-hero p {
+  max-width: 900px;
+  font-size: clamp(0.98rem, 1.22vw, 1.14rem);
+  font-weight: 400;
+  line-height: 1.56;
+}
+
+.project-list-inner h2 {
+  max-width: 900px;
+  font-size: clamp(1.45rem, 3vw, 2.35rem);
+  font-weight: 560;
+  line-height: 1.12;
+}
+
+.project-copy-panel h3 {
+  font-size: clamp(1.45rem, 1.85vw, 1.85rem);
+  font-weight: 560;
+}
+
+.project-copy-panel p {
+  font-size: clamp(0.92rem, 1vw, 1rem);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.project-year strong {
+  font-weight: 680;
+}
+
+.services-overview-item h3,
+.more-about-item summary,
+.faq-item summary,
+.service-arrow-list li,
+.project-empty-message {
+  font-weight: 500;
+}
+
+.recognition-copy p,
+.more-about-item p,
+.custom-project-note p,
+.faq-item p,
+.contact-copy p,
+.service-detail-intro p,
+.service-detail-panel p,
+.service-detail-copy p,
+.project-copy-panel p {
+  color: #2d3540;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2783,7 +3685,8 @@ geotest-logo-hero-reveal {
   .contact-point,
   .what-we-do-section::before,
   .what-we-do-content h2,
-  .what-we-do-copy {
+  .what-we-do-copy,
+  .about-structure-figure {
     animation: none !important;
   }
 
@@ -2814,6 +3717,11 @@ geotest-logo-hero-reveal {
   .motion-ready .what-we-do-section .what-we-do-copy {
     opacity: 1;
     filter: none;
+    transform: none;
+  }
+
+  .about-structure-figure {
+    opacity: 1;
     transform: none;
   }
 }

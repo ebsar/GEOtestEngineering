@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us | GEOtest Engineering</title>
+    <meta
+      name="description"
+      content="Learn about GEOtest Engineering, our geotechnical mission, vision, and approach to reliable project support."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:title" content="About Us | GEOtest Engineering" />
+    <meta
+      property="og:description"
+      content="GEOtest Engineering applies geotechnical knowledge, field experience, and practical engineering judgment to projects with clarity and responsibility."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="public/icons/geotest-dots-icon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="About Us | GEOtest Engineering" />
+    <meta
+      name="twitter:description"
+      content="GEOtest Engineering applies geotechnical knowledge, field experience, and practical engineering judgment to projects with clarity and responsibility."
+    />
+    <meta name="twitter:image" content="public/icons/geotest-dots-icon.svg" />
+    <link rel="icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="shortcut icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary navigation">
+      <nav class="navbar">
+        <a class="brand" href="index.html#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="primary-menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-panel" id="primary-menu">
+          <ul class="nav-links">
+            <li><a href="index.html#home" data-i18n="nav.home">Home</a></li>
+            <li class="has-dropdown">
+              <button
+                class="dropdown-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-controls="services-menu"
+              >
+                <span data-i18n="nav.services">Services</span>
+                <svg aria-hidden="true" viewBox="0 0 20 20">
+                  <path d="M5.5 7.5 10 12l4.5-4.5" />
+                </svg>
+              </button>
+              <ul class="dropdown-menu" id="services-menu">
+                <li><a href="designing.html" data-i18n="overview.design">Designing</a></li>
+                <li><a href="supervision.html" data-i18n="overview.supervision">Supervision</a></li>
+                <li><a href="consulting.html" data-i18n="overview.consulting">Consulting</a></li>
+                <li><a href="geometric-investigation.html" data-i18n="overview.geometric">Geometric Investigation</a></li>
+              </ul>
+            </li>
+            <li><a href="projects.html" data-i18n="nav.projects">Projects</a></li>
+            <li><a href="about.html" aria-current="page" data-i18n="nav.about">About Us</a></li>
+            <li><a href="contact.html" data-i18n="nav.contacts">Contacts</a></li>
+          </ul>
+
+          <label class="language-picker" for="language-select">
+            <select id="language-select" name="language" aria-label="Choose language">
+              <option value="en">🇬🇧 EN</option>
+              <option value="sq">🇦🇱 AL</option>
+            </select>
+          </label>
+        </div>
+      </nav>
+    </header>
+
+    <main class="about-page-main">
+      <section class="about-intro-section" aria-labelledby="about-title">
+        <div class="about-page-inner">
+          <p class="about-logo-kicker" aria-hidden="true">Engineering</p>
+          <h1 id="about-title" data-i18n="about.title">GEOtest Engineering</h1>
+          <p data-i18n="about.intro">
+            The journey in geotechnical engineering began through academic
+            education, field investigation, design work, and practical project
+            experience. GEOtest Engineering brings that knowledge into every
+            assignment with a precise, responsible, and site-specific approach.
+            Today, we support projects with clear technical thinking,
+            professional communication, and solutions adapted to real ground
+            conditions.
+          </p>
+        </div>
+      </section>
+
+      <section class="about-mission-section" aria-label="Mission and vision">
+        <div class="about-mission-inner">
+          <div class="about-mission-copy">
+            <section class="about-statement" aria-labelledby="about-mission-title">
+              <h2 id="about-mission-title" data-i18n="about.mission.title">Our Mission</h2>
+              <p data-i18n="about.mission.text">
+                To provide top-quality and innovative geotechnical solutions
+                based on precision, quality, and professional standards, helping
+                our clients achieve their goals.
+              </p>
+            </section>
+
+            <section class="about-statement" aria-labelledby="about-vision-title">
+              <h2 id="about-vision-title" data-i18n="about.vision.title">Our Vision</h2>
+              <p data-i18n="about.vision.text">
+                To become a trusted geotechnical engineering partner recognized
+                for expertise, innovative approaches, and contribution to the
+                development of safe and efficient engineering solutions.
+              </p>
+            </section>
+          </div>
+
+          <figure class="about-structure-figure">
+            <img
+              src="public/images/about-shtylla.png"
+              alt="Structural columns illustration"
+              loading="eager"
+              width="735"
+              height="922"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="about-work-section about-work-section-dark" aria-labelledby="about-work-title">
+        <div class="about-page-inner about-work-grid">
+          <div class="about-work-copy">
+            <h2 id="about-work-title" data-i18n="about.work.title">Key Areas of Work</h2>
+            <p data-i18n-html="about.work.investigations">
+              <strong>Geotechnical Investigations</strong> - Development of studies and designs
+              for new and existing construction projects, aiming to ensure safety and
+              cost-efficiency through detailed site analysis.
+            </p>
+            <p data-i18n-html="about.work.design">
+              <strong>Design</strong> - We provide design services for all phases of
+              documentation, including studies, conceptual, main, and detailed designs,
+              tender documentation, and design supervision, using advanced methods and tools.
+            </p>
+            <p data-i18n-html="about.work.supervision">
+              <strong>Expert Supervision</strong> - Our expert team conducts on-site supervision
+              to ensure the proper implementation of geotechnical recommendations and
+              compliance with technical and safety standards during construction.
+            </p>
+            <p data-i18n-html="about.work.consulting">
+              <strong>Consulting</strong> - We offer expert support throughout all phases of
+              construction projects, from initial site analysis to final implementation,
+              guaranteeing optimal solutions and risk minimization.
+            </p>
+          </div>
+
+          <figure class="about-work-media about-work-media-wide">
+            <img
+              src="public/images/about-key-areas.png"
+              alt="Concrete foundation columns in water"
+              loading="lazy"
+              width="628"
+              height="419"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="about-work-section about-work-section-light" aria-labelledby="about-varazdin-title">
+        <div class="about-page-inner about-work-grid">
+          <div class="about-work-copy">
+            <h2 id="about-varazdin-title" data-i18n="about.varazdin.title">Why Varaždin?</h2>
+            <p data-i18n="about.varazdin.text">
+              Choosing Varaždin as the company's headquarters merged both the professional
+              and personal aspects of our journey. This city, rich in engineering tradition
+              and a dynamic business environment, has proven to be the ideal place for the
+              development of a specialized geotechnical practice. The blend of Varaždin's
+              traditional and modern spirit aligns with our vision of geotechnical engineering.
+              Here at GEOtest Engineering, we create innovative solutions that address the
+              challenges of modern construction.
+            </p>
+          </div>
+
+          <figure class="about-work-media about-work-media-portrait">
+            <img
+              src="public/images/about-varazdin.png"
+              alt="Street view in Varaždin"
+              loading="lazy"
+              width="406"
+              height="541"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="about-partner-section" aria-labelledby="about-partner-title">
+        <div class="about-page-inner about-partner-inner">
+          <h2 id="about-partner-title" data-i18n="about.partner.title">
+            GEOtest Engineering - Your Partner in Developing Geotechnical Solutions
+          </h2>
+          <div class="about-partner-grid">
+            <p data-i18n="about.partner.left">
+              We continuously monitor the latest technological trends and plan to actively
+              engage with the professional community. We look forward to future opportunities
+              to share knowledge and participate in international conferences and professional
+              gatherings, contributing to the growth of the field that we are passionate about.
+            </p>
+            <div class="about-partner-action">
+              <p data-i18n="about.partner.right">
+                Whether you are seeking expert advice, creative solutions, or reliable partners,
+                GEOtest Engineering is here for you. Contact us, and together, let's build a
+                sustainable future on solid foundational principles.
+              </p>
+              <a class="about-partner-button" href="contact.html" data-i18n="about.partner.button">Free Consultation</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="footer-main">
+        <a class="footer-brand" href="index.html#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="index.html#home" data-i18n="nav.home">Home</a>
+          <a href="index.html#services" data-i18n="nav.services">Services</a>
+          <a href="projects.html" data-i18n="nav.projects">Projects</a>
+          <a href="about.html" aria-current="page" data-i18n="nav.about">About Us</a>
+        </nav>
+
+        <a class="footer-contact" href="contact.html" data-i18n="footer.contact">Contact now</a>
+      </div>
+
+      <p class="footer-copy" data-i18n="footer.copy">© 2026 GEOtest Engineering. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js?v=20260530-about-final"></script>
+  </body>
+</html>

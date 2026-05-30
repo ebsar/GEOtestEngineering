@@ -81,8 +81,9 @@ const translations = {
     "services.report": "Geotechnical Report",
     "services.laboratory": "Laboratory Investigations Work",
     "services.designing": "Designing",
-    "services.supervision": "Supervision in Geotechnical Engineering",
-    "services.consulting": "Consulting in Geotechnical Engineering",
+    "services.supervision": "Supervision",
+    "services.consulting": "Consulting",
+    "services.geometric": "Geometric Investigation",
     "services.monitoring": "Technical Monitoring",
     "overview.title": "Our Services",
     "overview.design": "Designing",
@@ -103,7 +104,7 @@ const translations = {
     "custom.title": "Project Development Tailored To Your Needs",
     "custom.text": "GEOtest Engineering develops technical solutions tailored to your needs. We carefully consider your ideas and requirements, turning them into feasible and efficient solutions customized to the specifics of each project.",
     "custom.button": "Free consulting",
-    "faq.title": "Frequently Asked Questions",
+    "faq.title": "FAQ",
     "faq.report.title": "What is a geotechnical report?",
     "faq.report.text": "A geotechnical report summarizes the soil, rock, groundwater, and foundation conditions of a site and gives technical recommendations for safe design and construction.",
     "faq.required.title": "When is a geotechnical report required, and when is a geotechnical project needed?",
@@ -112,6 +113,34 @@ const translations = {
     "faq.anchor.text": "A geotechnical anchor transfers load into stable ground to support retaining structures or slopes. Consent depends on the project position, property boundary, local regulations, and whether anchors pass under neighboring land.",
     "faq.contact.title": "How can I contact you?",
     "faq.contact.text": "Use the contact section to send project information, location, and available documentation. We will review it and respond with the next practical steps.",
+    "projects.title": "PROJECT LIST",
+    "projects.intro": "Below is a selection of projects we have been involved in. Each project is approached with a high level of responsibility, in full compliance with technical requirements and site-specific conditions.",
+    "projects.filter.all": "All projects",
+    "projects.filter.site": "Site investigations",
+    "projects.filter.geotechnical": "Geotechnical projects",
+    "projects.filter.monitoring": "Technical monitoring",
+    "projects.group.investigations": "I. GEOTECHNICAL INVESTIGATIONS AND REPORTS",
+    "projects.durdekovac.title": "Đurđekovac",
+    "projects.durdekovac.text": "The subject of this geotechnical report was the execution of geotechnical investigation works with the aim of defining the foundation conditions for a future structure located on a slope within an area of a stabilized landslide. The conducted investigations determined the geotechnical soil profile, including the distribution of surface deposits, the depth and characteristics of potentially sliding horizons, as well as the transition to more stable layers. Due to initial design uncertainties regarding the structure itself, this phase proposed the execution of one geotechnical borehole at a representative location, along with engineering geological mapping of the slope and presentation of the results on an overview plan. Based on the obtained data, it was concluded that, in the main design phase of the foundation, it would be justified to carry out an additional borehole at the toe of the slope in order to fully define the geotechnical profile and reliably assess terrain stability.",
+    "projects.year.label": "year of design:",
+    "projects.empty": "Projects in this category will be added soon.",
+    "about.title": "GEOtest Engineering",
+    "about.intro": "The journey in geotechnical engineering began through academic education, field investigation, design work, and practical project experience. GEOtest Engineering brings that knowledge into every assignment with a precise, responsible, and site-specific approach. Today, we support projects with clear technical thinking, professional communication, and solutions adapted to real ground conditions.",
+    "about.mission.title": "Our Mission",
+    "about.mission.text": "To provide top-quality and innovative geotechnical solutions based on precision, quality, and professional standards, helping our clients achieve their goals.",
+    "about.vision.title": "Our Vision",
+    "about.vision.text": "To become a trusted geotechnical engineering partner recognized for expertise, innovative approaches, and contribution to the development of safe and efficient engineering solutions.",
+    "about.work.title": "Key Areas of Work",
+    "about.work.investigations": "<strong>Geotechnical Investigations</strong> - Development of studies and designs for new and existing construction projects, aiming to ensure safety and cost-efficiency through detailed site analysis.",
+    "about.work.design": "<strong>Design</strong> - We provide design services for all phases of documentation, including studies, conceptual, main, and detailed designs, tender documentation, and design supervision, using advanced methods and tools.",
+    "about.work.supervision": "<strong>Expert Supervision</strong> - Our expert team conducts on-site supervision to ensure the proper implementation of geotechnical recommendations and compliance with technical and safety standards during construction.",
+    "about.work.consulting": "<strong>Consulting</strong> - We offer expert support throughout all phases of construction projects, from initial site analysis to final implementation, guaranteeing optimal solutions and risk minimization.",
+    "about.varazdin.title": "Why Varaždin?",
+    "about.varazdin.text": "Choosing Varaždin as the company's headquarters merged both the professional and personal aspects of our journey. This city, rich in engineering tradition and a dynamic business environment, has proven to be the ideal place for the development of a specialized geotechnical practice. The blend of Varaždin's traditional and modern spirit aligns with our vision of geotechnical engineering. Here at GEOtest Engineering, we create innovative solutions that address the challenges of modern construction.",
+    "about.partner.title": "GEOtest Engineering - Your Partner in Developing Geotechnical Solutions",
+    "about.partner.left": "We continuously monitor the latest technological trends and plan to actively engage with the professional community. We look forward to future opportunities to share knowledge and participate in international conferences and professional gatherings, contributing to the growth of the field that we are passionate about.",
+    "about.partner.right": "Whether you are seeking expert advice, creative solutions, or reliable partners, GEOtest Engineering is here for you. Contact us, and together, let's build a sustainable future on solid foundational principles.",
+    "about.partner.button": "Free Consultation",
     "contact.kicker": "Contact GEOtest",
     "contact.title": "Start your geotechnical project with clarity.",
     "contact.text": "Send us the project location, scope, and available documentation. We will review the conditions and respond with the most practical next step for investigation, design, supervision, or consulting.",
@@ -218,9 +247,10 @@ const translations = {
     "services.investigation": "Hulumtime Gjeoteknike",
     "services.report": "Raport Gjeoteknik",
     "services.laboratory": "Punime Laboratorike",
-    "services.designing": "Projektim",
-    "services.supervision": "Mbikëqyrje në Inxhinieri Gjeoteknike",
-    "services.consulting": "Konsulencë në Inxhinieri Gjeoteknike",
+    "services.designing": "Projektimi",
+    "services.supervision": "Mbikëqyrja",
+    "services.consulting": "Konsultimi",
+    "services.geometric": "Hulumtimi gjeometrik",
     "services.monitoring": "Monitorim Teknik",
     "overview.title": "Shërbimet Tona",
     "overview.design": "Projektimi",
@@ -241,7 +271,7 @@ const translations = {
     "custom.title": "Hartimi i projekteve sipas kërkesave tuaja",
     "custom.text": "GEOtest Engineering zhvillon zgjidhje teknike të përshtatura me nevojat tuaja. Ne i shqyrtojmë me kujdes idetë dhe kërkesat tuaja, duke i kthyer ato në zgjidhje të realizueshme, efikase dhe të përshtatura me veçoritë e çdo projekti.",
     "custom.button": "Konsultim falas",
-    "faq.title": "Pyetje të shpeshta",
+    "faq.title": "FAQ",
     "faq.report.title": "Çfarë është raporti gjeoteknik?",
     "faq.report.text": "Raporti gjeoteknik përmbledh kushtet e tokës, shkëmbinjve, ujërave nëntokësore dhe themeleve të një lokacioni, si dhe jep rekomandime teknike për projektim dhe ndërtim të sigurt.",
     "faq.required.title": "Kur kërkohet raporti gjeoteknik dhe kur nevojitet projekti gjeoteknik?",
@@ -250,6 +280,34 @@ const translations = {
     "faq.anchor.text": "Ankori gjeoteknik transferon ngarkesën në tokë të qëndrueshme për të mbështetur struktura mbajtëse ose shpate. Pëlqimi varet nga pozicioni i projektit, kufiri i pronës, rregulloret lokale dhe nëse ankorët kalojnë nën tokën fqinje.",
     "faq.contact.title": "Si mund t'ju kontaktoj?",
     "faq.contact.text": "Përdorni seksionin e kontaktit për të dërguar informacionin e projektit, lokacionin dhe dokumentacionin që keni në dispozicion. Ne do ta shqyrtojmë dhe do t'ju kthejmë hapat praktikë të radhës.",
+    "projects.title": "LISTA E PROJEKTEVE",
+    "projects.intro": "Më poshtë është një përzgjedhje e projekteve ku kemi qenë të përfshirë. Çdo projekt trajtohet me nivel të lartë përgjegjësie, në përputhje të plotë me kërkesat teknike dhe kushtet specifike të lokacionit.",
+    "projects.filter.all": "Të gjitha projektet",
+    "projects.filter.site": "Hulumtime në terren",
+    "projects.filter.geotechnical": "Projekte gjeoteknike",
+    "projects.filter.monitoring": "Monitorim teknik",
+    "projects.group.investigations": "I. HULUMTIME DHE RAPORTE GJEOTEKNIKE",
+    "projects.durdekovac.title": "Đurđekovac",
+    "projects.durdekovac.text": "Objekt i këtij raporti gjeoteknik ishte kryerja e punimeve hulumtuese gjeoteknike me qëllim përcaktimin e kushteve të themeleve për një strukturë të ardhshme të vendosur në një shpat brenda zonës së një rrëshqitjeje të stabilizuar. Hulumtimet e kryera përcaktuan profilin gjeoteknik të tokës, duke përfshirë shpërndarjen e depozitimeve sipërfaqësore, thellësinë dhe karakteristikat e horizonteve potencialisht rrëshqitëse, si dhe kalimin në shtresa më të qëndrueshme. Për shkak të pasigurive fillestare të projektimit lidhur me vetë strukturën, kjo fazë propozoi kryerjen e një shpimi gjeoteknik në një lokacion përfaqësues, së bashku me hartëzimin inxhinieriko-gjeologjik të shpatit dhe paraqitjen e rezultateve në një plan përmbledhës. Bazuar në të dhënat e marra, u konkludua se në fazën kryesore të projektimit të themeleve do të ishte e arsyeshme të kryhej një shpim shtesë në këmbën e shpatit për të përcaktuar plotësisht profilin gjeoteknik dhe për të vlerësuar në mënyrë të besueshme stabilitetin e terrenit.",
+    "projects.year.label": "viti i projektimit:",
+    "projects.empty": "Projektet në këtë kategori do të shtohen së shpejti.",
+    "about.title": "GEOtest Engineering",
+    "about.intro": "Rrugëtimi në inxhinierinë gjeoteknike filloi përmes edukimit akademik, hulumtimeve në terren, punës projektuese dhe përvojës praktike në projekte. GEOtest Engineering e sjell këtë njohuri në çdo angazhim me qasje të saktë, të përgjegjshme dhe të përshtatur me kushtet e lokacionit. Sot, ne mbështesim projektet me mendim teknik të qartë, komunikim profesional dhe zgjidhje të përshtatura me kushtet reale të terrenit.",
+    "about.mission.title": "Misioni Ynë",
+    "about.mission.text": "Të ofrojmë zgjidhje gjeoteknike cilësore dhe inovative, të bazuara në saktësi, cilësi dhe standarde profesionale, duke ndihmuar klientët tanë të arrijnë qëllimet e tyre.",
+    "about.vision.title": "Vizioni Ynë",
+    "about.vision.text": "Të bëhemi partner i besueshëm në inxhinierinë gjeoteknike, i njohur për ekspertizë, qasje inovative dhe kontribut në zhvillimin e zgjidhjeve inxhinierike të sigurta dhe efikase.",
+    "about.work.title": "Fushat Kryesore të Punës",
+    "about.work.investigations": "<strong>Hulumtime gjeoteknike</strong> - Zhvillim i studimeve dhe projekteve për ndërtime të reja dhe ekzistuese, me qëllim sigurimin e sigurisë dhe efikasitetit përmes analizës së detajuar të lokacionit.",
+    "about.work.design": "<strong>Projektim</strong> - Ofrojmë shërbime projektimi për të gjitha fazat e dokumentacionit, duke përfshirë studime, projekte konceptuale, kryesore dhe të detajuara, dokumentacion tenderi dhe mbikëqyrje të projektimit.",
+    "about.work.supervision": "<strong>Mbikëqyrje profesionale</strong> - Ekipi ynë kryen mbikëqyrje në terren për zbatimin e duhur të rekomandimeve gjeoteknike dhe përputhjen me standardet teknike dhe të sigurisë gjatë ndërtimit.",
+    "about.work.consulting": "<strong>Konsulencë</strong> - Ofrojmë mbështetje profesionale në të gjitha fazat e projekteve të ndërtimit, nga analiza fillestare e lokacionit deri te zbatimi final, duke garantuar zgjidhje optimale dhe minimizim të rreziqeve.",
+    "about.varazdin.title": "Pse Varaždin?",
+    "about.varazdin.text": "Zgjedhja e Varaždinit si seli e kompanisë bashkoi aspektet profesionale dhe personale të rrugëtimit tonë. Ky qytet, i pasur me traditë inxhinierike dhe mjedis dinamik biznesi, është dëshmuar si vend ideal për zhvillimin e një praktike të specializuar gjeoteknike. Fryma tradicionale dhe moderne e Varaždinit përputhet me vizionin tonë për inxhinierinë gjeoteknike. Në GEOtest Engineering krijojmë zgjidhje inovative për sfidat e ndërtimit modern.",
+    "about.partner.title": "GEOtest Engineering - Partneri Juaj në Zhvillimin e Zgjidhjeve Gjeoteknike",
+    "about.partner.left": "Ne ndjekim vazhdimisht trendet më të reja teknologjike dhe synojmë të angazhohemi aktivisht me komunitetin profesional. Presim mundësi të ardhshme për të ndarë njohuri dhe për të marrë pjesë në konferenca ndërkombëtare dhe takime profesionale.",
+    "about.partner.right": "Nëse kërkoni këshillë profesionale, zgjidhje kreative ose partnerë të besueshëm, GEOtest Engineering është këtu për ju. Na kontaktoni dhe së bashku të ndërtojmë një të ardhme të qëndrueshme mbi parime të forta themelimi.",
+    "about.partner.button": "Konsultim Falas",
     "contact.kicker": "Kontaktoni GEOtest",
     "contact.title": "Filloni projektin tuaj gjeoteknik me qartësi.",
     "contact.text": "Dërgoni lokacionin, fushën e projektit dhe dokumentacionin që keni në dispozicion. Ne do t'i shqyrtojmë kushtet dhe do t'ju përgjigjemi me hapin më praktik për hulumtim, projektim, mbikëqyrje ose konsultim.",
@@ -358,6 +416,11 @@ const applyLanguage = (language) => {
     if (value) element.textContent = value;
   });
 
+  document.querySelectorAll("[data-i18n-html]").forEach((element) => {
+    const value = dictionary[element.dataset.i18nHtml];
+    if (value) element.innerHTML = value;
+  });
+
   document.querySelectorAll("[data-i18n-title]").forEach((element) => {
     const value = dictionary[element.dataset.i18nTitle];
     if (value) element.title = value;
@@ -393,6 +456,88 @@ if (whatWeDoSection) {
 
     whatWeDoObserver.observe(whatWeDoSection);
   }
+}
+
+document.querySelectorAll("[data-project-slider]").forEach((slider) => {
+  const slides = Array.from(slider.querySelectorAll(".project-slide"));
+  const previousButton = slider.querySelector("[data-slide-prev]");
+  const nextButton = slider.querySelector("[data-slide-next]");
+  let activeIndex = Math.max(
+    0,
+    slides.findIndex((slide) => slide.classList.contains("is-active")),
+  );
+
+  const setActiveSlide = (nextIndex) => {
+    if (!slides.length) return;
+
+    activeIndex = (nextIndex + slides.length) % slides.length;
+
+    slides.forEach((slide, index) => {
+      const isActive = index === activeIndex;
+      slide.classList.toggle("is-active", isActive);
+      slide.setAttribute("aria-hidden", String(!isActive));
+    });
+  };
+
+  previousButton?.addEventListener("click", () => {
+    setActiveSlide(activeIndex - 1);
+  });
+
+  nextButton?.addEventListener("click", () => {
+    setActiveSlide(activeIndex + 1);
+  });
+
+  slider.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") {
+      setActiveSlide(activeIndex - 1);
+    }
+
+    if (event.key === "ArrowRight") {
+      setActiveSlide(activeIndex + 1);
+    }
+  });
+
+  setActiveSlide(activeIndex);
+});
+
+const projectFilterButtons = Array.from(document.querySelectorAll("[data-project-filter]"));
+const projectCards = Array.from(document.querySelectorAll("[data-project-card]"));
+const projectEmptyMessage = document.querySelector("[data-project-empty]");
+const projectListHeading = document.querySelector("#project-list-heading");
+
+const applyProjectFilter = (filter) => {
+  let visibleCount = 0;
+
+  projectCards.forEach((card) => {
+    const categories = (card.dataset.projectCategories || "").split(/\s+/);
+    const isVisible = filter === "all" || categories.includes(filter);
+    card.classList.toggle("is-hidden", !isVisible);
+    if (isVisible) visibleCount += 1;
+  });
+
+  projectFilterButtons.forEach((button) => {
+    const isActive = button.dataset.projectFilter === filter;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+
+  if (projectEmptyMessage) {
+    projectEmptyMessage.hidden = visibleCount > 0;
+  }
+
+  if (projectListHeading) {
+    projectListHeading.hidden = visibleCount === 0;
+  }
+};
+
+projectFilterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    applyProjectFilter(button.dataset.projectFilter || "all");
+  });
+});
+
+if (projectFilterButtons.length) {
+  applyProjectFilter("all");
 }
 
 const geotestDotMap = [
