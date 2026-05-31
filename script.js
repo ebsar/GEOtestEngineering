@@ -1,3 +1,24 @@
+const pageLoader = document.createElement("div");
+pageLoader.className = "page-loader";
+pageLoader.setAttribute("aria-hidden", "true");
+pageLoader.innerHTML = '<span class="page-loader-spinner"></span>';
+document.body.classList.add("is-page-loading");
+document.body.prepend(pageLoader);
+
+const hidePageLoader = () => {
+  pageLoader.classList.add("is-hidden");
+  document.body.classList.remove("is-page-loading");
+  window.setTimeout(() => pageLoader.remove(), 320);
+};
+
+if (document.readyState === "complete") {
+  window.setTimeout(hidePageLoader, 420);
+} else {
+  window.addEventListener("load", () => window.setTimeout(hidePageLoader, 420), {
+    once: true,
+  });
+}
+
 const navbar = document.querySelector(".navbar");
 const navToggle = document.querySelector(".nav-toggle");
 const dropdown = document.querySelector(".has-dropdown");
