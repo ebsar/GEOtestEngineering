@@ -164,7 +164,12 @@ const translations = {
     "about.partner.button": "Free Consultation",
     "contact.kicker": "Contact GEOtest",
     "contact.title": "Start your geotechnical project with clarity.",
-    "contact.text": "Send us the project location, scope, and available documentation. We will review the conditions and respond with the most practical next step for investigation, design, supervision, or consulting.",
+    "contact.text": "Contact us directly by email, share your phone number, or send us your project location. You can also send us your information below, and we will reach out to you.",
+    "contact.direct.email": "Email",
+    "contact.direct.phone": "Phone",
+    "contact.direct.phoneValue": "Send your phone number and we will call you back",
+    "contact.direct.location": "Location",
+    "contact.direct.locationValue": "Varaždin, Croatia",
     "contact.name": "Name",
     "contact.email": "Email",
     "contact.service": "Service",
@@ -331,7 +336,12 @@ const translations = {
     "about.partner.button": "Konsultim Falas",
     "contact.kicker": "Kontaktoni GEOtest",
     "contact.title": "Filloni projektin tuaj gjeoteknik me qartësi.",
-    "contact.text": "Dërgoni lokacionin, fushën e projektit dhe dokumentacionin që keni në dispozicion. Ne do t'i shqyrtojmë kushtet dhe do t'ju përgjigjemi me hapin më praktik për hulumtim, projektim, mbikëqyrje ose konsultim.",
+    "contact.text": "Na kontaktoni drejtpërdrejt me email, ndani numrin tuaj të telefonit, ose dërgoni lokacionin e projektit. Mund të na dërgoni edhe informacionin tuaj më poshtë dhe ne do t'ju kontaktojmë.",
+    "contact.direct.email": "Email",
+    "contact.direct.phone": "Telefoni",
+    "contact.direct.phoneValue": "Dërgoni numrin tuaj të telefonit dhe ne do t'ju telefonojmë",
+    "contact.direct.location": "Lokacioni",
+    "contact.direct.locationValue": "Varaždin, Kroaci",
     "contact.name": "Emri",
     "contact.email": "Email",
     "contact.service": "Shërbimi",
@@ -456,28 +466,42 @@ applyLanguage(languageSelect?.value || "en");
 
 const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const whatWeDoSection = document.querySelector("#what-we-do");
+const recognitionSection = document.querySelector(".recognition-section");
+const servicesOverviewSection = document.querySelector("#services");
+const moreAboutSection = document.querySelector(".more-about-section");
+const customProjectTop = document.querySelector(".custom-project-top");
+const faqLayout = document.querySelector(".faq-layout");
 
 if (!motionQuery.matches) {
   document.documentElement.classList.add("motion-ready");
 }
 
-if (whatWeDoSection) {
+const revealOnScroll = (element, threshold = 0.28) => {
+  if (!element) return;
+
   if (motionQuery.matches || !("IntersectionObserver" in window)) {
-    whatWeDoSection.classList.add("is-visible");
+    element.classList.add("is-visible");
   } else {
-    const whatWeDoObserver = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       ([entry], observer) => {
         if (!entry.isIntersecting) return;
 
-        whatWeDoSection.classList.add("is-visible");
-        observer.unobserve(whatWeDoSection);
+        element.classList.add("is-visible");
+        observer.unobserve(element);
       },
-      { threshold: 0.28 },
+      { threshold },
     );
 
-    whatWeDoObserver.observe(whatWeDoSection);
+    observer.observe(element);
   }
-}
+};
+
+revealOnScroll(whatWeDoSection);
+revealOnScroll(recognitionSection, 0.22);
+revealOnScroll(servicesOverviewSection, 0.22);
+revealOnScroll(moreAboutSection, 0.22);
+revealOnScroll(customProjectTop, 0.24);
+revealOnScroll(faqLayout, 0.24);
 
 document.querySelectorAll("[data-project-slider]").forEach((slider) => {
   const slides = Array.from(slider.querySelectorAll(".project-slide"));
