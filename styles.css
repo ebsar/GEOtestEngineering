@@ -3038,17 +3038,20 @@ geotest-logo-hero-reveal {
     box-shadow: 0 22px 40px rgba(16, 32, 51, 0.14);
     max-height: 0;
     overflow: hidden;
+    opacity: 0;
     pointer-events: none;
-    transform: translateY(-10px);
+    transform: translateY(-14px);
     visibility: hidden;
     transition:
-      max-height 260ms cubic-bezier(0.2, 0.78, 0.22, 1),
-      transform 220ms cubic-bezier(0.2, 0.78, 0.22, 1),
-      visibility 0s linear 220ms;
+      max-height 520ms cubic-bezier(0.16, 0.86, 0.22, 1),
+      opacity 360ms ease,
+      transform 460ms cubic-bezier(0.16, 0.86, 0.22, 1),
+      visibility 0s linear 520ms;
   }
 
   .navbar.is-open .nav-panel {
     max-height: 560px;
+    opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
     visibility: visible;
