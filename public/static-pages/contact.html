@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact GEOtest Engineering</title>
+    <meta
+      name="description"
+      content="Contact GEOtest Engineering for geotechnical investigation, design, supervision, consulting, and project support."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:title" content="Contact GEOtest Engineering" />
+    <meta
+      property="og:description"
+      content="Start your geotechnical project with a clear request for investigation, design, supervision, or consulting."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="public/icons/geotest-dots-icon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Contact GEOtest Engineering" />
+    <meta
+      name="twitter:description"
+      content="Start your geotechnical project with a clear request for investigation, design, supervision, or consulting."
+    />
+    <meta name="twitter:image" content="public/icons/geotest-dots-icon.svg" />
+    <link rel="icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="shortcut icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary navigation">
+      <nav class="navbar">
+        <a class="brand" href="index.html#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="primary-menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-panel" id="primary-menu">
+          <ul class="nav-links">
+            <li><a href="index.html#home" data-i18n="nav.home">Home</a></li>
+            <li class="has-dropdown">
+              <button
+                class="dropdown-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-controls="services-menu"
+              >
+                <span data-i18n="nav.services">Services</span>
+                <svg aria-hidden="true" viewBox="0 0 20 20">
+                  <path d="M5.5 7.5 10 12l4.5-4.5" />
+                </svg>
+              </button>
+              <ul class="dropdown-menu" id="services-menu">
+                <li><a href="designing.html" data-i18n="overview.design">Designing</a></li>
+                <li><a href="supervision.html" data-i18n="overview.supervision">Supervision</a></li>
+                <li><a href="consulting.html" data-i18n="overview.consulting">Consulting</a></li>
+                <li><a href="geometric-investigation.html" data-i18n="overview.geometric">Geometric Investigation</a></li>
+              </ul>
+            </li>
+            <li><a href="projects.html" data-i18n="nav.projects">Projects</a></li>
+            <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+            <li><a href="contact.html" data-i18n="nav.contacts">Contacts</a></li>
+          </ul>
+
+          <label class="language-picker" for="language-select">
+            <select id="language-select" name="language" aria-label="Choose language">
+              <option value="en">🇬🇧 EN</option>
+              <option value="sq">🇦🇱 AL</option>
+            </select>
+          </label>
+        </div>
+      </nav>
+    </header>
+
+    <main class="contact-page-main">
+      <section class="contact-section contact-page-section" id="contacts" aria-labelledby="contact-title">
+        <div class="contact-inner">
+          <div class="contact-copy">
+            <p class="contact-kicker" data-i18n="contact.kicker">Contact GEOtest</p>
+            <h1 id="contact-title" data-i18n="contact.title">Start your geotechnical project with clarity.</h1>
+            <p data-i18n="contact.text">
+              Contact us directly by email, share your phone number, or send us
+              your project location. You can also send us your information below,
+              and we will reach out to you.
+            </p>
+
+            <ul class="contact-details" aria-label="GEOtest Engineering contact information">
+              <li>
+                <span data-i18n="contact.direct.email">Email</span>
+                <a href="mailto:geotestengineering.ks@gmail.com">geotestengineering.ks@gmail.com</a>
+              </li>
+              <li>
+                <span data-i18n="contact.direct.phone">Phone</span>
+                <a href="tel:+38349242052" data-i18n="contact.direct.phoneValue">+38349242052</a>
+              </li>
+              <li>
+                <span data-i18n="contact.direct.location">Location</span>
+                <span data-i18n="contact.direct.locationValue">Rruga "Mizahir Isma", Rahovec, Kosovo 21000</span>
+              </li>
+            </ul>
+
+            <div class="contact-motion" aria-hidden="true">
+              <span class="contact-scan"></span>
+              <span class="contact-core"></span>
+              <span class="contact-layer layer-one"></span>
+              <span class="contact-layer layer-two"></span>
+              <span class="contact-layer layer-three"></span>
+              <span class="contact-point point-one"></span>
+              <span class="contact-point point-two"></span>
+              <span class="contact-point point-three"></span>
+            </div>
+          </div>
+
+          <form class="contact-form" action="mailto:geotestengineering.ks@gmail.com" method="post" enctype="text/plain">
+            <div class="form-row">
+              <label>
+                <span data-i18n="contact.name">Name</span>
+                <input type="text" name="name" autocomplete="name" required />
+              </label>
+              <label>
+                <span data-i18n="contact.email">Email</span>
+                <input type="email" name="email" autocomplete="email" required />
+              </label>
+            </div>
+
+            <label>
+              <span data-i18n="contact.phone">Phone number</span>
+              <input type="tel" name="phone" autocomplete="tel" required />
+            </label>
+
+            <label>
+              <span data-i18n="contact.location">Project location</span>
+              <input type="text" name="location" autocomplete="street-address" />
+            </label>
+
+            <label>
+              <span data-i18n="contact.message">Project details</span>
+              <textarea name="message" rows="5" required></textarea>
+            </label>
+
+            <button type="submit" data-i18n="contact.submit">Send request</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="footer-main">
+        <a class="footer-brand" href="index.html#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <a class="footer-contact" href="contact.html" data-i18n="footer.contact">Contact now</a>
+      </div>
+
+      <p class="footer-copy" data-i18n="footer.copy">© 2026 GEOtest Engineering. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js?v=20260530-about-final"></script>
+  </body>
+</html>

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project List | GEOtest Engineering</title>
+    <meta
+      name="description"
+      content="Explore selected GEOtest Engineering projects, including geotechnical investigations, reports, site work, and monitoring."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:title" content="Project List | GEOtest Engineering" />
+    <meta
+      property="og:description"
+      content="A selection of GEOtest Engineering projects completed with care, responsibility, and site-specific technical precision."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="public/images/project-durdekovac-site.jpeg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Project List | GEOtest Engineering" />
+    <meta
+      name="twitter:description"
+      content="A selection of GEOtest Engineering projects completed with care, responsibility, and site-specific technical precision."
+    />
+    <meta name="twitter:image" content="public/images/project-durdekovac-site.jpeg" />
+    <link rel="icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="shortcut icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary navigation">
+      <nav class="navbar">
+        <a class="brand" href="index.html#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="primary-menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-panel" id="primary-menu">
+          <ul class="nav-links">
+            <li><a href="index.html#home" data-i18n="nav.home">Home</a></li>
+            <li class="has-dropdown">
+              <button
+                class="dropdown-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-controls="services-menu"
+              >
+                <span data-i18n="nav.services">Services</span>
+                <svg aria-hidden="true" viewBox="0 0 20 20">
+                  <path d="M5.5 7.5 10 12l4.5-4.5" />
+                </svg>
+              </button>
+              <ul class="dropdown-menu" id="services-menu">
+                <li><a href="designing.html" data-i18n="overview.design">Designing</a></li>
+                <li><a href="supervision.html" data-i18n="overview.supervision">Supervision</a></li>
+                <li><a href="consulting.html" data-i18n="overview.consulting">Consulting</a></li>
+                <li><a href="geometric-investigation.html" data-i18n="overview.geometric">Geometric Investigation</a></li>
+              </ul>
+            </li>
+            <li><a href="projects.html" aria-current="page" data-i18n="nav.projects">Projects</a></li>
+            <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+            <li><a href="contact.html" data-i18n="nav.contacts">Contacts</a></li>
+          </ul>
+
+          <label class="language-picker" for="language-select">
+            <select id="language-select" name="language" aria-label="Choose language">
+              <option value="en">🇬🇧 EN</option>
+              <option value="sq">🇦🇱 AL</option>
+            </select>
+          </label>
+        </div>
+      </nav>
+    </header>
+
+    <main class="projects-page-main">
+      <section class="projects-hero" aria-labelledby="projects-title">
+        <div class="projects-hero-inner">
+          <h1 id="projects-title" data-i18n="projects.title">PROJECT LIST</h1>
+          <p data-i18n="projects.intro">
+            Below is a selection of projects we have been involved in. Each
+            project is approached with a high level of responsibility, in full
+            compliance with technical requirements and site-specific conditions.
+          </p>
+        </div>
+      </section>
+
+      <section class="project-filter-band" aria-label="Project filters">
+        <div class="project-filter-list" role="list">
+          <button class="project-filter is-active" type="button" data-project-filter="all" data-i18n="projects.filter.all">All projects</button>
+          <button class="project-filter" type="button" data-project-filter="site" data-i18n="projects.filter.site">Site investigations</button>
+          <button class="project-filter" type="button" data-project-filter="geotechnical" data-i18n="projects.filter.geotechnical">Geotechnical projects</button>
+          <button class="project-filter" type="button" data-project-filter="monitoring" data-i18n="projects.filter.monitoring">Technical monitoring</button>
+        </div>
+      </section>
+
+      <section class="project-list-section" aria-labelledby="project-list-heading">
+        <div class="project-list-inner">
+          <h2 id="project-list-heading" data-i18n="projects.group.investigations">
+            I. GEOTECHNICAL INVESTIGATIONS AND REPORTS
+          </h2>
+
+          <article class="project-card" data-project-card data-project-categories="site geotechnical">
+            <div class="project-copy-panel">
+              <h3 data-i18n="projects.durdekovac.title">Đurđekovac</h3>
+              <p data-i18n="projects.durdekovac.text">
+                The subject of this geotechnical report was the execution of
+                geotechnical investigation works with the aim of defining the
+                foundation conditions for a future structure located on a slope
+                within an area of a stabilized landslide. The conducted
+                investigations determined the geotechnical soil profile,
+                including the distribution of surface deposits, the depth and
+                characteristics of potentially sliding horizons, as well as the
+                transition to more stable layers. Due to initial design
+                uncertainties regarding the structure itself, this phase
+                proposed the execution of one geotechnical borehole at a
+                representative location, along with engineering geological
+                mapping of the slope and presentation of the results on an
+                overview plan. Based on the obtained data, it was concluded that,
+                in the main design phase of the foundation, it would be justified
+                to carry out an additional borehole at the toe of the slope in
+                order to fully define the geotechnical profile and reliably
+                assess terrain stability.
+              </p>
+              <p class="project-year">
+                <span data-i18n="projects.year.label">year of design:</span>
+                <strong>2026.</strong>
+              </p>
+            </div>
+
+            <div class="project-slider" data-project-slider>
+              <div class="project-slide-track">
+                <img
+                  class="project-slide is-active"
+                  src="public/images/project-durdekovac-site.jpeg"
+                  alt="Geotechnical investigation work beside an existing house"
+                  loading="eager"
+                  width="2560"
+                  height="1920"
+                />
+                <img
+                  class="project-slide"
+                  src="public/images/project-durdekovac-core-one.jpeg"
+                  alt="B-1 borehole core sample tray in the field"
+                  loading="lazy"
+                  width="1600"
+                  height="1200"
+                />
+                <img
+                  class="project-slide"
+                  src="public/images/project-durdekovac-slope.jpeg"
+                  alt="Field team performing geotechnical investigation on a sloped terrain"
+                  loading="lazy"
+                  width="1600"
+                  height="1200"
+                />
+                <img
+                  class="project-slide"
+                  src="public/images/project-durdekovac-core-two.png"
+                  alt="Detailed B-1 borehole core tray with numbered depth markers"
+                  loading="lazy"
+                  width="1600"
+                  height="1200"
+                />
+              </div>
+
+              <button class="project-slide-button project-slide-prev" type="button" data-slide-prev aria-label="Previous project photo">
+                <svg aria-hidden="true" viewBox="0 0 20 20">
+                  <path d="M12.5 4.5 7 10l5.5 5.5" />
+                </svg>
+              </button>
+              <button class="project-slide-button project-slide-next" type="button" data-slide-next aria-label="Next project photo">
+                <svg aria-hidden="true" viewBox="0 0 20 20">
+                  <path d="m7.5 4.5 5.5 5.5-5.5 5.5" />
+                </svg>
+              </button>
+            </div>
+          </article>
+
+          <p class="project-empty-message" data-project-empty data-i18n="projects.empty" hidden>
+            Projects in this category will be added soon.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="footer-main">
+        <a class="footer-brand" href="index.html#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <a class="footer-contact" href="contact.html" data-i18n="footer.contact">Contact now</a>
+      </div>
+
+      <p class="footer-copy" data-i18n="footer.copy">© 2026 GEOtest Engineering. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js?v=20260530-about-final"></script>
+  </body>
+</html>

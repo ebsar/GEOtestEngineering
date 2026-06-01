@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GEOtest Engineering</title>
+    <meta
+      name="description"
+      content="GEOtest Engineering provides geotechnical investigations, reports, laboratory work, design, supervision, consulting, and technical monitoring."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:title" content="GEOtest Engineering" />
+    <meta
+      property="og:description"
+      content="Professional geotechnical engineering services for investigation, design, supervision, consulting, and monitoring."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="public/icons/geotest-dots-icon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="GEOtest Engineering" />
+    <meta
+      name="twitter:description"
+      content="Professional geotechnical engineering services for investigation, design, supervision, consulting, and monitoring."
+    />
+    <meta name="twitter:image" content="public/icons/geotest-dots-icon.svg" />
+    <link rel="icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="shortcut icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary navigation">
+      <nav class="navbar">
+        <a class="brand" href="#" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="primary-menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-panel" id="primary-menu">
+          <ul class="nav-links">
+            <li><a href="#home" data-i18n="nav.home">Home</a></li>
+            <li class="has-dropdown">
+              <button
+                class="dropdown-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-controls="services-menu"
+              >
+                <span data-i18n="nav.services">Services</span>
+                <svg aria-hidden="true" viewBox="0 0 20 20">
+                  <path d="M5.5 7.5 10 12l4.5-4.5" />
+                </svg>
+              </button>
+              <ul class="dropdown-menu" id="services-menu">
+                <li><a href="designing.html" data-i18n="services.designing">Designing</a></li>
+                <li><a href="supervision.html" data-i18n="services.supervision">Supervision</a></li>
+                <li><a href="consulting.html" data-i18n="services.consulting">Consulting</a></li>
+                <li><a href="geometric-investigation.html" data-i18n="services.geometric">Geometric Investigation</a></li>
+              </ul>
+            </li>
+            <li><a href="projects.html" data-i18n="nav.projects">Projects</a></li>
+            <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+            <li><a href="contact.html" data-i18n="nav.contacts">Contacts</a></li>
+          </ul>
+
+          <label class="language-picker" for="language-select">
+            <select id="language-select" name="language" aria-label="Choose language">
+              <option value="en">🇬🇧 EN</option>
+              <option value="sq">🇦🇱 AL</option>
+            </select>
+          </label>
+        </div>
+      </nav>
+    </header>
+
+    <main id="home" class="hero-section" aria-label="GEOtest Engineering hero">
+      <section class="hero-visual" aria-label="GEOtest Engineering logo reveal">
+        <geotest-logo-hero-reveal></geotest-logo-hero-reveal>
+        <h1 class="hero-tagline" data-i18n="hero.tagline">Where interactions with soil begins.</h1>
+        <ul class="hero-service-icons" aria-label="GEOtest Engineering visual services">
+          <li class="service-icon-item" title="Soil drilling and pipe testing" data-i18n-title="icons.drilling">
+            <img
+              class="service-icon service-image-icon"
+              src="public/images/deep-soil-investigation.webp"
+              alt=""
+              loading="eager"
+              width="520"
+              height="293"
+            />
+          </li>
+          <li class="service-icon-item" title="Soft soil transitioning into hard soil" data-i18n-title="icons.slope">
+            <img
+              class="service-icon service-image-icon"
+              src="public/images/soil-slope-analysis.webp"
+              alt=""
+              loading="lazy"
+              width="520"
+              height="293"
+            />
+          </li>
+          <li class="service-icon-item" title="Foundation pipes inside earth" data-i18n-title="icons.foundation">
+            <img
+              class="service-icon service-image-icon"
+              src="public/images/foundation-piles.webp"
+              alt=""
+              loading="lazy"
+              width="520"
+              height="293"
+            />
+          </li>
+          <li class="service-icon-item" title="Pipe with side anchors in earth" data-i18n-title="icons.anchors">
+            <img
+              class="service-icon service-image-icon"
+              src="public/images/anchored-pipe-monitoring.webp"
+              alt=""
+              loading="lazy"
+              width="520"
+              height="293"
+            />
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <section class="what-we-do-section" id="what-we-do" aria-labelledby="what-we-do-title">
+      <div class="what-we-do-content">
+        <h2 id="what-we-do-title">What we do</h2>
+        <div class="what-we-do-copy">
+          <p>
+            Founded in early 2025, GEOtest Engineering develops a contemporary
+            approach to geotechnical engineering, combining thorough professional
+            expertise with efficient and innovative working methods. As a dynamic
+            and flexible company, we continuously contribute to the development of
+            the geotechnical services market in Croatia and the European Union,
+            while consistently adhering to the highest professional standards of
+            the profession.
+          </p>
+          <p>
+            Our expert team operates in four key areas: geotechnical
+            investigations, design, professional supervision, and consulting. What
+            sets us apart is our ability to respond quickly and precisely to each
+            challenge, with quality remaining our top priority. Regardless of the
+            project scope, we approach every assignment with the same level of
+            dedication and professionalism, developing solutions that are
+            reliable, functional, and tailored to specific project conditions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="recognition-section" aria-labelledby="recognition-title">
+      <div class="recognition-card">
+        <figure class="recognition-media">
+          <img
+            src="public/images/recognition-site.png"
+            alt="Geotechnical construction site with foundation works and reinforcement bars"
+            loading="lazy"
+            width="692"
+            height="488"
+          />
+        </figure>
+        <div class="recognition-copy">
+          <h2 id="recognition-title">Recognition</h2>
+          <p>
+            GEOtest Engineering excels in managing complex geotechnical projects
+            from the first investigation to reliable realization. By combining
+            in-depth field knowledge with a modern engineering approach, we
+            develop practical solutions that meet professional standards and keep
+            each project moving smoothly, precisely, and efficiently.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-overview-section" id="services" aria-labelledby="services-overview-title">
+      <div class="services-overview-inner">
+        <h2 id="services-overview-title" data-i18n="overview.title">Our Services</h2>
+
+        <div class="services-overview-grid" aria-label="GEOtest Engineering services">
+          <a class="service-overview-item service-overview-link" href="designing.html">
+            <span class="service-overview-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M14 13h27l8 8v25H14zM41 13v9h8M20 25h17M20 32h12M20 39h8" />
+                <path d="M36 49l13-13 5 5-13 13-8 2 3-7zM46 39l5 5" />
+              </svg>
+            </span>
+            <h3 data-i18n="overview.design">Designing</h3>
+          </a>
+
+          <a class="service-overview-item service-overview-link" href="supervision.html">
+            <span class="service-overview-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M18 16h28v34H18zM25 16c0-4 3-7 7-7s7 3 7 7M25 27h14M25 34h8M25 41h6" />
+                <path d="M12 34l6 6 11-14M46 25h6v20h-6M49 31h3M49 38h3M14 53h40" />
+              </svg>
+            </span>
+            <h3 data-i18n="overview.supervision">Supervision</h3>
+          </a>
+
+          <a class="service-overview-item service-overview-link" href="consulting.html">
+            <span class="service-overview-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M11 38a10 10 0 0 1 20 0M21 22a6 6 0 1 1 0 12 6 6 0 0 1 0-12M36 39a9 9 0 0 1 18 0M45 24a6 6 0 1 1 0 12 6 6 0 0 1 0-12" />
+                <path d="M26 11h25v13h-9l-6 6v-6H26zM32 17h13M32 21h8M14 51h36" />
+              </svg>
+            </span>
+            <h3 data-i18n="overview.consulting">Consulting</h3>
+          </a>
+
+          <a class="service-overview-item service-overview-link" href="geometric-investigation.html">
+            <span class="service-overview-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M15 49h36M18 43h28M24 12h9v31h-9zM22 18h13M22 25h13M22 32h13M34 15h8v28h-8" />
+                <path d="M16 43c1-7 4-12 8-16M13 54c6-5 28-5 39 0M16 48c5-3 11-4 17-4M38 44c6 0 11 1 15 4" />
+              </svg>
+            </span>
+            <h3 data-i18n="overview.geometric">Geometric Investigation</h3>
+          </a>
+        </div>
+
+        <figure class="services-overview-media">
+          <img
+            src="public/images/services-site.png"
+            alt="Large construction foundation site with reinforcement works in progress"
+            loading="lazy"
+            width="1458"
+            height="516"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <section class="more-about-section" id="about-us" aria-labelledby="more-about-title">
+      <div class="more-about-inner">
+        <h2 id="more-about-title" data-i18n="more.title">More About Us</h2>
+
+        <div class="more-about-layout">
+          <div class="more-about-list">
+            <details class="more-about-item">
+              <summary data-i18n="more.modern.title">Modern approach</summary>
+              <p data-i18n="more.modern.text">
+                We combine practical field experience with clear digital workflows,
+                fast communication, and carefully structured engineering decisions.
+              </p>
+            </details>
+
+            <details class="more-about-item">
+              <summary data-i18n="more.investigations.title">Geotechnical investigations</summary>
+              <p data-i18n="more.investigations.text">
+                Our investigations define soil and rock conditions with reliable
+                methods, giving each project a strong technical foundation.
+              </p>
+            </details>
+
+            <details class="more-about-item">
+              <summary data-i18n="more.designing.title">Designing in geotechnical engineering</summary>
+              <p data-i18n="more.designing.text">
+                We prepare geotechnical designs that are buildable, efficient, and
+                adapted to the real behavior of the terrain.
+              </p>
+            </details>
+
+            <details class="more-about-item">
+              <summary data-i18n="more.consulting.title">Consulting</summary>
+              <p data-i18n="more.consulting.text">
+                We support investors, designers, and contractors with focused advice
+                during planning, construction, and problem solving.
+              </p>
+            </details>
+
+            <details class="more-about-item">
+              <summary data-i18n="more.mechanics.title">Soil mechanics and geotechnical engineering</summary>
+              <p data-i18n="more.mechanics.text">
+                We interpret soil behavior, stability, settlement, and groundwater
+                influence so technical choices remain safe and realistic.
+              </p>
+            </details>
+          </div>
+
+          <figure class="more-about-media">
+            <img
+              src="public/images/more-about-slope.png"
+              alt="Steep rocky slope with a road crossing the terrain"
+              loading="lazy"
+              width="790"
+              height="528"
+            />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="custom-project-section" id="projects" aria-labelledby="custom-project-title">
+      <div class="custom-project-inner">
+        <div class="custom-project-top">
+          <figure class="custom-project-media">
+            <img
+              src="public/images/car-project.jpg"
+              alt="GEOtest Engineering branded field vehicle"
+              loading="lazy"
+              width="2560"
+              height="1920"
+            />
+          </figure>
+
+          <div class="custom-project-copy">
+            <h2 id="custom-project-title" data-i18n="custom.title">Project Development Tailored To Your Needs</h2>
+            <div class="custom-project-note">
+              <p data-i18n="custom.text">
+                GEOtest Engineering develops technical solutions tailored to your
+                needs. We carefully consider your ideas and requirements, turning
+                them into feasible and efficient solutions customized to the
+                specifics of each project.
+              </p>
+            </div>
+            <a class="custom-project-button" href="contact.html" data-i18n="custom.button">Free consulting</a>
+          </div>
+        </div>
+
+        <div class="faq-layout" aria-labelledby="faq-title">
+          <h2 id="faq-title" data-i18n="faq.title">FAQ</h2>
+
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary data-i18n="faq.report.title">What is a geotechnical report?</summary>
+              <p data-i18n="faq.report.text">
+                A geotechnical report summarizes the soil, rock, groundwater, and
+                foundation conditions of a site and gives technical recommendations
+                for safe design and construction.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary data-i18n="faq.required.title">When is a geotechnical report required, and when is a geotechnical project needed?</summary>
+              <p data-i18n="faq.required.text">
+                A report is usually needed before design or construction when soil
+                conditions must be confirmed. A geotechnical project is needed when
+                technical solutions such as foundations, retaining systems, slopes,
+                or anchors must be designed.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary data-i18n="faq.anchor.title">What is a geotechnical anchor, and do I need the neighbor's consent for the installation of geotechnical anchors?</summary>
+              <p data-i18n="faq.anchor.text">
+                A geotechnical anchor transfers load into stable ground to support
+                retaining structures or slopes. Consent depends on the project
+                position, property boundary, local regulations, and whether anchors
+                pass under neighboring land.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary data-i18n="faq.contact.title">How can I contact you?</summary>
+              <p data-i18n="faq.contact.text">
+                Use the contact section to send project information, location, and
+                available documentation. We will review it and respond with the next
+                practical steps.
+              </p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="footer-main">
+        <a class="footer-brand" href="#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <a class="footer-contact" href="contact.html" data-i18n="footer.contact">Contact now</a>
+      </div>
+
+      <p class="footer-copy" data-i18n="footer.copy">© 2026 GEOtest Engineering. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js?v=20260530-about-final"></script>
+  </body>
+</html>

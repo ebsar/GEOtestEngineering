@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consulting | GEOtest Engineering</title>
+    <meta
+      name="description"
+      content="GEOtest Engineering provides geotechnical consulting for foundation design, excavation pits, retaining structures, soil improvement, and supervision."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:title" content="Consulting | GEOtest Engineering" />
+    <meta
+      property="og:description"
+      content="Specialized geotechnical consulting for practical, safe, and cost-aware engineering decisions."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="public/icons/geotest-dots-icon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Consulting | GEOtest Engineering" />
+    <meta
+      name="twitter:description"
+      content="Specialized geotechnical consulting for practical, safe, and cost-aware engineering decisions."
+    />
+    <meta name="twitter:image" content="public/icons/geotest-dots-icon.svg" />
+    <link rel="icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="shortcut icon" href="public/icons/geotest-dots-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary navigation">
+      <nav class="navbar">
+        <a class="brand" href="index.html#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="primary-menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-panel" id="primary-menu">
+          <ul class="nav-links">
+            <li><a href="index.html#home" data-i18n="nav.home">Home</a></li>
+            <li class="has-dropdown">
+              <button
+                class="dropdown-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-controls="services-menu"
+              >
+                <span data-i18n="nav.services">Services</span>
+                <svg aria-hidden="true" viewBox="0 0 20 20">
+                  <path d="M5.5 7.5 10 12l4.5-4.5" />
+                </svg>
+              </button>
+              <ul class="dropdown-menu" id="services-menu">
+                <li><a href="designing.html" data-i18n="overview.design">Designing</a></li>
+                <li><a href="supervision.html" data-i18n="overview.supervision">Supervision</a></li>
+                <li><a href="consulting.html" data-i18n="overview.consulting">Consulting</a></li>
+                <li><a href="geometric-investigation.html" data-i18n="overview.geometric">Geometric Investigation</a></li>
+              </ul>
+            </li>
+            <li><a href="projects.html" data-i18n="nav.projects">Projects</a></li>
+            <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+            <li><a href="contact.html" data-i18n="nav.contacts">Contacts</a></li>
+          </ul>
+
+          <label class="language-picker" for="language-select">
+            <select id="language-select" name="language" aria-label="Choose language">
+              <option value="en">🇬🇧 EN</option>
+              <option value="sq">🇦🇱 AL</option>
+            </select>
+          </label>
+        </div>
+      </nav>
+    </header>
+
+    <main class="service-detail-main">
+      <section class="service-detail-split consulting-detail-section" aria-labelledby="consulting-title">
+        <div class="service-detail-inner service-detail-grid">
+          <div class="service-detail-copy">
+            <h1 id="consulting-title" data-i18n="consulting.title">Consulting in Geotechnical Engineering</h1>
+            <p data-i18n="consulting.intro">
+              Consulting in geotechnical engineering is crucial for the
+              successful realization of construction projects, especially when
+              dealing with complex challenges related to foundation design, soil
+              stability, and excavation support.
+            </p>
+
+            <h2 data-i18n="consulting.areas.title">Areas of Consulting:</h2>
+            <ul class="service-arrow-list">
+              <li data-i18n="consulting.areas.one">Foundation of structures</li>
+              <li data-i18n="consulting.areas.two">Excavation pits</li>
+              <li data-i18n="consulting.areas.three">Retaining structures</li>
+              <li data-i18n="consulting.areas.four">Soil improvement</li>
+              <li data-i18n="consulting.areas.five">Geotechnical supervision</li>
+            </ul>
+
+            <p data-i18n="consulting.experience">
+              As experts with extensive experience, we are dedicated to finding
+              the best solutions for specific geotechnical challenges.
+            </p>
+
+            <h2 data-i18n="consulting.approach.title">Our approach:</h2>
+            <ul class="service-arrow-list">
+              <li data-i18n="consulting.approach.one">Analysis of geotechnical conditions</li>
+              <li data-i18n="consulting.approach.two">Development of optimal solutions</li>
+              <li data-i18n="consulting.approach.three">Risk and cost assessment</li>
+              <li data-i18n="consulting.approach.four">Technical support during execution</li>
+              <li data-i18n="consulting.approach.five">Quality control</li>
+            </ul>
+          </div>
+
+          <figure class="service-detail-media consulting-detail-media">
+            <img
+              src="public/images/consulting-detail.png"
+              alt="Geotechnical consulting meeting and project planning"
+              loading="eager"
+              width="722"
+              height="362"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="consulting-closing-section" aria-label="Consulting approach details">
+        <div class="service-detail-inner service-detail-copy consulting-closing-copy">
+          <p data-i18n="consulting.success">
+            The key to our success lies in an integrated and customized approach
+            that enables the timely identification of issues and the proposal of
+            effective measures to resolve them.
+          </p>
+          <p data-i18n="consulting.commitment">
+            GEOtest Engineering is committed to providing top-tier consulting
+            services in geotechnical engineering.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="footer-main">
+        <a class="footer-brand" href="index.html#home" aria-label="GEOtest Engineering home">
+          <geotest-navbar-logo></geotest-navbar-logo>
+        </a>
+
+        <a class="footer-contact" href="contact.html" data-i18n="footer.contact">Contact now</a>
+      </div>
+
+      <p class="footer-copy" data-i18n="footer.copy">© 2026 GEOtest Engineering. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js?v=20260530-about-final"></script>
+  </body>
+</html>
