@@ -1,4 +1,5 @@
 import { translations } from "./translations.js";
+import { getSupabaseClient } from "./supabase.js";
 
 const geotestDotMap = [
   ["yellow", "blue", "blue", "blue"],
@@ -12,6 +13,7 @@ const geotestDotMap = [
 ];
 
 let cleanupHandlers = [];
+let cmsOverrideCache;
 
 const addCleanup = (handler) => {
   cleanupHandlers.push(handler);
@@ -20,6 +22,50 @@ const addCleanup = (handler) => {
 const resetPageRuntime = () => {
   cleanupHandlers.forEach((handler) => handler());
   cleanupHandlers = [];
+};
+
+const normalizeAssetPath = (value = "") =>
+  value
+    .trim()
+    .replace(window.location.origin, "")
+    .replace(/^\/?public\//, "/")
+    .replace(/^([^/])/, "/$1");
+
+export const loadCmsOverrides = async ({ force = false } = {}) => {
+  if (cmsOverrideCache && !force) {
+    return cmsOverrideCache;
+  }
+
+  const overrides = {
+    text: new Map(),
+    images: new Map(),
+  };
+
+  try {
+    const supabase = await getSupabaseClient();
+    const { data, error } = await supabase
+      .from("website_cards")
+      .select("*")
+      .in("section_key", ["inline_text", "inline_images"])
+      .eq("is_published", true);
+
+    if (error) throw error;
+
+    (data || []).forEach((item) => {
+      if (item.section_key === "inline_text" && item.card_key) {
+        overrides.text.set(item.card_key, item);
+      }
+
+      if (item.section_key === "inline_images" && item.metadata?.original_src) {
+        overrides.images.set(normalizeAssetPath(item.metadata.original_src), item);
+      }
+    });
+  } catch (error) {
+    console.warn("CMS overrides unavailable:", error.message);
+  }
+
+  cmsOverrideCache = overrides;
+  return overrides;
 };
 
 const createGeotestDots = ({ dotClass = "", radius = 18, gap = 43, startX = 55, startY = 64 } = {}) =>
@@ -126,17 +172,25 @@ const defineLogoElements = () => {
   }
 };
 
-const applyLanguage = (language, root = document) => {
+export const applyLanguage = (language, root = document, cmsOverrides = cmsOverrideCache) => {
   const dictionary = translations[language] || translations.en;
   document.documentElement.lang = language;
 
   root.querySelectorAll("[data-i18n]").forEach((element) => {
-    const value = dictionary[element.dataset.i18n];
+    const override = cmsOverrides?.text?.get(element.dataset.i18n);
+    const value =
+      override?.translations?.[language]?.text ||
+      override?.translations?.[language]?.title ||
+      dictionary[element.dataset.i18n];
     if (value) element.textContent = value;
   });
 
   root.querySelectorAll("[data-i18n-html]").forEach((element) => {
-    const value = dictionary[element.dataset.i18nHtml];
+    const override = cmsOverrides?.text?.get(element.dataset.i18nHtml);
+    const value =
+      override?.translations?.[language]?.html ||
+      override?.translations?.[language]?.text ||
+      dictionary[element.dataset.i18nHtml];
     if (value) element.innerHTML = value;
   });
 
@@ -146,7 +200,28 @@ const applyLanguage = (language, root = document) => {
   });
 };
 
-const initLanguage = (root) => {
+export const applyImageOverrides = (root = document, cmsOverrides = cmsOverrideCache) => {
+  if (!cmsOverrides?.images) return;
+
+  root.querySelectorAll("img[src]").forEach((image) => {
+    const originalSrc = image.dataset.cmsOriginalSrc || normalizeAssetPath(image.getAttribute("src"));
+    const override = cmsOverrides.images.get(originalSrc);
+
+    image.dataset.cmsOriginalSrc = originalSrc;
+    image.dataset.cmsImage = "true";
+
+    if (override?.image_url) {
+      image.src = override.image_url;
+    }
+  });
+};
+
+export const applyCmsContent = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
+  applyLanguage(language, root, cmsOverrides);
+  applyImageOverrides(root, cmsOverrides);
+};
+
+const initLanguage = (root, cmsOverrides) => {
   const languageSelect = root.querySelector("#language-select");
   const savedLanguage = localStorage.getItem("geotest-language") || "sq";
 
@@ -155,13 +230,13 @@ const initLanguage = (root) => {
     const onChange = (event) => {
       const nextLanguage = event.target.value;
       localStorage.setItem("geotest-language", nextLanguage);
-      applyLanguage(nextLanguage, root);
+      applyCmsContent(root, nextLanguage, cmsOverrides);
     };
     languageSelect.addEventListener("change", onChange);
     addCleanup(() => languageSelect.removeEventListener("change", onChange));
   }
 
-  applyLanguage(savedLanguage, root);
+  applyCmsContent(root, savedLanguage, cmsOverrides);
 };
 
 const initNavigation = (root, router) => {
@@ -366,12 +441,13 @@ const initProjectFilters = (root) => {
   if (projectFilterButtons.length) applyProjectFilter("all");
 };
 
-export const initSitePage = (root, router) => {
+export const initSitePage = async (root, router, options = {}) => {
   if (!root) return;
 
   resetPageRuntime();
+  const cmsOverrides = await loadCmsOverrides({ force: options.forceCmsRefresh });
   defineLogoElements();
-  initLanguage(root);
+  initLanguage(root, cmsOverrides);
   initNavigation(root, router);
   initRevealMotion(root);
   initProjectSliders(root);

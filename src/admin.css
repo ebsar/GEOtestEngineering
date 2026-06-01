@@ -367,3 +367,303 @@
     justify-content: flex-start;
   }
 }
+
+.visual-edit-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.visual-edit-login {
+  display: grid;
+  gap: 22px;
+  width: min(520px, calc(100% - 32px));
+  padding: 28px;
+  margin: 12vh auto;
+  color: #102033;
+  background: #ffffff;
+  border: 1px solid rgba(44, 43, 145, 0.14);
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(16, 32, 51, 0.12);
+}
+
+.visual-edit-login p,
+.visual-edit-dialog p {
+  margin: 0 0 8px;
+  color: #2c2b91;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.visual-edit-login h1,
+.visual-edit-dialog h2 {
+  margin: 0;
+  color: #102033;
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  line-height: 1.02;
+}
+
+.visual-edit-login span {
+  display: block;
+  margin-top: 12px;
+  color: #526171;
+  line-height: 1.55;
+}
+
+.visual-edit-login form {
+  display: grid;
+  gap: 12px;
+}
+
+.visual-edit-login input,
+.visual-edit-dialog input,
+.visual-edit-dialog textarea,
+.visual-edit-toolbar select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: #102033;
+  font: inherit;
+  background: #ffffff;
+  border: 1px solid rgba(16, 32, 51, 0.18);
+  border-radius: 9px;
+}
+
+.visual-edit-login button,
+.visual-edit-toolbar button,
+.visual-edit-dialog button {
+  min-height: 42px;
+  padding: 0 14px;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  background: #2c2b91;
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.visual-edit-status {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  z-index: 10000;
+  width: min(520px, calc(100% - 28px));
+  padding: 12px 14px;
+  color: #102033;
+  text-align: center;
+  background: rgba(238, 247, 251, 0.96);
+  border: 1px solid rgba(18, 169, 214, 0.22);
+  border-radius: 12px;
+  box-shadow: 0 16px 44px rgba(16, 32, 51, 0.12);
+  transform: translateX(-50%);
+}
+
+.visual-edit-status.is-error {
+  color: #781a1a;
+  background: #fff0f0;
+  border-color: #ffc6c6;
+}
+
+.visual-edit-status.is-success {
+  color: #124828;
+  background: #eefbf2;
+  border-color: #bce8c9;
+}
+
+.visual-edit-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 9998;
+  display: grid;
+  grid-template-columns: minmax(170px, 0.8fr) minmax(280px, 1.5fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 18px;
+  color: #102033;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(44, 43, 145, 0.14);
+  box-shadow: 0 16px 48px rgba(16, 32, 51, 0.1);
+  backdrop-filter: blur(14px);
+}
+
+.visual-edit-toolbar strong,
+.visual-edit-toolbar span {
+  display: block;
+}
+
+.visual-edit-toolbar span {
+  margin-top: 2px;
+  color: #526171;
+  font-size: 0.82rem;
+}
+
+.visual-edit-toolbar nav,
+.visual-edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.visual-edit-toolbar button,
+.visual-edit-toolbar select {
+  width: auto;
+  min-height: 36px;
+  font-size: 0.86rem;
+}
+
+.visual-edit-toolbar button {
+  color: #2c2b91;
+  background: rgba(44, 43, 145, 0.08);
+}
+
+.visual-edit-toolbar button.is-active {
+  color: #ffffff;
+  background: #2c2b91;
+}
+
+.visual-edit-preview {
+  min-height: 100vh;
+}
+
+.visual-edit-preview .site-header {
+  top: 61px;
+}
+
+.visual-edit-preview .hero-section,
+.visual-edit-preview .projects-page-main,
+.visual-edit-preview .contact-page-main,
+.visual-edit-preview .service-detail-main,
+.visual-edit-preview .about-page-main {
+  padding-top: calc(var(--edit-offset, 61px) + 0px);
+}
+
+.visual-edit-control-wrap {
+  position: relative;
+  outline: 2px dashed transparent;
+  outline-offset: 4px;
+}
+
+.visual-edit-control-wrap:hover {
+  outline-color: rgba(18, 169, 214, 0.72);
+}
+
+.visual-edit-text-wrap {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.visual-edit-image-wrap {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.visual-edit-image-wrap > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.visual-edit-button {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  z-index: 4;
+  min-width: 42px;
+  min-height: 30px;
+  padding: 0 9px;
+  color: #ffffff;
+  font: 700 0.72rem/1 "Nunito Sans", system-ui, sans-serif;
+  background: #2c2b91;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 10px 26px rgba(16, 32, 51, 0.24);
+  cursor: pointer;
+}
+
+.visual-edit-image-button {
+  background: #12a9d6;
+}
+
+.visual-edit-dialog {
+  width: min(620px, calc(100vw - 28px));
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 30px 90px rgba(16, 32, 51, 0.26);
+}
+
+.visual-edit-dialog::backdrop {
+  background: rgba(7, 24, 40, 0.44);
+  backdrop-filter: blur(10px);
+}
+
+.visual-edit-dialog form {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+}
+
+.visual-edit-dialog header,
+.visual-edit-dialog footer {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.visual-edit-dialog header button {
+  width: 40px;
+  min-height: 40px;
+  padding: 0;
+  color: #102033;
+  font-size: 1.8rem;
+  line-height: 1;
+  background: rgba(16, 32, 51, 0.08);
+  border-radius: 999px;
+}
+
+.visual-edit-dialog label {
+  display: grid;
+  gap: 8px;
+  color: #102033;
+  font-weight: 700;
+}
+
+.visual-edit-dialog footer button:first-child {
+  color: #2c2b91;
+  background: rgba(44, 43, 145, 0.08);
+}
+
+.visual-edit-help {
+  color: #526171 !important;
+  font-size: 0.92rem !important;
+  font-weight: 450 !important;
+  line-height: 1.45;
+  text-transform: none !important;
+}
+
+img[data-cms-image="true"] {
+  max-width: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 840px) {
+  .visual-edit-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-edit-preview .site-header {
+    top: 190px;
+  }
+
+  .visual-edit-preview .hero-section,
+  .visual-edit-preview .projects-page-main,
+  .visual-edit-preview .contact-page-main,
+  .visual-edit-preview .service-detail-main,
+  .visual-edit-preview .about-page-main {
+    padding-top: 190px;
+  }
+}

@@ -70,7 +70,7 @@ const loadPage = async () => {
 
     pageHtml.value = extractBody(await response.text());
     await nextTick();
-    initSitePage(pageRoot.value, router);
+    await initSitePage(pageRoot.value, router);
   } finally {
     window.setTimeout(() => emit("page-loading", false), 260);
   }

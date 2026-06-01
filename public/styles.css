@@ -105,6 +105,11 @@ a {
   text-decoration: none;
 }
 
+img[data-cms-image="true"] {
+  max-width: 100%;
+  object-fit: cover;
+}
+
 .site-header {
   position: fixed;
   inset: 0 0 auto;
