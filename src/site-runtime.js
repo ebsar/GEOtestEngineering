@@ -39,6 +39,7 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
   const overrides = {
     text: new Map(),
     images: new Map(),
+    projects: [],
   };
 
   try {
@@ -46,8 +47,9 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
     const { data, error } = await supabase
       .from("website_cards")
       .select("*")
-      .in("section_key", ["inline_text", "inline_images"])
-      .eq("is_published", true);
+      .in("section_key", ["inline_text", "inline_images", "projects.list"])
+      .eq("is_published", true)
+      .order("sort_order", { ascending: true });
 
     if (error) throw error;
 
@@ -56,8 +58,16 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
         overrides.text.set(item.card_key, item);
       }
 
+      if (item.section_key === "inline_images" && item.card_key) {
+        overrides.images.set(item.card_key, item);
+      }
+
       if (item.section_key === "inline_images" && item.metadata?.original_src) {
         overrides.images.set(normalizeAssetPath(item.metadata.original_src), item);
+      }
+
+      if (item.section_key === "projects.list") {
+        overrides.projects.push(item);
       }
     });
   } catch (error) {
@@ -172,6 +182,81 @@ const defineLogoElements = () => {
   }
 };
 
+const getTranslatedContent = (item, language, fallback = {}) => {
+  const secondaryLanguage = language === "sq" ? "en" : "sq";
+  return {
+    ...fallback,
+    ...(item?.translations?.[secondaryLanguage] || {}),
+    ...(item?.translations?.[language] || {}),
+  };
+};
+
+const escapeHtml = (value = "") =>
+  String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+const renderCmsProjects = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
+  const projectList = root.querySelector(".project-list-inner");
+  const emptyMessage = root.querySelector("[data-project-empty]");
+
+  if (!projectList || !emptyMessage) return;
+
+  root.querySelectorAll("[data-cms-project-card]").forEach((card) => card.remove());
+
+  (cmsOverrides?.projects || []).forEach((project) => {
+    const content = getTranslatedContent(project, language, {
+      title: "",
+      description: "",
+    });
+    const categories = project.metadata?.categories?.length
+      ? project.metadata.categories
+      : project.category && project.category !== "all"
+        ? [project.category]
+        : [];
+    const categoryText = categories.join(" ");
+    const imageUrl = project.image_url || "/images/project-durdekovac-site.jpeg";
+    const year = project.metadata?.year || "";
+    const title = escapeHtml(content.title || "Untitled project");
+    const description = escapeHtml(content.description || "");
+    const yearMarkup = year
+      ? `
+          <p class="project-year">
+            <span>${escapeHtml(translations[language]?.["projects.year.label"] || "year of design:")}</span>
+            <strong>${escapeHtml(year)}</strong>
+          </p>
+        `
+      : "";
+
+    const article = document.createElement("article");
+    article.className = "project-card";
+    article.dataset.projectCard = "";
+    article.dataset.cmsProjectCard = project.card_key || project.id;
+    article.dataset.projectCategories = categoryText;
+    article.innerHTML = `
+      <div class="project-copy-panel">
+        <h3>${title}</h3>
+        <p>${description}</p>
+        ${yearMarkup}
+      </div>
+      <div class="project-slider" data-project-slider>
+        <div class="project-slide-track">
+          <img
+            class="project-slide is-active"
+            src="${escapeHtml(imageUrl)}"
+            alt="${title}"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    `;
+
+    projectList.insertBefore(article, emptyMessage);
+  });
+};
+
 export const applyLanguage = (language, root = document, cmsOverrides = cmsOverrideCache) => {
   const dictionary = translations[language] || translations.en;
   document.documentElement.lang = language;
@@ -205,7 +290,8 @@ export const applyImageOverrides = (root = document, cmsOverrides = cmsOverrideC
 
   root.querySelectorAll("img[src]").forEach((image) => {
     const originalSrc = image.dataset.cmsOriginalSrc || normalizeAssetPath(image.getAttribute("src"));
-    const override = cmsOverrides.images.get(originalSrc);
+    const cmsKey = image.dataset.cmsImageKey ? `image:${image.dataset.cmsImageKey}` : originalSrc;
+    const override = cmsOverrides.images.get(cmsKey) || cmsOverrides.images.get(originalSrc);
 
     image.dataset.cmsOriginalSrc = originalSrc;
     image.dataset.cmsImage = "true";
@@ -218,6 +304,7 @@ export const applyImageOverrides = (root = document, cmsOverrides = cmsOverrideC
 
 export const applyCmsContent = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
   applyLanguage(language, root, cmsOverrides);
+  renderCmsProjects(root, language, cmsOverrides);
   applyImageOverrides(root, cmsOverrides);
 };
 
@@ -408,12 +495,12 @@ const initProjectSliders = (root) => {
 
 const initProjectFilters = (root) => {
   const projectFilterButtons = Array.from(root.querySelectorAll("[data-project-filter]"));
-  const projectCards = Array.from(root.querySelectorAll("[data-project-card]"));
   const projectEmptyMessage = root.querySelector("[data-project-empty]");
   const projectListHeading = root.querySelector("#project-list-heading");
 
   const applyProjectFilter = (filter) => {
     let visibleCount = 0;
+    const projectCards = Array.from(root.querySelectorAll("[data-project-card]"));
 
     projectCards.forEach((card) => {
       const categories = (card.dataset.projectCategories || "").split(/\s+/);

@@ -99,6 +99,56 @@
         </footer>
       </form>
     </dialog>
+
+    <dialog ref="projectDialog" class="visual-edit-dialog">
+      <form v-if="projectDraft" @submit.prevent="saveProject">
+        <header>
+          <div>
+            <p>Add project</p>
+            <h2>{{ languageLabel }} project content</h2>
+          </div>
+          <button type="button" @click="closeDialogs">×</button>
+        </header>
+        <label>
+          Category
+          <select v-model="projectDraft.category" required>
+            <option value="all">All projects only</option>
+            <option value="site">Site investigations / Hulumtime në terren</option>
+            <option value="geotechnical">Geotechnical projects / Projekte gjeoteknike</option>
+            <option value="monitoring">Technical monitoring / Monitorim teknik</option>
+          </select>
+        </label>
+        <label>
+          Project title
+          <input v-model="projectDraft.title" type="text" required />
+        </label>
+        <label>
+          Year
+          <input v-model="projectDraft.year" type="text" placeholder="2026." />
+        </label>
+        <label>
+          Project description
+          <textarea v-model="projectDraft.description" rows="7" required></textarea>
+        </label>
+        <label>
+          Project photo
+          <input type="file" accept="image/*" required @change="handleProjectFile" />
+        </label>
+        <img
+          v-if="projectDraft.previewUrl"
+          class="visual-edit-image-preview"
+          :src="projectDraft.previewUrl"
+          alt="Selected project preview"
+        />
+        <p class="visual-edit-help">
+          The photo will fill the project image frame. The frame keeps its size and crops the photo neatly.
+        </p>
+        <footer>
+          <button type="button" @click="closeDialogs">Cancel</button>
+          <button type="submit" :disabled="isBusy">{{ isBusy ? "Adding..." : "Add project" }}</button>
+        </footer>
+      </form>
+    </dialog>
   </main>
 </template>
 
@@ -128,6 +178,7 @@ const router = useRouter();
 const pageRoot = ref(null);
 const textDialog = ref(null);
 const imageDialog = ref(null);
+const projectDialog = ref(null);
 const pageHtml = ref("");
 const session = ref(null);
 const selectedPage = ref("home");
@@ -137,6 +188,7 @@ const status = ref("");
 const statusType = ref("info");
 const textDraft = ref(null);
 const imageDraft = ref(null);
+const projectDraft = ref(null);
 const login = reactive({
   email: "",
   password: "",
@@ -185,6 +237,9 @@ const normalizeAssetPath = (value = "") =>
     .replace(/^([^/])/, "/$1");
 
 const imageKey = (src) => `image:${normalizeAssetPath(src)}`;
+
+const imageCmsKey = (image) =>
+  image.dataset.cmsImageKey ? `image:${image.dataset.cmsImageKey}` : imageKey(image.dataset.cmsOriginalSrc || image.getAttribute("src"));
 
 const extractBody = (documentText) => {
   const parser = new DOMParser();
@@ -250,6 +305,23 @@ const addEditButtons = () => {
     button.addEventListener("click", () => openImageEditor(image));
     wrapper.appendChild(button);
   });
+
+  addProjectCreateButton();
+};
+
+const addProjectCreateButton = () => {
+  if (selectedPage.value !== "projects") return;
+
+  const projectList = pageRoot.value?.querySelector(".project-list-inner");
+  if (!projectList || projectList.querySelector("[data-add-project-button]")) return;
+
+  const button = document.createElement("button");
+  button.className = "visual-edit-add-project-button";
+  button.type = "button";
+  button.dataset.addProjectButton = "true";
+  button.textContent = "+ Add project";
+  button.addEventListener("click", openProjectEditor);
+  projectList.insertBefore(button, projectList.firstElementChild);
 };
 
 const openTextEditor = (element, key) => {
@@ -269,6 +341,7 @@ const openTextEditor = (element, key) => {
 const openImageEditor = (image) => {
   const originalSrc = image.dataset.cmsOriginalSrc || normalizeAssetPath(image.getAttribute("src"));
   imageDraft.value = {
+    cardKey: imageCmsKey(image),
     originalSrc,
     currentUrl: image.getAttribute("src"),
     file: null,
@@ -277,15 +350,34 @@ const openImageEditor = (image) => {
   imageDialog.value?.showModal();
 };
 
+const openProjectEditor = () => {
+  projectDraft.value = {
+    category: "site",
+    title: "",
+    year: "2026.",
+    description: "",
+    file: null,
+    previewUrl: "",
+    previewObjectUrl: "",
+  };
+  projectDialog.value?.showModal();
+};
+
 const closeDialogs = () => {
   if (imageDraft.value?.previewObjectUrl) {
     URL.revokeObjectURL(imageDraft.value.previewObjectUrl);
   }
 
+  if (projectDraft.value?.previewObjectUrl) {
+    URL.revokeObjectURL(projectDraft.value.previewObjectUrl);
+  }
+
   textDialog.value?.close();
   imageDialog.value?.close();
+  projectDialog.value?.close();
   textDraft.value = null;
   imageDraft.value = null;
+  projectDraft.value = null;
 };
 
 const handleImageFile = (event) => {
@@ -305,6 +397,42 @@ const handleImageFile = (event) => {
   };
 };
 
+const handleProjectFile = (event) => {
+  const [file] = Array.from(event.target.files || []);
+  if (!file) return;
+
+  if (projectDraft.value.previewObjectUrl) {
+    URL.revokeObjectURL(projectDraft.value.previewObjectUrl);
+  }
+
+  const previewObjectUrl = URL.createObjectURL(file);
+  projectDraft.value = {
+    ...projectDraft.value,
+    file,
+    previewUrl: previewObjectUrl,
+    previewObjectUrl,
+  };
+};
+
+const uploadCmsPhoto = async (file, folder) => {
+  const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const filePath = `${folder}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+  const { error: uploadError } = await supabase.storage
+    .from("cms-media")
+    .upload(filePath, file, {
+      cacheControl: "31536000",
+      upsert: false,
+    });
+
+  if (uploadError) throw uploadError;
+
+  const { data: publicUrlData } = supabase.storage.from("cms-media").getPublicUrl(filePath);
+  return {
+    publicUrl: publicUrlData.publicUrl,
+    filePath,
+  };
+};
+
 const getExistingInlineText = async (key) => {
   const { data, error } = await supabase
     .from("website_cards")
@@ -317,12 +445,13 @@ const getExistingInlineText = async (key) => {
   return data;
 };
 
-const getExistingImage = async (originalSrc) => {
+const getExistingImage = async (cardKey, originalSrc) => {
   const { data, error } = await supabase
     .from("website_cards")
     .select("*")
     .eq("section_key", "inline_images")
-    .eq("card_key", imageKey(originalSrc))
+    .or(`card_key.eq.${cardKey},card_key.eq.${imageKey(originalSrc)}`)
+    .limit(1)
     .maybeSingle();
 
   if (error) throw error;
@@ -375,23 +504,12 @@ const saveImage = async () => {
     }
 
     const originalSrc = normalizeAssetPath(imageDraft.value.originalSrc);
-    const existing = await getExistingImage(originalSrc);
-    const extension = imageDraft.value.file.name.split(".").pop()?.toLowerCase() || "jpg";
-    const filePath = `${selectedPage.value}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
-    const { error: uploadError } = await supabase.storage
-      .from("cms-media")
-      .upload(filePath, imageDraft.value.file, {
-        cacheControl: "31536000",
-        upsert: false,
-      });
-
-    if (uploadError) throw uploadError;
-
-    const { data: publicUrlData } = supabase.storage.from("cms-media").getPublicUrl(filePath);
-    const imageUrl = publicUrlData.publicUrl;
+    const cardKey = imageDraft.value.cardKey || imageKey(originalSrc);
+    const existing = await getExistingImage(cardKey, originalSrc);
+    const { publicUrl: imageUrl, filePath } = await uploadCmsPhoto(imageDraft.value.file, selectedPage.value);
     const payload = {
       section_key: "inline_images",
-      card_key: imageKey(originalSrc),
+      card_key: cardKey,
       image_url: imageUrl,
       category: "image",
       is_published: true,
@@ -413,6 +531,53 @@ const saveImage = async () => {
     closeDialogs();
     await loadPreview();
     showStatus("Image saved and fitted into the existing frame.", "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isBusy.value = false;
+  }
+};
+
+const saveProject = async () => {
+  isBusy.value = true;
+  try {
+    if (!projectDraft.value.file) {
+      throw new Error("Please choose a project photo.");
+    }
+
+    const { publicUrl, filePath } = await uploadCmsPhoto(projectDraft.value.file, "projects");
+    const cardKey = `project.${crypto.randomUUID()}`;
+    const categories =
+      projectDraft.value.category === "all" ? [] : [projectDraft.value.category];
+    const translationsPayload = {
+      [selectedLanguage.value]: {
+        title: projectDraft.value.title.trim(),
+        description: projectDraft.value.description.trim(),
+      },
+    };
+    const payload = {
+      section_key: "projects.list",
+      card_key: cardKey,
+      translations: translationsPayload,
+      image_url: publicUrl,
+      category: projectDraft.value.category,
+      sort_order: Date.now(),
+      is_published: true,
+      metadata: {
+        page: "projects",
+        year: projectDraft.value.year.trim(),
+        categories,
+        storage_bucket: "cms-media",
+        storage_path: filePath,
+      },
+      updated_at: new Date().toISOString(),
+    };
+    const { error } = await supabase.from("website_cards").insert(payload);
+    if (error) throw error;
+
+    closeDialogs();
+    await loadPreview();
+    showStatus("Project added.", "success");
   } catch (error) {
     showStatus(error.message, "error");
   } finally {

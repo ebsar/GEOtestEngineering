@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">GEOtest Engineering social preview</title>
+  <desc id="desc">Large GEOtest Engineering logo and brand preview for social sharing.</desc>
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#07192f" flood-opacity="0.14" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="#f7fbff" />
+  <rect x="52" y="52" width="1096" height="526" rx="42" fill="#e8f6ff" stroke="#d7edf8" stroke-width="2" />
+  <circle cx="1042" cy="76" r="138" fill="#fff200" opacity="0.16" />
+  <circle cx="108" cy="566" r="178" fill="#12a9d6" opacity="0.12" />
+
+  <g transform="translate(102 100) scale(0.72)" filter="url(#softShadow)" fill="none" stroke="#1d1d1d" stroke-width="5.8" shape-rendering="geometricPrecision">
+    <circle cx="92" cy="60" r="28" fill="#fff200" />
+    <circle cx="148" cy="60" r="28" fill="#2c2b91" />
+    <circle cx="204" cy="60" r="28" fill="#2c2b91" />
+    <circle cx="260" cy="60" r="28" fill="#2c2b91" />
+
+    <circle cx="92" cy="116" r="28" fill="#2c2b91" />
+    <circle cx="148" cy="116" r="28" fill="#fff200" />
+    <circle cx="204" cy="116" r="28" fill="#fff200" />
+    <circle cx="260" cy="116" r="28" fill="#fff200" />
+
+    <circle cx="92" cy="172" r="28" fill="#2c2b91" />
+    <circle cx="148" cy="172" r="28" fill="#fff200" />
+    <circle cx="204" cy="172" r="28" fill="#fff200" />
+    <circle cx="260" cy="172" r="28" fill="#fff200" />
+    <circle cx="316" cy="172" r="28" fill="#2c2b91" />
+
+    <circle cx="92" cy="228" r="28" fill="#2c2b91" />
+    <circle cx="148" cy="228" r="28" fill="#fff200" />
+    <circle cx="204" cy="228" r="28" fill="#2c2b91" />
+    <circle cx="260" cy="228" r="28" fill="#2c2b91" />
+    <circle cx="316" cy="228" r="28" fill="#2c2b91" />
+    <circle cx="372" cy="228" r="28" fill="#2c2b91" />
+
+    <circle cx="92" cy="284" r="28" fill="#2c2b91" />
+    <circle cx="148" cy="284" r="28" fill="#fff200" />
+    <circle cx="204" cy="284" r="28" fill="#fff200" />
+    <circle cx="260" cy="284" r="28" fill="#2c2b91" />
+    <circle cx="316" cy="284" r="28" fill="#2c2b91" />
+    <circle cx="372" cy="284" r="28" fill="#2c2b91" />
+
+    <circle cx="92" cy="340" r="28" fill="#fff200" />
+    <circle cx="148" cy="340" r="28" fill="#2c2b91" />
+    <circle cx="204" cy="340" r="28" fill="#2c2b91" />
+    <circle cx="260" cy="340" r="28" fill="#2c2b91" />
+    <circle cx="316" cy="340" r="28" fill="#2c2b91" />
+
+    <circle cx="316" cy="396" r="28" fill="#2c2b91" />
+    <circle cx="372" cy="452" r="28" fill="#2c2b91" />
+  </g>
+
+  <g transform="translate(430 158)">
+    <text x="0" y="96" fill="#2c2b91" font-family="Georgia, 'Times New Roman', serif" font-size="92" font-weight="700">
+      GEO<tspan font-style="italic">test</tspan>
+    </text>
+    <rect x="4" y="120" width="534" height="12" rx="6" fill="#dce83a" />
+    <text x="0" y="226" fill="#12a9d6" font-family="Georgia, 'Times New Roman', serif" font-size="86" font-weight="700">
+      Engineering
+    </text>
+    <text x="4" y="304" fill="#0b2239" font-family="Arial, Helvetica, sans-serif" font-size="33" font-weight="700" letter-spacing="0">
+      Geotechnical engineering services
+    </text>
+  </g>
+</svg>

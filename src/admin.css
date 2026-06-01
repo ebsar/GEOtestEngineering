@@ -417,6 +417,7 @@
 
 .visual-edit-login input,
 .visual-edit-dialog input,
+.visual-edit-dialog select,
 .visual-edit-dialog textarea,
 .visual-edit-toolbar select {
   width: 100%;
@@ -653,6 +654,29 @@
   background: rgba(238, 247, 251, 0.8);
   border: 1px solid rgba(18, 169, 214, 0.16);
   border-radius: 12px;
+}
+
+.visual-edit-add-project-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 48px;
+  margin: 0 0 28px;
+  padding: 12px 20px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 760;
+  background: #2c2b91;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(44, 43, 145, 0.22);
+  cursor: pointer;
+}
+
+.visual-edit-add-project-button:hover,
+.visual-edit-add-project-button:focus-visible {
+  background: #12a9d6;
 }
 
 img[data-cms-image="true"] {
