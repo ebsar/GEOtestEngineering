@@ -112,10 +112,13 @@
         <label>
           Category
           <select v-model="projectDraft.category" required>
-            <option value="all">All projects only</option>
-            <option value="site">Site investigations / Hulumtime në terren</option>
-            <option value="geotechnical">Geotechnical projects / Projekte gjeoteknike</option>
-            <option value="monitoring">Technical monitoring / Monitorim teknik</option>
+            <option
+              v-for="option in projectCategoryOptions"
+              :key="option.value"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </option>
           </select>
         </label>
         <label>
@@ -149,6 +152,43 @@
         </footer>
       </form>
     </dialog>
+
+    <dialog ref="filterDialog" class="visual-edit-dialog">
+      <form v-if="filterDraft" @submit.prevent="saveProjectFilter">
+        <header>
+          <div>
+            <p>Project filters</p>
+            <h2>Add or hide filter buttons</h2>
+          </div>
+          <button type="button" @click="closeDialogs">×</button>
+        </header>
+        <div class="visual-edit-filter-list">
+          <div v-for="filter in filterDraft.items" :key="filter.value" class="visual-edit-filter-row">
+            <span>{{ filter.label }}</span>
+            <button
+              type="button"
+              :disabled="filter.value === 'all' || isBusy"
+              @click="hideProjectFilter(filter)"
+            >
+              {{ filter.value === "all" ? "Required" : "Delete" }}
+            </button>
+          </div>
+        </div>
+        <label>
+          New filter name
+          <input v-model="filterDraft.label" type="text" placeholder="Example: Road projects" />
+        </label>
+        <p class="visual-edit-help">
+          “All projects” stays always visible. New filters can be selected later when adding a project.
+        </p>
+        <footer>
+          <button type="button" @click="closeDialogs">Cancel</button>
+          <button type="submit" :disabled="isBusy || !filterDraft.label.trim()">
+            {{ isBusy ? "Adding..." : "Add filter" }}
+          </button>
+        </footer>
+      </form>
+    </dialog>
   </main>
 </template>
 
@@ -179,6 +219,7 @@ const pageRoot = ref(null);
 const textDialog = ref(null);
 const imageDialog = ref(null);
 const projectDialog = ref(null);
+const filterDialog = ref(null);
 const pageHtml = ref("");
 const session = ref(null);
 const selectedPage = ref("home");
@@ -189,6 +230,8 @@ const statusType = ref("info");
 const textDraft = ref(null);
 const imageDraft = ref(null);
 const projectDraft = ref(null);
+const filterDraft = ref(null);
+const projectCategoryOptions = ref([]);
 const login = reactive({
   email: "",
   password: "",
@@ -307,6 +350,7 @@ const addEditButtons = () => {
   });
 
   addProjectCreateButton();
+  addProjectFilterManageButton();
 };
 
 const addProjectCreateButton = () => {
@@ -322,6 +366,35 @@ const addProjectCreateButton = () => {
   button.textContent = "+ Add project";
   button.addEventListener("click", openProjectEditor);
   projectList.insertBefore(button, projectList.firstElementChild);
+};
+
+const addProjectFilterManageButton = () => {
+  if (selectedPage.value !== "projects") return;
+
+  const filterBand = pageRoot.value?.querySelector(".project-filter-band");
+  if (!filterBand || filterBand.querySelector("[data-manage-filters-button]")) return;
+
+  const button = document.createElement("button");
+  button.className = "visual-edit-manage-filters-button";
+  button.type = "button";
+  button.dataset.manageFiltersButton = "true";
+  button.textContent = "+ Manage filters";
+  button.addEventListener("click", openFilterEditor);
+  filterBand.appendChild(button);
+};
+
+const getProjectCategoryOptions = () => {
+  if (!pageRoot.value) return [{ value: "all", label: "All projects only" }];
+
+  return Array.from(pageRoot.value.querySelectorAll("[data-project-filter]"))
+    .filter((button) => !button.hidden)
+    .map((button) => ({
+      value: button.dataset.projectFilter,
+      label:
+        button.dataset.projectFilter === "all"
+          ? `${button.textContent.trim()} only`
+          : button.textContent.trim(),
+    }));
 };
 
 const openTextEditor = (element, key) => {
@@ -351,8 +424,9 @@ const openImageEditor = (image) => {
 };
 
 const openProjectEditor = () => {
+  projectCategoryOptions.value = getProjectCategoryOptions();
   projectDraft.value = {
-    category: "site",
+    category: projectCategoryOptions.value.find((item) => item.value !== "all")?.value || "all",
     title: "",
     year: "2026.",
     description: "",
@@ -361,6 +435,17 @@ const openProjectEditor = () => {
     previewObjectUrl: "",
   };
   projectDialog.value?.showModal();
+};
+
+const openFilterEditor = () => {
+  filterDraft.value = {
+    label: "",
+    items: getProjectCategoryOptions().map((item) => ({
+      value: item.value,
+      label: item.label.replace(/\s+only$/i, ""),
+    })),
+  };
+  filterDialog.value?.showModal();
 };
 
 const closeDialogs = () => {
@@ -375,9 +460,11 @@ const closeDialogs = () => {
   textDialog.value?.close();
   imageDialog.value?.close();
   projectDialog.value?.close();
+  filterDialog.value?.close();
   textDraft.value = null;
   imageDraft.value = null;
   projectDraft.value = null;
+  filterDraft.value = null;
 };
 
 const handleImageFile = (event) => {
@@ -457,6 +544,28 @@ const getExistingImage = async (cardKey, originalSrc) => {
   if (error) throw error;
   return data;
 };
+
+const getExistingProjectFilter = async (filterKey) => {
+  const { data, error } = await supabase
+    .from("website_cards")
+    .select("*")
+    .eq("section_key", "projects.filters")
+    .eq("card_key", `filter.${filterKey}`)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data;
+};
+
+const slugifyFilter = (value) =>
+  value
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 42);
 
 const saveText = async () => {
   isBusy.value = true;
@@ -578,6 +687,94 @@ const saveProject = async () => {
     closeDialogs();
     await loadPreview();
     showStatus("Project added.", "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isBusy.value = false;
+  }
+};
+
+const saveProjectFilter = async () => {
+  isBusy.value = true;
+  try {
+    const label = filterDraft.value.label.trim();
+    const existingKeys = new Set(filterDraft.value.items.map((item) => item.value));
+    let filterKey = slugifyFilter(label) || `filter-${Date.now()}`;
+    if (existingKeys.has(filterKey)) {
+      filterKey = `${filterKey}-${Date.now().toString().slice(-5)}`;
+    }
+    const existing = await getExistingProjectFilter(filterKey);
+
+    const payload = {
+      section_key: "projects.filters",
+      card_key: `filter.${filterKey}`,
+      translations: {
+        ...(existing?.translations || {}),
+        [selectedLanguage.value]: { title: label },
+      },
+      category: "project-filter",
+      sort_order: existing?.sort_order || Date.now(),
+      is_published: true,
+      metadata: {
+        ...(existing?.metadata || {}),
+        page: "projects",
+        filter_key: filterKey,
+        custom: true,
+        hidden: false,
+      },
+      updated_at: new Date().toISOString(),
+    };
+    const query = existing
+      ? supabase.from("website_cards").update(payload).eq("id", existing.id)
+      : supabase.from("website_cards").insert(payload);
+    const { error } = await query;
+    if (error) throw error;
+
+    closeDialogs();
+    await loadPreview();
+    showStatus("Project filter added.", "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isBusy.value = false;
+  }
+};
+
+const hideProjectFilter = async (filter) => {
+  if (filter.value === "all") return;
+
+  isBusy.value = true;
+  try {
+    const existing = await getExistingProjectFilter(filter.value);
+    const payload = {
+      section_key: "projects.filters",
+      card_key: `filter.${filter.value}`,
+      translations: {
+        ...(existing?.translations || {}),
+        [selectedLanguage.value]: {
+          title: filter.label,
+        },
+      },
+      category: "project-filter",
+      sort_order: existing?.sort_order || Date.now(),
+      is_published: true,
+      metadata: {
+        ...(existing?.metadata || {}),
+        page: "projects",
+        filter_key: filter.value,
+        hidden: true,
+      },
+      updated_at: new Date().toISOString(),
+    };
+    const query = existing
+      ? supabase.from("website_cards").update(payload).eq("id", existing.id)
+      : supabase.from("website_cards").insert(payload);
+    const { error } = await query;
+    if (error) throw error;
+
+    closeDialogs();
+    await loadPreview();
+    showStatus("Project filter deleted from the live page.", "success");
   } catch (error) {
     showStatus(error.message, "error");
   } finally {

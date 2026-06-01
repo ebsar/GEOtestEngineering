@@ -40,6 +40,7 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
     text: new Map(),
     images: new Map(),
     projects: [],
+    projectFilters: [],
   };
 
   try {
@@ -47,7 +48,7 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
     const { data, error } = await supabase
       .from("website_cards")
       .select("*")
-      .in("section_key", ["inline_text", "inline_images", "projects.list"])
+      .in("section_key", ["inline_text", "inline_images", "projects.list", "projects.filters"])
       .eq("is_published", true)
       .order("sort_order", { ascending: true });
 
@@ -68,6 +69,10 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
 
       if (item.section_key === "projects.list") {
         overrides.projects.push(item);
+      }
+
+      if (item.section_key === "projects.filters") {
+        overrides.projectFilters.push(item);
       }
     });
   } catch (error) {
@@ -257,6 +262,40 @@ const renderCmsProjects = (root = document, language = "sq", cmsOverrides = cmsO
   });
 };
 
+const renderProjectFilters = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
+  const filterList = root.querySelector(".project-filter-list");
+  if (!filterList) return;
+
+  filterList.querySelectorAll("[data-cms-project-filter]").forEach((filter) => filter.remove());
+  filterList.querySelectorAll("[data-project-filter]").forEach((filter) => {
+    filter.hidden = false;
+  });
+
+  (cmsOverrides?.projectFilters || []).forEach((filter) => {
+    const filterKey = filter.metadata?.filter_key || filter.card_key?.replace(/^filter\./, "");
+    if (!filterKey) return;
+
+    const existing = filterList.querySelector(`[data-project-filter="${CSS.escape(filterKey)}"]`);
+    if (filter.metadata?.hidden) {
+      if (existing) existing.hidden = true;
+      return;
+    }
+
+    if (existing) return;
+
+    const content = getTranslatedContent(filter, language, {
+      title: filter.metadata?.label || filterKey,
+    });
+    const button = document.createElement("button");
+    button.className = "project-filter";
+    button.type = "button";
+    button.dataset.projectFilter = filterKey;
+    button.dataset.cmsProjectFilter = "true";
+    button.textContent = content.title || filterKey;
+    filterList.appendChild(button);
+  });
+};
+
 export const applyLanguage = (language, root = document, cmsOverrides = cmsOverrideCache) => {
   const dictionary = translations[language] || translations.en;
   document.documentElement.lang = language;
@@ -304,6 +343,7 @@ export const applyImageOverrides = (root = document, cmsOverrides = cmsOverrideC
 
 export const applyCmsContent = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
   applyLanguage(language, root, cmsOverrides);
+  renderProjectFilters(root, language, cmsOverrides);
   renderCmsProjects(root, language, cmsOverrides);
   applyImageOverrides(root, cmsOverrides);
 };
@@ -504,7 +544,7 @@ const initProjectFilters = (root) => {
 
     projectCards.forEach((card) => {
       const categories = (card.dataset.projectCategories || "").split(/\s+/);
-      const isVisible = filter === "all" || categories.includes(filter);
+      const isVisible = filter === "all" || (!card.hidden && categories.includes(filter));
       card.classList.toggle("is-hidden", !isVisible);
       if (isVisible) visibleCount += 1;
     });
