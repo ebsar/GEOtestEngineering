@@ -1,7 +1,12 @@
 const pageLoader = document.createElement("div");
 pageLoader.className = "page-loader";
 pageLoader.setAttribute("aria-hidden", "true");
-pageLoader.innerHTML = '<span class="page-loader-spinner"></span>';
+pageLoader.innerHTML = `
+  <span class="page-loader-content">
+    <span class="page-loader-spinner"></span>
+    <span class="page-loader-text">Duke u ngarkuar...</span>
+  </span>
+`;
 document.body.classList.add("is-page-loading");
 document.body.prepend(pageLoader);
 
@@ -167,11 +172,12 @@ const translations = {
     "contact.text": "Contact us directly by email, share your phone number, or send us your project location. You can also send us your information below, and we will reach out to you.",
     "contact.direct.email": "Email",
     "contact.direct.phone": "Phone",
-    "contact.direct.phoneValue": "Send your phone number and we will call you back",
+    "contact.direct.phoneValue": "+38349242052",
     "contact.direct.location": "Location",
-    "contact.direct.locationValue": "Varaždin, Croatia",
-    "contact.name": "Name",
+    "contact.direct.locationValue": "Rruga \"Mizahir Isma\", Rahovec, Kosovo 21000",
+    "contact.name": "Full name",
     "contact.email": "Email",
+    "contact.phone": "Phone number",
     "contact.service": "Service",
     "contact.service.placeholder": "Choose service",
     "contact.location": "Project location",
@@ -339,11 +345,12 @@ const translations = {
     "contact.text": "Na kontaktoni drejtpërdrejt me email, ndani numrin tuaj të telefonit, ose dërgoni lokacionin e projektit. Mund të na dërgoni edhe informacionin tuaj më poshtë dhe ne do t'ju kontaktojmë.",
     "contact.direct.email": "Email",
     "contact.direct.phone": "Telefoni",
-    "contact.direct.phoneValue": "Dërgoni numrin tuaj të telefonit dhe ne do t'ju telefonojmë",
+    "contact.direct.phoneValue": "+38349242052",
     "contact.direct.location": "Lokacioni",
-    "contact.direct.locationValue": "Varaždin, Kroaci",
-    "contact.name": "Emri",
+    "contact.direct.locationValue": "Rruga \"Mizahir Isma\", Rahovec, Kosovë 21000",
+    "contact.name": "Emri i plotë",
     "contact.email": "Email",
+    "contact.phone": "Numri i telefonit",
     "contact.service": "Shërbimi",
     "contact.service.placeholder": "Zgjidh shërbimin",
     "contact.location": "Lokacioni i projektit",
