@@ -222,18 +222,52 @@ const renderCmsProjects = (root = document, language = "sq", cmsOverrides = cmsO
         ? [project.category]
         : [];
     const categoryText = categories.join(" ");
-    const imageUrl = project.image_url || "/images/project-durdekovac-site.jpeg";
-    const year = project.metadata?.year || "";
+    const gallery = project.metadata?.gallery?.length
+      ? project.metadata.gallery
+      : [{ url: project.image_url || "/images/project-durdekovac-site.jpeg" }];
+    const yearText =
+      content.yearText ||
+      (project.metadata?.year
+        ? `${translations[language]?.["projects.year.label"] || "year of design:"} ${project.metadata.year}`
+        : "");
     const title = escapeHtml(content.title || "Untitled project");
     const description = escapeHtml(content.description || "");
-    const yearMarkup = year
+    const yearMarkup = yearText
       ? `
           <p class="project-year">
-            <span>${escapeHtml(translations[language]?.["projects.year.label"] || "year of design:")}</span>
-            <strong>${escapeHtml(year)}</strong>
+            <strong>${escapeHtml(yearText)}</strong>
           </p>
         `
       : "";
+    const slides = gallery
+      .slice(0, 10)
+      .map((image, index) => {
+        const imageUrl = typeof image === "string" ? image : image.url;
+        return `
+          <img
+            class="project-slide${index === 0 ? " is-active" : ""}"
+            src="${escapeHtml(imageUrl)}"
+            alt="${title}"
+            loading="${index === 0 ? "eager" : "lazy"}"
+          />
+        `;
+      })
+      .join("");
+    const sliderButtons =
+      gallery.length > 1
+        ? `
+            <button class="project-slide-button project-slide-prev" type="button" data-slide-prev aria-label="Previous project photo">
+              <svg aria-hidden="true" viewBox="0 0 20 20">
+                <path d="M12.5 4.5 7 10l5.5 5.5" />
+              </svg>
+            </button>
+            <button class="project-slide-button project-slide-next" type="button" data-slide-next aria-label="Next project photo">
+              <svg aria-hidden="true" viewBox="0 0 20 20">
+                <path d="m7.5 4.5 5.5 5.5-5.5 5.5" />
+              </svg>
+            </button>
+          `
+        : "";
 
     const article = document.createElement("article");
     article.className = "project-card";
@@ -248,13 +282,9 @@ const renderCmsProjects = (root = document, language = "sq", cmsOverrides = cmsO
       </div>
       <div class="project-slider" data-project-slider>
         <div class="project-slide-track">
-          <img
-            class="project-slide is-active"
-            src="${escapeHtml(imageUrl)}"
-            alt="${title}"
-            loading="lazy"
-          />
+          ${slides}
         </div>
+        ${sliderButtons}
       </div>
     `;
 

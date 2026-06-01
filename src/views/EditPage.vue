@@ -126,25 +126,28 @@
           <input v-model="projectDraft.title" type="text" required />
         </label>
         <label>
-          Year
-          <input v-model="projectDraft.year" type="text" placeholder="2026." />
+          Year text
+          <input v-model="projectDraft.yearText" type="text" placeholder="viti i projektimit: 2026." />
         </label>
         <label>
           Project description
           <textarea v-model="projectDraft.description" rows="7" required></textarea>
         </label>
         <label>
-          Project photo
-          <input type="file" accept="image/*" required @change="handleProjectFile" />
+          Project photos
+          <input type="file" accept="image/*" multiple required @change="handleProjectFiles" />
         </label>
-        <img
-          v-if="projectDraft.previewUrl"
-          class="visual-edit-image-preview"
-          :src="projectDraft.previewUrl"
-          alt="Selected project preview"
-        />
+        <div v-if="projectDraft.previewUrls.length" class="visual-edit-project-previews">
+          <img
+            v-for="(previewUrl, index) in projectDraft.previewUrls"
+            :key="previewUrl"
+            class="visual-edit-project-preview"
+            :src="previewUrl"
+            :alt="`Selected project preview ${index + 1}`"
+          />
+        </div>
         <p class="visual-edit-help">
-          The photo will fill the project image frame. The frame keeps its size and crops the photo neatly.
+          Add up to 10 photos. They will become the project slider. Every photo fills the same frame and crops neatly.
         </p>
         <footer>
           <button type="button" @click="closeDialogs">Cancel</button>
@@ -428,11 +431,11 @@ const openProjectEditor = () => {
   projectDraft.value = {
     category: projectCategoryOptions.value.find((item) => item.value !== "all")?.value || "all",
     title: "",
-    year: "2026.",
+    yearText: selectedLanguage.value === "sq" ? "viti i projektimit: 2026." : "year of design: 2026.",
     description: "",
-    file: null,
-    previewUrl: "",
-    previewObjectUrl: "",
+    files: [],
+    previewUrls: [],
+    previewObjectUrls: [],
   };
   projectDialog.value?.showModal();
 };
@@ -453,8 +456,8 @@ const closeDialogs = () => {
     URL.revokeObjectURL(imageDraft.value.previewObjectUrl);
   }
 
-  if (projectDraft.value?.previewObjectUrl) {
-    URL.revokeObjectURL(projectDraft.value.previewObjectUrl);
+  if (projectDraft.value?.previewObjectUrls?.length) {
+    projectDraft.value.previewObjectUrls.forEach((previewObjectUrl) => URL.revokeObjectURL(previewObjectUrl));
   }
 
   textDialog.value?.close();
@@ -484,20 +487,20 @@ const handleImageFile = (event) => {
   };
 };
 
-const handleProjectFile = (event) => {
-  const [file] = Array.from(event.target.files || []);
-  if (!file) return;
+const handleProjectFiles = (event) => {
+  const files = Array.from(event.target.files || []).slice(0, 10);
+  if (!files.length) return;
 
-  if (projectDraft.value.previewObjectUrl) {
-    URL.revokeObjectURL(projectDraft.value.previewObjectUrl);
+  if (projectDraft.value.previewObjectUrls?.length) {
+    projectDraft.value.previewObjectUrls.forEach((previewObjectUrl) => URL.revokeObjectURL(previewObjectUrl));
   }
 
-  const previewObjectUrl = URL.createObjectURL(file);
+  const previewObjectUrls = files.map((file) => URL.createObjectURL(file));
   projectDraft.value = {
     ...projectDraft.value,
-    file,
-    previewUrl: previewObjectUrl,
-    previewObjectUrl,
+    files,
+    previewUrls: previewObjectUrls,
+    previewObjectUrls,
   };
 };
 
@@ -650,11 +653,15 @@ const saveImage = async () => {
 const saveProject = async () => {
   isBusy.value = true;
   try {
-    if (!projectDraft.value.file) {
-      throw new Error("Please choose a project photo.");
+    if (!projectDraft.value.files.length) {
+      throw new Error("Please choose at least one project photo.");
     }
 
-    const { publicUrl, filePath } = await uploadCmsPhoto(projectDraft.value.file, "projects");
+    const uploadedPhotos = [];
+    for (const file of projectDraft.value.files.slice(0, 10)) {
+      uploadedPhotos.push(await uploadCmsPhoto(file, "projects"));
+    }
+
     const cardKey = `project.${crypto.randomUUID()}`;
     const categories =
       projectDraft.value.category === "all" ? [] : [projectDraft.value.category];
@@ -662,22 +669,27 @@ const saveProject = async () => {
       [selectedLanguage.value]: {
         title: projectDraft.value.title.trim(),
         description: projectDraft.value.description.trim(),
+        yearText: projectDraft.value.yearText.trim(),
       },
     };
+    const gallery = uploadedPhotos.map((photo) => ({
+      url: photo.publicUrl,
+      storage_path: photo.filePath,
+    }));
     const payload = {
       section_key: "projects.list",
       card_key: cardKey,
       translations: translationsPayload,
-      image_url: publicUrl,
+      image_url: gallery[0]?.url,
       category: projectDraft.value.category,
       sort_order: Date.now(),
       is_published: true,
       metadata: {
         page: "projects",
-        year: projectDraft.value.year.trim(),
         categories,
+        gallery,
         storage_bucket: "cms-media",
-        storage_path: filePath,
+        storage_path: gallery[0]?.storage_path,
       },
       updated_at: new Date().toISOString(),
     };

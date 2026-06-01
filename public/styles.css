@@ -3338,14 +3338,17 @@ geotest-logo-hero-reveal {
 
 @media (max-width: 760px) {
   .hero-section {
-    min-height: 53vh;
-    padding-top: 102px;
-    padding-bottom: 20px;
+    min-height: calc(100svh - 96px);
+    place-items: center;
+    align-content: center;
+    padding: 104px 20px 72px;
   }
 
   .hero-visual {
-    padding: 0 18px;
-    margin-top: 0;
+    justify-self: center;
+    width: min(100%, 520px);
+    margin: 0 auto;
+    padding: 16px 16px 20px;
   }
 
   geotest-logo-hero-reveal {
