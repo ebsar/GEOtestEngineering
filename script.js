@@ -462,7 +462,11 @@ languageSelect?.addEventListener("change", (event) => {
   applyLanguage(event.target.value);
 });
 
-applyLanguage(languageSelect?.value || "en");
+const defaultLanguage = "sq";
+if (languageSelect) {
+  languageSelect.value = defaultLanguage;
+}
+applyLanguage(defaultLanguage);
 
 const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const whatWeDoSection = document.querySelector("#what-we-do");

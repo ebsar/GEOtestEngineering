@@ -43,9 +43,7 @@ body.is-page-loading {
   z-index: 9999;
   display: grid;
   place-items: center;
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: #ffffff;
   opacity: 1;
   visibility: visible;
   transition:
@@ -66,6 +64,17 @@ body.is-page-loading {
   border-top-color: var(--logo-navy);
   border-radius: 999px;
   animation: pageLoaderSpin 760ms linear infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .page-loader {
+    background: #071828;
+  }
+
+  .page-loader-spinner {
+    border-color: rgba(255, 255, 255, 0.18);
+    border-top-color: var(--logo-blue);
+  }
 }
 
 @keyframes pageLoaderSpin {
