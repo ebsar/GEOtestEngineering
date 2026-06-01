@@ -80,9 +80,15 @@
           <button type="button" @click="closeDialogs">×</button>
         </header>
         <label>
-          Image URL
-          <input v-model.trim="imageDraft.imageUrl" type="url" placeholder="https://..." autofocus required />
+          Choose photo
+          <input type="file" accept="image/*" required @change="handleImageFile" />
         </label>
+        <img
+          v-if="imageDraft.previewUrl"
+          class="visual-edit-image-preview"
+          :src="imageDraft.previewUrl"
+          alt="Selected image preview"
+        />
         <p class="visual-edit-help">
           The image will fill the current website card/frame. The card keeps its size; the image is cropped with
           object-fit: cover when needed.
@@ -264,16 +270,39 @@ const openImageEditor = (image) => {
   const originalSrc = image.dataset.cmsOriginalSrc || normalizeAssetPath(image.getAttribute("src"));
   imageDraft.value = {
     originalSrc,
-    imageUrl: image.getAttribute("src"),
+    currentUrl: image.getAttribute("src"),
+    file: null,
+    previewUrl: image.getAttribute("src"),
   };
   imageDialog.value?.showModal();
 };
 
 const closeDialogs = () => {
+  if (imageDraft.value?.previewObjectUrl) {
+    URL.revokeObjectURL(imageDraft.value.previewObjectUrl);
+  }
+
   textDialog.value?.close();
   imageDialog.value?.close();
   textDraft.value = null;
   imageDraft.value = null;
+};
+
+const handleImageFile = (event) => {
+  const [file] = Array.from(event.target.files || []);
+  if (!file) return;
+
+  if (imageDraft.value.previewObjectUrl) {
+    URL.revokeObjectURL(imageDraft.value.previewObjectUrl);
+  }
+
+  const previewObjectUrl = URL.createObjectURL(file);
+  imageDraft.value = {
+    ...imageDraft.value,
+    file,
+    previewUrl: previewObjectUrl,
+    previewObjectUrl,
+  };
 };
 
 const getExistingInlineText = async (key) => {
@@ -341,17 +370,36 @@ const saveText = async () => {
 const saveImage = async () => {
   isBusy.value = true;
   try {
+    if (!imageDraft.value.file) {
+      throw new Error("Please choose a photo first.");
+    }
+
     const originalSrc = normalizeAssetPath(imageDraft.value.originalSrc);
     const existing = await getExistingImage(originalSrc);
+    const extension = imageDraft.value.file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const filePath = `${selectedPage.value}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+    const { error: uploadError } = await supabase.storage
+      .from("cms-media")
+      .upload(filePath, imageDraft.value.file, {
+        cacheControl: "31536000",
+        upsert: false,
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { data: publicUrlData } = supabase.storage.from("cms-media").getPublicUrl(filePath);
+    const imageUrl = publicUrlData.publicUrl;
     const payload = {
       section_key: "inline_images",
       card_key: imageKey(originalSrc),
-      image_url: imageDraft.value.imageUrl,
+      image_url: imageUrl,
       category: "image",
       is_published: true,
       metadata: {
         ...(existing?.metadata || {}),
         original_src: originalSrc,
+        storage_bucket: "cms-media",
+        storage_path: filePath,
         page: selectedPage.value,
       },
       updated_at: new Date().toISOString(),

@@ -804,9 +804,8 @@ geotest-navbar-logo {
 
 .service-overview-icon svg {
   display: block;
-  width: 50px;
-  height: 50px;
-  filter: drop-shadow(0 1px 0 rgba(29, 29, 29, 0.28));
+  width: 46px;
+  height: 46px;
 }
 
 .service-overview-icon path {
@@ -814,7 +813,7 @@ geotest-navbar-logo {
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 2.55;
+  stroke-width: 1.75;
   vector-effect: non-scaling-stroke;
 }
 
