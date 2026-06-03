@@ -192,6 +192,35 @@
         </footer>
       </form>
     </dialog>
+
+    <dialog ref="deleteProjectsDialog" class="visual-edit-dialog">
+      <form v-if="deleteProjectsDraft" @submit.prevent="removeAllEditableProjects">
+        <header>
+          <div>
+            <p>Remove projects</p>
+            <h2>Remove all editable projects?</h2>
+          </div>
+          <button type="button" @click="closeDialogs">×</button>
+        </header>
+        <p class="visual-edit-help">
+          This will remove every project added from the editor from the live Projects page. Type REMOVE to confirm.
+        </p>
+        <label>
+          Confirmation
+          <input v-model="deleteProjectsDraft.confirmation" type="text" placeholder="REMOVE" required />
+        </label>
+        <footer>
+          <button type="button" @click="closeDialogs">Cancel</button>
+          <button
+            class="visual-edit-danger-action"
+            type="submit"
+            :disabled="isBusy || deleteProjectsDraft.confirmation !== 'REMOVE'"
+          >
+            {{ isBusy ? "Removing..." : "Remove all projects" }}
+          </button>
+        </footer>
+      </form>
+    </dialog>
   </main>
 </template>
 
@@ -223,6 +252,7 @@ const textDialog = ref(null);
 const imageDialog = ref(null);
 const projectDialog = ref(null);
 const filterDialog = ref(null);
+const deleteProjectsDialog = ref(null);
 const pageHtml = ref("");
 const session = ref(null);
 const selectedPage = ref("home");
@@ -234,6 +264,7 @@ const textDraft = ref(null);
 const imageDraft = ref(null);
 const projectDraft = ref(null);
 const filterDraft = ref(null);
+const deleteProjectsDraft = ref(null);
 const projectCategoryOptions = ref([]);
 const login = reactive({
   email: "",
@@ -362,13 +393,24 @@ const addProjectCreateButton = () => {
   const projectList = pageRoot.value?.querySelector(".project-list-inner");
   if (!projectList || projectList.querySelector("[data-add-project-button]")) return;
 
-  const button = document.createElement("button");
-  button.className = "visual-edit-add-project-button";
-  button.type = "button";
-  button.dataset.addProjectButton = "true";
-  button.textContent = "+ Add project";
-  button.addEventListener("click", openProjectEditor);
-  projectList.insertBefore(button, projectList.firstElementChild);
+  const actions = document.createElement("div");
+  actions.className = "visual-edit-project-actions";
+  actions.dataset.addProjectButton = "true";
+
+  const addButton = document.createElement("button");
+  addButton.className = "visual-edit-add-project-button";
+  addButton.type = "button";
+  addButton.textContent = "+ Add project";
+  addButton.addEventListener("click", openProjectEditor);
+
+  const removeButton = document.createElement("button");
+  removeButton.className = "visual-edit-remove-projects-button";
+  removeButton.type = "button";
+  removeButton.textContent = "Remove all projects";
+  removeButton.addEventListener("click", openDeleteProjectsDialog);
+
+  actions.append(addButton, removeButton);
+  projectList.insertBefore(actions, projectList.firstElementChild);
 };
 
 const addProjectFilterManageButton = () => {
@@ -451,6 +493,13 @@ const openFilterEditor = () => {
   filterDialog.value?.showModal();
 };
 
+const openDeleteProjectsDialog = () => {
+  deleteProjectsDraft.value = {
+    confirmation: "",
+  };
+  deleteProjectsDialog.value?.showModal();
+};
+
 const closeDialogs = () => {
   if (imageDraft.value?.previewObjectUrl) {
     URL.revokeObjectURL(imageDraft.value.previewObjectUrl);
@@ -464,10 +513,12 @@ const closeDialogs = () => {
   imageDialog.value?.close();
   projectDialog.value?.close();
   filterDialog.value?.close();
+  deleteProjectsDialog.value?.close();
   textDraft.value = null;
   imageDraft.value = null;
   projectDraft.value = null;
   filterDraft.value = null;
+  deleteProjectsDraft.value = null;
 };
 
 const handleImageFile = (event) => {
@@ -570,15 +621,71 @@ const slugifyFilter = (value) =>
     .replace(/^-+|-+$/g, "")
     .slice(0, 42);
 
+const translateAlbanianToEnglish = async (value = "") => {
+  const text = value.trim();
+  if (!text) return "";
+
+  try {
+    const response = await fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=en&dt=t&q=${encodeURIComponent(text)}`,
+    );
+    if (!response.ok) throw new Error("Translation request failed.");
+
+    const data = await response.json();
+    const translated = Array.isArray(data?.[0])
+      ? data[0].map((part) => part?.[0] || "").join("")
+      : "";
+
+    return translated.trim() || text;
+  } catch (error) {
+    console.warn("Automatic translation unavailable:", error.message);
+    return text;
+  }
+};
+
+const translateAlbanianHtmlToEnglish = async (html = "") => {
+  if (!html.trim()) return "";
+
+  const parser = new DOMParser();
+  const documentFragment = parser.parseFromString(`<div>${html}</div>`, "text/html");
+  const root = documentFragment.body.firstElementChild;
+  const textNodes = [];
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    if (node.nodeValue.trim()) textNodes.push(node);
+  }
+
+  for (const node of textNodes) {
+    node.nodeValue = await translateAlbanianToEnglish(node.nodeValue);
+  }
+
+  return root.innerHTML;
+};
+
 const saveText = async () => {
   isBusy.value = true;
   try {
     const existing = await getExistingInlineText(textDraft.value.key);
+    const shouldAutoTranslateText = selectedLanguage.value === "sq";
+    const translatedEnglish = shouldAutoTranslateText
+      ? textDraft.value.isHtml
+        ? await translateAlbanianHtmlToEnglish(textDraft.value.value)
+        : await translateAlbanianToEnglish(textDraft.value.value)
+      : "";
     const translationsPayload = {
       ...(existing?.translations || {}),
       [selectedLanguage.value]: textDraft.value.isHtml
         ? { html: textDraft.value.value }
         : { text: textDraft.value.value },
+      ...(shouldAutoTranslateText
+        ? {
+            en: textDraft.value.isHtml
+              ? { ...(existing?.translations?.en || {}), html: translatedEnglish }
+              : { ...(existing?.translations?.en || {}), text: translatedEnglish },
+          }
+        : {}),
     };
     const payload = {
       section_key: "inline_text",
@@ -665,12 +772,22 @@ const saveProject = async () => {
     const cardKey = `project.${crypto.randomUUID()}`;
     const categories =
       projectDraft.value.category === "all" ? [] : [projectDraft.value.category];
+    const projectContent = {
+      title: projectDraft.value.title.trim(),
+      description: projectDraft.value.description.trim(),
+      yearText: projectDraft.value.yearText.trim(),
+    };
+    const englishProjectContent =
+      selectedLanguage.value === "sq"
+        ? {
+            title: await translateAlbanianToEnglish(projectContent.title),
+            description: await translateAlbanianToEnglish(projectContent.description),
+            yearText: await translateAlbanianToEnglish(projectContent.yearText),
+          }
+        : null;
     const translationsPayload = {
-      [selectedLanguage.value]: {
-        title: projectDraft.value.title.trim(),
-        description: projectDraft.value.description.trim(),
-        yearText: projectDraft.value.yearText.trim(),
-      },
+      [selectedLanguage.value]: projectContent,
+      ...(englishProjectContent ? { en: englishProjectContent } : {}),
     };
     const gallery = uploadedPhotos.map((photo) => ({
       url: photo.publicUrl,
@@ -723,6 +840,14 @@ const saveProjectFilter = async () => {
       translations: {
         ...(existing?.translations || {}),
         [selectedLanguage.value]: { title: label },
+        ...(selectedLanguage.value === "sq"
+          ? {
+              en: {
+                ...(existing?.translations?.en || {}),
+                title: await translateAlbanianToEnglish(label),
+              },
+            }
+          : {}),
       },
       category: "project-filter",
       sort_order: existing?.sort_order || Date.now(),
@@ -787,6 +912,31 @@ const hideProjectFilter = async (filter) => {
     closeDialogs();
     await loadPreview();
     showStatus("Project filter deleted from the live page.", "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isBusy.value = false;
+  }
+};
+
+const removeAllEditableProjects = async () => {
+  if (deleteProjectsDraft.value.confirmation !== "REMOVE") return;
+
+  isBusy.value = true;
+  try {
+    const { error } = await supabase
+      .from("website_cards")
+      .update({
+        is_published: false,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("section_key", "projects.list");
+
+    if (error) throw error;
+
+    closeDialogs();
+    await loadPreview();
+    showStatus("All editable projects were removed from the live page.", "success");
   } catch (error) {
     showStatus(error.message, "error");
   } finally {

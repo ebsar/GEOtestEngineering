@@ -672,13 +672,21 @@
   border-radius: 10px;
 }
 
-.visual-edit-add-project-button {
+.visual-edit-project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 28px;
+}
+
+.visual-edit-add-project-button,
+.visual-edit-remove-projects-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: fit-content;
   min-height: 48px;
-  margin: 0 0 28px;
   padding: 12px 20px;
   color: #ffffff;
   font-size: 1rem;
@@ -693,6 +701,26 @@
 .visual-edit-add-project-button:hover,
 .visual-edit-add-project-button:focus-visible {
   background: #12a9d6;
+}
+
+.visual-edit-remove-projects-button,
+.visual-edit-danger-action {
+  background: #9f1d1d !important;
+  box-shadow: 0 14px 34px rgba(159, 29, 29, 0.2);
+}
+
+.visual-edit-remove-projects-button:hover,
+.visual-edit-remove-projects-button:focus-visible,
+.visual-edit-danger-action:hover,
+.visual-edit-danger-action:focus-visible {
+  background: #c42b2b !important;
+}
+
+.visual-edit-danger-action:disabled {
+  color: rgba(255, 255, 255, 0.74);
+  background: #9b9b9b !important;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
 .visual-edit-manage-filters-button {

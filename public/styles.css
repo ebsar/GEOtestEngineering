@@ -311,6 +311,14 @@ geotest-navbar-logo {
   cursor: pointer;
 }
 
+.language-picker-label {
+  color: #536171;
+  font-size: 0.78rem;
+  font-weight: 680;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .language-picker select::-ms-expand {
   display: none;
 }
@@ -513,7 +521,7 @@ geotest-navbar-logo {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("/images/what-we-do-background.png") center / cover no-repeat;
+  background: url("/images/what-we-do-soil.png") center / cover no-repeat;
   transform: none;
   transform-origin: bottom center;
   will-change: transform, opacity, filter;
