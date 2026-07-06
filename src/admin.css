@@ -607,6 +607,14 @@
   padding: 22px;
 }
 
+.visual-edit-dialog section {
+  display: grid;
+  gap: 16px;
+  max-height: min(760px, calc(100vh - 28px));
+  padding: 22px;
+  overflow: auto;
+}
+
 .visual-edit-dialog header,
 .visual-edit-dialog footer {
   display: flex;
@@ -780,6 +788,107 @@
   color: #526171;
   background: rgba(16, 32, 51, 0.08);
   cursor: not-allowed;
+}
+
+.visual-edit-history-dialog {
+  width: min(860px, calc(100vw - 28px));
+}
+
+.visual-edit-history-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.visual-edit-history-actions button {
+  width: auto;
+  color: #2c2b91;
+  background: rgba(44, 43, 145, 0.08);
+}
+
+.visual-edit-history-empty {
+  padding: 18px;
+  color: #526171;
+  background: rgba(238, 247, 251, 0.9);
+  border: 1px solid rgba(18, 169, 214, 0.16);
+  border-radius: 12px;
+}
+
+.visual-edit-history-list {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.visual-edit-history-item {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(44, 43, 145, 0.14);
+  border-radius: 14px;
+  box-shadow: 0 12px 34px rgba(16, 32, 51, 0.08);
+}
+
+.visual-edit-history-top,
+.visual-edit-history-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.visual-edit-history-top strong {
+  color: #102033;
+  font-size: 1.02rem;
+}
+
+.visual-edit-history-top time,
+.visual-edit-history-meta span {
+  color: #526171;
+  font-size: 0.82rem;
+}
+
+.visual-edit-history-meta {
+  justify-content: flex-start;
+}
+
+.visual-edit-history-meta span {
+  padding: 5px 8px;
+  background: rgba(238, 247, 251, 0.96);
+  border-radius: 999px;
+}
+
+.visual-edit-history-item p {
+  margin: 0;
+  color: #102033;
+  line-height: 1.45;
+}
+
+.visual-edit-history-changes {
+  display: grid;
+  grid-template-columns: minmax(100px, 0.24fr) minmax(0, 1fr);
+  gap: 6px 12px;
+  padding: 12px;
+  margin: 0;
+  background: rgba(238, 247, 251, 0.76);
+  border-radius: 10px;
+}
+
+.visual-edit-history-changes dt {
+  color: #2c2b91;
+  font-size: 0.82rem;
+  font-weight: 760;
+}
+
+.visual-edit-history-changes dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #102033;
+  font-size: 0.9rem;
 }
 
 img[data-cms-image="true"] {

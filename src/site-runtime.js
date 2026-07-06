@@ -224,7 +224,7 @@ const renderCmsProjects = (root = document, language = "sq", cmsOverrides = cmsO
     const categoryText = categories.join(" ");
     const gallery = project.metadata?.gallery?.length
       ? project.metadata.gallery
-      : [{ url: project.image_url || "/images/project-durdekovac-site.jpeg" }];
+      : [{ url: project.image_url || "/images/project-durdekovac-site.webp" }];
     const yearText =
       content.yearText ||
       (project.metadata?.year

@@ -45,6 +45,7 @@
             <option value="sq">Albanian</option>
             <option value="en">English</option>
           </select>
+          <button type="button" @click="openHistoryDialog">History</button>
           <button type="button" @click="refreshPreview">Refresh</button>
           <button type="button" @click="signOut">Sign out</button>
         </div>
@@ -81,7 +82,7 @@
         </header>
         <label>
           Choose photo
-          <input type="file" accept="image/*" required @change="handleImageFile" />
+          <input type="file" accept="image/png,image/jpeg,image/webp" required @change="handleImageFile" />
         </label>
         <img
           v-if="imageDraft.previewUrl"
@@ -135,7 +136,7 @@
         </label>
         <label>
           Project photos
-          <input type="file" accept="image/*" multiple required @change="handleProjectFiles" />
+          <input type="file" accept="image/png,image/jpeg,image/webp" multiple required @change="handleProjectFiles" />
         </label>
         <div v-if="projectDraft.previewUrls.length" class="visual-edit-project-previews">
           <img
@@ -221,6 +222,46 @@
         </footer>
       </form>
     </dialog>
+
+    <dialog ref="historyDialog" class="visual-edit-dialog visual-edit-history-dialog">
+      <section>
+        <header>
+          <div>
+            <p>Edit history</p>
+            <h2>Latest admin changes</h2>
+          </div>
+          <button type="button" @click="closeHistoryDialog">×</button>
+        </header>
+        <div class="visual-edit-history-actions">
+          <button type="button" :disabled="isHistoryLoading" @click="loadHistory">
+            {{ isHistoryLoading ? "Loading..." : "Refresh history" }}
+          </button>
+        </div>
+        <div v-if="!historyItems.length" class="visual-edit-history-empty">
+          No history yet. Changes will appear here after the admin saves content.
+        </div>
+        <ol v-else class="visual-edit-history-list">
+          <li v-for="item in historyItems" :key="item.id || item.card_key" class="visual-edit-history-item">
+            <div class="visual-edit-history-top">
+              <strong>{{ item.metadata?.action_label || item.metadata?.action || "Website change" }}</strong>
+              <time>{{ formatHistoryDate(item.updated_at) }}</time>
+            </div>
+            <div class="visual-edit-history-meta">
+              <span>{{ item.metadata?.page || "website" }}</span>
+              <span>{{ item.metadata?.language || "shared" }}</span>
+              <span>{{ item.metadata?.admin_email || "admin" }}</span>
+            </div>
+            <p v-if="item.metadata?.summary">{{ item.metadata.summary }}</p>
+            <dl v-if="item.metadata?.changes" class="visual-edit-history-changes">
+              <template v-for="(value, key) in item.metadata.changes" :key="key">
+                <dt>{{ key }}</dt>
+                <dd>{{ value }}</dd>
+              </template>
+            </dl>
+          </li>
+        </ol>
+      </section>
+    </dialog>
   </main>
 </template>
 
@@ -253,6 +294,7 @@ const imageDialog = ref(null);
 const projectDialog = ref(null);
 const filterDialog = ref(null);
 const deleteProjectsDialog = ref(null);
+const historyDialog = ref(null);
 const pageHtml = ref("");
 const session = ref(null);
 const selectedPage = ref("home");
@@ -265,6 +307,8 @@ const imageDraft = ref(null);
 const projectDraft = ref(null);
 const filterDraft = ref(null);
 const deleteProjectsDraft = ref(null);
+const historyItems = ref([]);
+const isHistoryLoading = ref(false);
 const projectCategoryOptions = ref([]);
 const login = reactive({
   email: "",
@@ -279,6 +323,76 @@ const languageLabel = computed(() => (selectedLanguage.value === "en" ? "English
 const showStatus = (message, type = "info") => {
   status.value = message;
   statusType.value = type;
+};
+
+const truncateHistoryValue = (value = "") => {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  return text.length > 220 ? `${text.slice(0, 220)}...` : text;
+};
+
+const makeHistoryCardKey = () => `history.${Date.now()}.${crypto.randomUUID()}`;
+
+const logHistory = async ({ action, actionLabel, page, language = "shared", summary, changes = {} }) => {
+  try {
+    await supabase.from("website_cards").insert({
+      section_key: "editor.history",
+      card_key: makeHistoryCardKey(),
+      translations: {},
+      category: "history",
+      sort_order: Math.floor(Date.now() / 1000),
+      is_published: false,
+      metadata: {
+        action,
+        action_label: actionLabel,
+        page,
+        language,
+        summary,
+        changes,
+        admin_email: session.value?.user?.email || "",
+      },
+      updated_at: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.warn("Could not write edit history:", error.message);
+  }
+};
+
+const loadHistory = async () => {
+  if (!supabase) return;
+
+  isHistoryLoading.value = true;
+  try {
+    const { data, error } = await supabase
+      .from("website_cards")
+      .select("id, card_key, metadata, updated_at")
+      .eq("section_key", "editor.history")
+      .order("updated_at", { ascending: false })
+      .limit(60);
+
+    if (error) throw error;
+    historyItems.value = data || [];
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isHistoryLoading.value = false;
+  }
+};
+
+const openHistoryDialog = async () => {
+  await loadHistory();
+  historyDialog.value?.showModal();
+};
+
+const closeHistoryDialog = () => {
+  historyDialog.value?.close();
+};
+
+const formatHistoryDate = (value) => {
+  if (!value) return "";
+  return new Intl.DateTimeFormat("en", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(value));
 };
 
 const routeMap = new Map([
@@ -556,12 +670,13 @@ const handleProjectFiles = (event) => {
 };
 
 const uploadCmsPhoto = async (file, folder) => {
-  const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
-  const filePath = `${folder}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+  const webpFile = await convertImageToWebp(file);
+  const filePath = `${folder}/${Date.now()}-${crypto.randomUUID()}.webp`;
   const { error: uploadError } = await supabase.storage
     .from("cms-media")
-    .upload(filePath, file, {
+    .upload(filePath, webpFile, {
       cacheControl: "31536000",
+      contentType: "image/webp",
       upsert: false,
     });
 
@@ -572,6 +687,42 @@ const uploadCmsPhoto = async (file, folder) => {
     publicUrl: publicUrlData.publicUrl,
     filePath,
   };
+};
+
+const convertImageToWebp = async (file) => {
+  if (file.type === "image/webp") return file;
+
+  try {
+    const bitmap = await createImageBitmap(file);
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Could not prepare image conversion.");
+
+    context.drawImage(bitmap, 0, 0);
+    bitmap.close?.();
+
+    const blob = await new Promise((resolve, reject) => {
+      canvas.toBlob(
+        (nextBlob) => {
+          if (nextBlob) {
+            resolve(nextBlob);
+          } else {
+            reject(new Error("Could not convert image to WebP."));
+          }
+        },
+        "image/webp",
+        0.86,
+      );
+    });
+
+    const name = `${file.name.replace(/\.[^.]+$/, "") || "geotest-photo"}.webp`;
+    return new File([blob], name, { type: "image/webp" });
+  } catch (error) {
+    throw new Error(`This image could not be converted to WebP. Please use a PNG, JPG, JPEG, or WebP file. ${error.message}`);
+  }
 };
 
 const getExistingInlineText = async (key) => {
@@ -705,6 +856,24 @@ const saveText = async () => {
     const { error } = await query;
     if (error) throw error;
 
+    await logHistory({
+      action: "text.update",
+      actionLabel: "Text updated",
+      page: selectedPage.value,
+      language: selectedLanguage.value,
+      summary: `Updated ${textDraft.value.key}.`,
+      changes: {
+        field: textDraft.value.key,
+        before: truncateHistoryValue(
+          existing?.translations?.[selectedLanguage.value]?.html ||
+            existing?.translations?.[selectedLanguage.value]?.text ||
+            "",
+        ),
+        after: truncateHistoryValue(textDraft.value.value),
+        autoTranslatedEnglish: shouldAutoTranslateText ? "yes" : "no",
+      },
+    });
+
     closeDialogs();
     await loadPreview();
     showStatus(`${languageLabel.value} text saved.`, "success");
@@ -746,6 +915,19 @@ const saveImage = async () => {
       : supabase.from("website_cards").insert(payload);
     const { error } = await query;
     if (error) throw error;
+
+    await logHistory({
+      action: "image.update",
+      actionLabel: "Image updated",
+      page: selectedPage.value,
+      summary: `Updated image ${cardKey}.`,
+      changes: {
+        image: cardKey,
+        before: existing?.image_url || originalSrc,
+        after: imageUrl,
+        format: "webp",
+      },
+    });
 
     closeDialogs();
     await loadPreview();
@@ -813,6 +995,22 @@ const saveProject = async () => {
     const { error } = await supabase.from("website_cards").insert(payload);
     if (error) throw error;
 
+    await logHistory({
+      action: "project.create",
+      actionLabel: "Project added",
+      page: "projects",
+      language: selectedLanguage.value,
+      summary: `Added project ${projectContent.title}.`,
+      changes: {
+        title: projectContent.title,
+        category: projectDraft.value.category,
+        yearText: projectContent.yearText,
+        photos: String(gallery.length),
+        format: "webp",
+        autoTranslatedEnglish: selectedLanguage.value === "sq" ? "yes" : "no",
+      },
+    });
+
     closeDialogs();
     await loadPreview();
     showStatus("Project added.", "success");
@@ -867,6 +1065,19 @@ const saveProjectFilter = async () => {
     const { error } = await query;
     if (error) throw error;
 
+    await logHistory({
+      action: "project-filter.create",
+      actionLabel: "Project filter added",
+      page: "projects",
+      language: selectedLanguage.value,
+      summary: `Added project filter ${label}.`,
+      changes: {
+        filter: filterKey,
+        label,
+        autoTranslatedEnglish: selectedLanguage.value === "sq" ? "yes" : "no",
+      },
+    });
+
     closeDialogs();
     await loadPreview();
     showStatus("Project filter added.", "success");
@@ -909,6 +1120,18 @@ const hideProjectFilter = async (filter) => {
     const { error } = await query;
     if (error) throw error;
 
+    await logHistory({
+      action: "project-filter.delete",
+      actionLabel: "Project filter deleted",
+      page: "projects",
+      language: selectedLanguage.value,
+      summary: `Deleted project filter ${filter.label}.`,
+      changes: {
+        filter: filter.value,
+        label: filter.label,
+      },
+    });
+
     closeDialogs();
     await loadPreview();
     showStatus("Project filter deleted from the live page.", "success");
@@ -924,6 +1147,12 @@ const removeAllEditableProjects = async () => {
 
   isBusy.value = true;
   try {
+    const { count } = await supabase
+      .from("website_cards")
+      .select("id", { count: "exact", head: true })
+      .eq("section_key", "projects.list")
+      .eq("is_published", true);
+
     const { error } = await supabase
       .from("website_cards")
       .update({
@@ -933,6 +1162,16 @@ const removeAllEditableProjects = async () => {
       .eq("section_key", "projects.list");
 
     if (error) throw error;
+
+    await logHistory({
+      action: "projects.delete_all",
+      actionLabel: "All projects removed",
+      page: "projects",
+      summary: "Removed all editable projects from the live project page.",
+      changes: {
+        removedProjects: String(count || 0),
+      },
+    });
 
     closeDialogs();
     await loadPreview();

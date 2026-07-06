@@ -521,7 +521,7 @@ geotest-navbar-logo {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("/images/what-we-do-soil.png") center / cover no-repeat;
+  background: url("/images/what-we-do-soil.webp") center / cover no-repeat;
   transform: none;
   transform-origin: bottom center;
   will-change: transform, opacity, filter;
