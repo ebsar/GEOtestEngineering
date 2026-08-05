@@ -135,20 +135,43 @@
           <textarea v-model="projectDraft.description" rows="7" required></textarea>
         </label>
         <label>
-          Project photos
-          <input type="file" accept="image/png,image/jpeg,image/webp" multiple required @change="handleProjectFiles" />
+          Project photos ({{ projectDraft.previewUrls.length }}/10)
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            multiple
+            :disabled="projectDraft.previewUrls.length >= 10"
+            @change="handleProjectFiles"
+          />
         </label>
         <div v-if="projectDraft.previewUrls.length" class="visual-edit-project-previews">
-          <img
+          <div
             v-for="(previewUrl, index) in projectDraft.previewUrls"
             :key="previewUrl"
-            class="visual-edit-project-preview"
-            :src="previewUrl"
-            :alt="`Selected project preview ${index + 1}`"
-          />
+            class="visual-edit-project-preview-item"
+          >
+            <img
+              class="visual-edit-project-preview"
+              :src="previewUrl"
+              :alt="`Selected project preview ${index + 1}`"
+            />
+            <button
+              type="button"
+              class="visual-edit-project-preview-remove"
+              title="Remove photo"
+              @click="removeProjectPhoto(index)"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+        <div v-if="removedProjectPhoto" class="visual-edit-project-undo">
+          <span>Photo removed.</span>
+          <button type="button" @click="undoRemoveProjectPhoto">Undo</button>
         </div>
         <p class="visual-edit-help">
-          Add up to 10 photos. They will become the project slider. Every photo fills the same frame and crops neatly.
+          Add up to 10 photos. Pick several at once, or add them one at a time — each selection is added to the
+          list below. They will become the project slider. Every photo fills the same frame and crops neatly.
         </p>
         <footer>
           <button type="button" @click="closeDialogs">Cancel</button>
@@ -310,6 +333,7 @@ const deleteProjectsDraft = ref(null);
 const historyItems = ref([]);
 const isHistoryLoading = ref(false);
 const projectCategoryOptions = ref([]);
+const removedProjectPhoto = ref(null);
 const login = reactive({
   email: "",
   password: "",
@@ -317,12 +341,26 @@ const login = reactive({
 
 let supabase;
 let currentCmsOverrides;
+let statusTimeoutId = null;
+let removedProjectPhotoTimeoutId = null;
 
 const languageLabel = computed(() => (selectedLanguage.value === "en" ? "English" : "Albanian"));
 
 const showStatus = (message, type = "info") => {
   status.value = message;
   statusType.value = type;
+
+  if (statusTimeoutId) {
+    clearTimeout(statusTimeoutId);
+    statusTimeoutId = null;
+  }
+
+  if (type === "error") {
+    statusTimeoutId = setTimeout(() => {
+      status.value = "";
+      statusTimeoutId = null;
+    }, 5000);
+  }
 };
 
 const truncateHistoryValue = (value = "") => {
@@ -582,8 +620,20 @@ const openImageEditor = (image) => {
   imageDialog.value?.showModal();
 };
 
+const discardRemovedProjectPhoto = () => {
+  if (removedProjectPhotoTimeoutId) {
+    clearTimeout(removedProjectPhotoTimeoutId);
+    removedProjectPhotoTimeoutId = null;
+  }
+  if (removedProjectPhoto.value?.previewUrl) {
+    URL.revokeObjectURL(removedProjectPhoto.value.previewUrl);
+  }
+  removedProjectPhoto.value = null;
+};
+
 const openProjectEditor = () => {
   projectCategoryOptions.value = getProjectCategoryOptions();
+  discardRemovedProjectPhoto();
   projectDraft.value = {
     category: projectCategoryOptions.value.find((item) => item.value !== "all")?.value || "all",
     title: "",
@@ -623,6 +673,8 @@ const closeDialogs = () => {
     projectDraft.value.previewObjectUrls.forEach((previewObjectUrl) => URL.revokeObjectURL(previewObjectUrl));
   }
 
+  discardRemovedProjectPhoto();
+
   textDialog.value?.close();
   imageDialog.value?.close();
   projectDialog.value?.close();
@@ -653,20 +705,71 @@ const handleImageFile = (event) => {
 };
 
 const handleProjectFiles = (event) => {
-  const files = Array.from(event.target.files || []).slice(0, 10);
-  if (!files.length) return;
+  const newFiles = Array.from(event.target.files || []);
+  event.target.value = "";
+  if (!newFiles.length) return;
 
-  if (projectDraft.value.previewObjectUrls?.length) {
-    projectDraft.value.previewObjectUrls.forEach((previewObjectUrl) => URL.revokeObjectURL(previewObjectUrl));
+  const remainingSlots = 10 - projectDraft.value.files.length;
+  const filesToAdd = newFiles.slice(0, Math.max(remainingSlots, 0));
+  if (!filesToAdd.length) return;
+
+  if (projectDraft.value.files.length + filesToAdd.length >= 10) {
+    discardRemovedProjectPhoto();
   }
 
-  const previewObjectUrls = files.map((file) => URL.createObjectURL(file));
+  const newPreviewObjectUrls = filesToAdd.map((file) => URL.createObjectURL(file));
+  projectDraft.value = {
+    ...projectDraft.value,
+    files: [...projectDraft.value.files, ...filesToAdd],
+    previewUrls: [...projectDraft.value.previewUrls, ...newPreviewObjectUrls],
+    previewObjectUrls: [...projectDraft.value.previewObjectUrls, ...newPreviewObjectUrls],
+  };
+};
+
+const removeProjectPhoto = (index) => {
+  const file = projectDraft.value.files[index];
+  const previewUrl = projectDraft.value.previewUrls[index];
+  if (!file) return;
+
+  discardRemovedProjectPhoto();
+
+  projectDraft.value = {
+    ...projectDraft.value,
+    files: projectDraft.value.files.filter((_, i) => i !== index),
+    previewUrls: projectDraft.value.previewUrls.filter((_, i) => i !== index),
+    previewObjectUrls: projectDraft.value.previewObjectUrls.filter((_, i) => i !== index),
+  };
+
+  removedProjectPhoto.value = { file, previewUrl, index };
+  removedProjectPhotoTimeoutId = setTimeout(() => {
+    discardRemovedProjectPhoto();
+  }, 8000);
+};
+
+const undoRemoveProjectPhoto = () => {
+  if (!removedProjectPhoto.value) return;
+
+  const { file, previewUrl, index } = removedProjectPhoto.value;
+  if (removedProjectPhotoTimeoutId) {
+    clearTimeout(removedProjectPhotoTimeoutId);
+    removedProjectPhotoTimeoutId = null;
+  }
+
+  const insertAt = Math.min(index, projectDraft.value.files.length);
+  const files = [...projectDraft.value.files];
+  const previewUrls = [...projectDraft.value.previewUrls];
+  const previewObjectUrls = [...projectDraft.value.previewObjectUrls];
+  files.splice(insertAt, 0, file);
+  previewUrls.splice(insertAt, 0, previewUrl);
+  previewObjectUrls.splice(insertAt, 0, previewUrl);
+
   projectDraft.value = {
     ...projectDraft.value,
     files,
-    previewUrls: previewObjectUrls,
+    previewUrls,
     previewObjectUrls,
   };
+  removedProjectPhoto.value = null;
 };
 
 const uploadCmsPhoto = async (file, folder) => {
@@ -981,7 +1084,7 @@ const saveProject = async () => {
       translations: translationsPayload,
       image_url: gallery[0]?.url,
       category: projectDraft.value.category,
-      sort_order: Date.now(),
+      sort_order: Math.floor(Date.now() / 1000),
       is_published: true,
       metadata: {
         page: "projects",
@@ -1048,7 +1151,7 @@ const saveProjectFilter = async () => {
           : {}),
       },
       category: "project-filter",
-      sort_order: existing?.sort_order || Date.now(),
+      sort_order: existing?.sort_order || Math.floor(Date.now() / 1000),
       is_published: true,
       metadata: {
         ...(existing?.metadata || {}),
@@ -1104,7 +1207,7 @@ const hideProjectFilter = async (filter) => {
         },
       },
       category: "project-filter",
-      sort_order: existing?.sort_order || Date.now(),
+      sort_order: existing?.sort_order || Math.floor(Date.now() / 1000),
       is_published: true,
       metadata: {
         ...(existing?.metadata || {}),

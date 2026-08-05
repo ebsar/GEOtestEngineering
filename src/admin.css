@@ -680,6 +680,54 @@
   border-radius: 10px;
 }
 
+.visual-edit-project-preview-item {
+  position: relative;
+}
+
+.visual-edit-project-preview-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(16, 32, 51, 0.72);
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.visual-edit-project-preview-remove:hover {
+  background: rgba(213, 46, 46, 0.9);
+}
+
+.visual-edit-project-undo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(18, 169, 214, 0.1);
+  border: 1px solid rgba(18, 169, 214, 0.24);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #102033;
+}
+
+.visual-edit-project-undo button {
+  border: none;
+  background: none;
+  color: #2c2b91;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .visual-edit-project-actions {
   display: flex;
   flex-wrap: wrap;
