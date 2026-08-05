@@ -448,7 +448,7 @@ const showStatus = (message, type = "info") => {
     statusTimeoutId = null;
   }
 
-  if (type === "error") {
+  if (type === "error" || type === "success") {
     statusTimeoutId = setTimeout(() => {
       status.value = "";
       statusTimeoutId = null;
@@ -578,11 +578,17 @@ const loadPreview = async () => {
   pageHtml.value = extractBody(await response.text());
   await nextTick();
   currentCmsOverrides = await loadCmsOverrides({ force: true });
-  await initSitePage(pageRoot.value, router, { forceCmsRefresh: true });
+  await initSitePage(pageRoot.value, router, { forceCmsRefresh: false });
   applyCmsContent(pageRoot.value, selectedLanguage.value, currentCmsOverrides);
   localStorage.setItem("geotest-language", selectedLanguage.value);
   addEditButtons();
   isBusy.value = false;
+};
+
+const refreshCmsContent = async () => {
+  await initSitePage(pageRoot.value, router, { forceCmsRefresh: true });
+  currentCmsOverrides = await loadCmsOverrides();
+  addEditButtons();
 };
 
 const refreshPreview = async () => {
@@ -1125,13 +1131,15 @@ const translateAlbanianHtmlToEnglish = async (html = "") => {
 const saveText = async () => {
   isBusy.value = true;
   try {
-    const existing = await getExistingInlineText(textDraft.value.key);
     const shouldAutoTranslateText = selectedLanguage.value === "sq";
-    const translatedEnglish = shouldAutoTranslateText
-      ? textDraft.value.isHtml
-        ? await translateAlbanianHtmlToEnglish(textDraft.value.value)
-        : await translateAlbanianToEnglish(textDraft.value.value)
-      : "";
+    const [existing, translatedEnglish] = await Promise.all([
+      getExistingInlineText(textDraft.value.key),
+      shouldAutoTranslateText
+        ? textDraft.value.isHtml
+          ? translateAlbanianHtmlToEnglish(textDraft.value.value)
+          : translateAlbanianToEnglish(textDraft.value.value)
+        : Promise.resolve(""),
+    ]);
     const translationsPayload = {
       ...(existing?.translations || {}),
       [selectedLanguage.value]: textDraft.value.isHtml
@@ -1163,7 +1171,7 @@ const saveText = async () => {
     const { error } = await query;
     if (error) throw error;
 
-    await logHistory({
+    logHistory({
       action: "text.update",
       actionLabel: "Text updated",
       page: selectedPage.value,
@@ -1182,7 +1190,7 @@ const saveText = async () => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus(`${languageLabel.value} text saved.`, "success");
   } catch (error) {
     showStatus(error.message, "error");
@@ -1223,7 +1231,7 @@ const saveImage = async () => {
     const { error } = await query;
     if (error) throw error;
 
-    await logHistory({
+    logHistory({
       action: "image.update",
       actionLabel: "Image updated",
       page: selectedPage.value,
@@ -1237,7 +1245,7 @@ const saveImage = async () => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus("Image saved and fitted into the existing frame.", "success");
   } catch (error) {
     showStatus(error.message, "error");
@@ -1253,10 +1261,9 @@ const saveProject = async () => {
       throw new Error("Please choose at least one project photo.");
     }
 
-    const uploadedPhotos = [];
-    for (const file of projectDraft.value.files.slice(0, 10)) {
-      uploadedPhotos.push(await uploadCmsPhoto(file, "projects"));
-    }
+    const uploadedPhotos = await Promise.all(
+      projectDraft.value.files.slice(0, 10).map((file) => uploadCmsPhoto(file, "projects")),
+    );
 
     const cardKey = `project.${crypto.randomUUID()}`;
     const categories =
@@ -1268,11 +1275,14 @@ const saveProject = async () => {
     };
     const englishProjectContent =
       selectedLanguage.value === "sq"
-        ? {
-            title: await translateAlbanianToEnglish(projectContent.title),
-            description: await translateAlbanianToEnglish(projectContent.description),
-            yearText: await translateAlbanianToEnglish(projectContent.yearText),
-          }
+        ? await (async () => {
+            const [title, description, yearText] = await Promise.all([
+              translateAlbanianToEnglish(projectContent.title),
+              translateAlbanianToEnglish(projectContent.description),
+              translateAlbanianToEnglish(projectContent.yearText),
+            ]);
+            return { title, description, yearText };
+          })()
         : null;
     const translationsPayload = {
       [selectedLanguage.value]: projectContent,
@@ -1288,7 +1298,7 @@ const saveProject = async () => {
       translations: translationsPayload,
       image_url: gallery[0]?.url,
       category: projectDraft.value.category,
-      sort_order: Math.floor(Date.now() / 1000),
+      sort_order: -Math.floor(Date.now() / 1000),
       is_published: true,
       metadata: {
         page: "projects",
@@ -1302,7 +1312,7 @@ const saveProject = async () => {
     const { error } = await supabase.from("website_cards").insert(payload);
     if (error) throw error;
 
-    await logHistory({
+    logHistory({
       action: "project.create",
       actionLabel: "Project added",
       page: "projects",
@@ -1319,7 +1329,7 @@ const saveProject = async () => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus("Project added.", "success");
   } catch (error) {
     showStatus(error.message, "error");
@@ -1337,7 +1347,10 @@ const saveProjectFilter = async () => {
     if (existingKeys.has(filterKey)) {
       filterKey = `${filterKey}-${Date.now().toString().slice(-5)}`;
     }
-    const existing = await getExistingProjectFilter(filterKey);
+    const [existing, translatedLabel] = await Promise.all([
+      getExistingProjectFilter(filterKey),
+      selectedLanguage.value === "sq" ? translateAlbanianToEnglish(label) : Promise.resolve(null),
+    ]);
 
     const payload = {
       section_key: "projects.filters",
@@ -1349,7 +1362,7 @@ const saveProjectFilter = async () => {
           ? {
               en: {
                 ...(existing?.translations?.en || {}),
-                title: await translateAlbanianToEnglish(label),
+                title: translatedLabel,
               },
             }
           : {}),
@@ -1372,7 +1385,7 @@ const saveProjectFilter = async () => {
     const { error } = await query;
     if (error) throw error;
 
-    await logHistory({
+    logHistory({
       action: "project-filter.create",
       actionLabel: "Project filter added",
       page: "projects",
@@ -1386,7 +1399,7 @@ const saveProjectFilter = async () => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus("Project filter added.", "success");
   } catch (error) {
     showStatus(error.message, "error");
@@ -1427,7 +1440,7 @@ const hideProjectFilter = async (filter) => {
     const { error } = await query;
     if (error) throw error;
 
-    await logHistory({
+    logHistory({
       action: "project-filter.delete",
       actionLabel: "Project filter deleted",
       page: "projects",
@@ -1440,7 +1453,7 @@ const hideProjectFilter = async (filter) => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus("Project filter deleted from the live page.", "success");
   } catch (error) {
     showStatus(error.message, "error");
@@ -1470,7 +1483,7 @@ const removeAllEditableProjects = async () => {
 
     if (error) throw error;
 
-    await logHistory({
+    logHistory({
       action: "projects.delete_all",
       actionLabel: "All projects removed",
       page: "projects",
@@ -1481,7 +1494,7 @@ const removeAllEditableProjects = async () => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus("All editable projects were removed from the live page.", "success");
   } catch (error) {
     showStatus(error.message, "error");
@@ -1521,7 +1534,7 @@ const deleteSingleProject = async () => {
     const { error: deleteError } = await supabase.from("website_cards").delete().eq("id", existing.id);
     if (deleteError) throw deleteError;
 
-    await logHistory({
+    logHistory({
       action: "project.delete",
       actionLabel: "Project deleted",
       page: "projects",
@@ -1533,7 +1546,7 @@ const deleteSingleProject = async () => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus("Project deleted.", "success");
   } catch (error) {
     showStatus(error.message, "error");
@@ -1572,7 +1585,7 @@ const saveListItem = async () => {
     const { error } = await supabase.from("website_cards").insert(payload);
     if (error) throw error;
 
-    await logHistory({
+    logHistory({
       action: "list_item.create",
       actionLabel: "Bullet added",
       page,
@@ -1582,7 +1595,7 @@ const saveListItem = async () => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus("Bullet added.", "success");
   } catch (error) {
     showStatus(error.message, "error");
@@ -1625,7 +1638,7 @@ const deleteListItem = async () => {
       throw new Error("This bullet could not be identified.");
     }
 
-    await logHistory({
+    logHistory({
       action: "list_item.delete",
       actionLabel: "Bullet removed",
       page,
@@ -1634,7 +1647,7 @@ const deleteListItem = async () => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus("Bullet removed.", "success");
   } catch (error) {
     showStatus(error.message, "error");
@@ -1680,7 +1693,7 @@ const removeAllListItems = async () => {
       if (error) throw error;
     }
 
-    await logHistory({
+    logHistory({
       action: "list_items.delete_all",
       actionLabel: "All bullets removed",
       page,
@@ -1689,7 +1702,7 @@ const removeAllListItems = async () => {
     });
 
     closeDialogs();
-    await loadPreview();
+    await refreshCmsContent();
     showStatus("All bullets removed from this list.", "success");
   } catch (error) {
     showStatus(error.message, "error");
