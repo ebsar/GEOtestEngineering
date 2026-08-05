@@ -779,6 +779,100 @@
   cursor: not-allowed;
 }
 
+.project-card[data-cms-project-card] {
+  position: relative;
+}
+
+.visual-edit-delete-project-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+  min-width: 42px;
+  min-height: 30px;
+  padding: 0 12px;
+  color: #ffffff;
+  font: 700 0.72rem/1 "Nunito Sans", system-ui, sans-serif;
+  background: #9f1d1d;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 10px 26px rgba(16, 32, 51, 0.24);
+  cursor: pointer;
+}
+
+.visual-edit-delete-project-button:hover,
+.visual-edit-delete-project-button:focus-visible {
+  background: #c42b2b;
+}
+
+.visual-edit-list-item-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 8px;
+  vertical-align: middle;
+  color: #ffffff;
+  font-size: 0.72rem;
+  line-height: 1;
+  background: #9f1d1d;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.visual-edit-list-item-remove:hover,
+.visual-edit-list-item-remove:focus-visible {
+  background: #c42b2b;
+}
+
+.visual-edit-list-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0 0;
+}
+
+.visual-edit-add-list-item-button,
+.visual-edit-remove-list-items-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 34px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.visual-edit-add-list-item-button {
+  color: #2c2b91;
+  background: #ffffff;
+  border: 1px solid rgba(44, 43, 145, 0.18);
+}
+
+.visual-edit-add-list-item-button:hover,
+.visual-edit-add-list-item-button:focus-visible {
+  color: #ffffff;
+  background: #2c2b91;
+}
+
+.visual-edit-remove-list-items-button {
+  color: #9f1d1d;
+  background: #ffffff;
+  border: 1px solid rgba(159, 29, 29, 0.24);
+}
+
+.visual-edit-remove-list-items-button:hover,
+.visual-edit-remove-list-items-button:focus-visible {
+  color: #ffffff;
+  background: #9f1d1d;
+}
+
 .visual-edit-manage-filters-button {
   display: flex;
   align-items: center;

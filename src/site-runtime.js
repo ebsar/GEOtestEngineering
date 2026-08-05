@@ -41,6 +41,8 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
     images: new Map(),
     projects: [],
     projectFilters: [],
+    listItems: [],
+    hiddenListItems: new Set(),
   };
 
   try {
@@ -48,7 +50,14 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
     const { data, error } = await supabase
       .from("website_cards")
       .select("*")
-      .in("section_key", ["inline_text", "inline_images", "projects.list", "projects.filters"])
+      .in("section_key", [
+        "inline_text",
+        "inline_images",
+        "projects.list",
+        "projects.filters",
+        "list_items.custom",
+        "list_items.hidden",
+      ])
       .eq("is_published", true)
       .order("sort_order", { ascending: true });
 
@@ -73,6 +82,15 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
 
       if (item.section_key === "projects.filters") {
         overrides.projectFilters.push(item);
+      }
+
+      if (item.section_key === "list_items.custom") {
+        overrides.listItems.push(item);
+      }
+
+      if (item.section_key === "list_items.hidden") {
+        const key = item.metadata?.i18n_key || item.card_key;
+        if (key) overrides.hiddenListItems.add(key);
       }
     });
   } catch (error) {
@@ -326,6 +344,29 @@ const renderProjectFilters = (root = document, language = "sq", cmsOverrides = c
   });
 };
 
+const renderCmsListItems = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
+  root.querySelectorAll("ul[data-list-id]").forEach((list) => {
+    const listId = list.dataset.listId;
+
+    list.querySelectorAll("[data-cms-list-item]").forEach((item) => item.remove());
+    list.querySelectorAll("li[data-i18n]").forEach((item) => {
+      item.hidden = Boolean(cmsOverrides?.hiddenListItems?.has(item.dataset.i18n));
+    });
+
+    (cmsOverrides?.listItems || [])
+      .filter((item) => item.category === listId)
+      .forEach((item) => {
+        const content = getTranslatedContent(item, language, { text: "" });
+        if (!content.text) return;
+
+        const li = document.createElement("li");
+        li.dataset.cmsListItem = item.card_key || item.id;
+        li.textContent = content.text;
+        list.appendChild(li);
+      });
+  });
+};
+
 export const applyLanguage = (language, root = document, cmsOverrides = cmsOverrideCache) => {
   const dictionary = translations[language] || translations.en;
   document.documentElement.lang = language;
@@ -375,6 +416,7 @@ export const applyCmsContent = (root = document, language = "sq", cmsOverrides =
   applyLanguage(language, root, cmsOverrides);
   renderProjectFilters(root, language, cmsOverrides);
   renderCmsProjects(root, language, cmsOverrides);
+  renderCmsListItems(root, language, cmsOverrides);
   applyImageOverrides(root, cmsOverrides);
 };
 

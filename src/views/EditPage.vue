@@ -246,6 +246,91 @@
       </form>
     </dialog>
 
+    <dialog ref="deleteProjectDialog" class="visual-edit-dialog">
+      <form v-if="deleteProjectDraft" @submit.prevent="deleteSingleProject">
+        <header>
+          <div>
+            <p>Delete project</p>
+            <h2>Delete "{{ deleteProjectDraft.title }}"?</h2>
+          </div>
+          <button type="button" @click="closeDialogs">×</button>
+        </header>
+        <p class="visual-edit-help">
+          This permanently deletes this project and its photos from the live Projects page. This cannot be undone.
+        </p>
+        <footer>
+          <button type="button" @click="closeDialogs">Cancel</button>
+          <button class="visual-edit-danger-action" type="submit" :disabled="isBusy">
+            {{ isBusy ? "Deleting..." : "Delete project" }}
+          </button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog ref="listItemDialog" class="visual-edit-dialog">
+      <form v-if="listItemDraft" @submit.prevent="saveListItem">
+        <header>
+          <div>
+            <p>Add bullet</p>
+            <h2>{{ languageLabel }} bullet text</h2>
+          </div>
+          <button type="button" @click="closeDialogs">×</button>
+        </header>
+        <label>
+          Bullet text
+          <textarea v-model="listItemDraft.text" rows="3" required></textarea>
+        </label>
+        <footer>
+          <button type="button" @click="closeDialogs">Cancel</button>
+          <button type="submit" :disabled="isBusy">{{ isBusy ? "Adding..." : "Add bullet" }}</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog ref="deleteListItemDialog" class="visual-edit-dialog">
+      <form v-if="deleteListItemDraft" @submit.prevent="deleteListItem">
+        <header>
+          <div>
+            <p>Delete bullet</p>
+            <h2>Remove this bullet?</h2>
+          </div>
+          <button type="button" @click="closeDialogs">×</button>
+        </header>
+        <p class="visual-edit-help">"{{ deleteListItemDraft.text }}"</p>
+        <footer>
+          <button type="button" @click="closeDialogs">Cancel</button>
+          <button class="visual-edit-danger-action" type="submit" :disabled="isBusy">
+            {{ isBusy ? "Removing..." : "Remove bullet" }}
+          </button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog ref="removeAllListItemsDialog" class="visual-edit-dialog">
+      <form v-if="removeAllListItemsDraft" @submit.prevent="removeAllListItems">
+        <header>
+          <div>
+            <p>Remove all bullets</p>
+            <h2>Remove all bullets in this list?</h2>
+          </div>
+          <button type="button" @click="closeDialogs">×</button>
+        </header>
+        <p class="visual-edit-help">
+          This removes all {{ removeAllListItemsDraft.items.length }} bullets from this list on the live page.
+        </p>
+        <footer>
+          <button type="button" @click="closeDialogs">Cancel</button>
+          <button
+            class="visual-edit-danger-action"
+            type="submit"
+            :disabled="isBusy || !removeAllListItemsDraft.items.length"
+          >
+            {{ isBusy ? "Removing..." : "Remove all" }}
+          </button>
+        </footer>
+      </form>
+    </dialog>
+
     <dialog ref="historyDialog" class="visual-edit-dialog visual-edit-history-dialog">
       <section>
         <header>
@@ -317,6 +402,10 @@ const imageDialog = ref(null);
 const projectDialog = ref(null);
 const filterDialog = ref(null);
 const deleteProjectsDialog = ref(null);
+const deleteProjectDialog = ref(null);
+const listItemDialog = ref(null);
+const deleteListItemDialog = ref(null);
+const removeAllListItemsDialog = ref(null);
 const historyDialog = ref(null);
 const pageHtml = ref("");
 const session = ref(null);
@@ -330,6 +419,10 @@ const imageDraft = ref(null);
 const projectDraft = ref(null);
 const filterDraft = ref(null);
 const deleteProjectsDraft = ref(null);
+const deleteProjectDraft = ref(null);
+const listItemDraft = ref(null);
+const deleteListItemDraft = ref(null);
+const removeAllListItemsDraft = ref(null);
 const historyItems = ref([]);
 const isHistoryLoading = ref(false);
 const projectCategoryOptions = ref([]);
@@ -537,6 +630,81 @@ const addEditButtons = () => {
 
   addProjectCreateButton();
   addProjectFilterManageButton();
+  addProjectDeleteButtons();
+  addListItemButtons();
+};
+
+const addListItemButtons = () => {
+  pageRoot.value?.querySelectorAll("ul[data-list-id]").forEach((list) => {
+    const listId = list.dataset.listId;
+
+    Array.from(list.children).forEach((child) => {
+      if (!child.matches("li") && !child.matches(".visual-edit-text-wrap")) return;
+      if (child.querySelector("[data-delete-list-item-button]")) return;
+
+      const li = child.matches("li") ? child : child.querySelector("li");
+      if (!li) return;
+
+      const i18nKey = li.dataset.i18n || null;
+      const cardKey = li.dataset.cmsListItem || null;
+      const text = li.textContent.trim();
+
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "visual-edit-list-item-remove";
+      removeButton.dataset.deleteListItemButton = "true";
+      removeButton.textContent = "×";
+      removeButton.setAttribute("aria-label", "Remove this bullet");
+      removeButton.addEventListener("click", () => {
+        openDeleteListItemDialog({ listId, i18nKey, cardKey, text });
+      });
+      child.appendChild(removeButton);
+    });
+
+    if (list.nextElementSibling?.dataset?.listItemActions) return;
+
+    const actions = document.createElement("div");
+    actions.className = "visual-edit-list-item-actions";
+    actions.dataset.listItemActions = "true";
+
+    const addButton = document.createElement("button");
+    addButton.type = "button";
+    addButton.className = "visual-edit-add-list-item-button";
+    addButton.textContent = "+ Add bullet";
+    addButton.addEventListener("click", () => openAddListItemDialog(listId));
+
+    const removeAllButton = document.createElement("button");
+    removeAllButton.type = "button";
+    removeAllButton.className = "visual-edit-remove-list-items-button";
+    removeAllButton.textContent = "Remove all";
+    removeAllButton.addEventListener("click", () => openRemoveAllListItemsDialog(listId));
+
+    actions.append(addButton, removeAllButton);
+    list.insertAdjacentElement("afterend", actions);
+  });
+};
+
+const addProjectDeleteButtons = () => {
+  if (selectedPage.value !== "projects") return;
+
+  pageRoot.value?.querySelectorAll("[data-cms-project-card]").forEach((card) => {
+    if (card.querySelector("[data-delete-project-button]")) return;
+
+    const cardKey = card.dataset.cmsProjectCard;
+    if (!cardKey) return;
+
+    const title = card.querySelector(".project-copy-panel h3")?.textContent?.trim() || "this project";
+
+    const button = document.createElement("button");
+    button.className = "visual-edit-delete-project-button";
+    button.type = "button";
+    button.dataset.deleteProjectButton = "true";
+    button.textContent = "Delete";
+    button.setAttribute("aria-label", `Delete ${title}`);
+    button.addEventListener("click", () => openDeleteProjectDialog(cardKey, title));
+
+    card.appendChild(button);
+  });
 };
 
 const addProjectCreateButton = () => {
@@ -664,6 +832,34 @@ const openDeleteProjectsDialog = () => {
   deleteProjectsDialog.value?.showModal();
 };
 
+const openDeleteProjectDialog = (cardKey, title) => {
+  deleteProjectDraft.value = { cardKey, title };
+  deleteProjectDialog.value?.showModal();
+};
+
+const openAddListItemDialog = (listId) => {
+  listItemDraft.value = { listId, text: "" };
+  listItemDialog.value?.showModal();
+};
+
+const openDeleteListItemDialog = ({ listId, i18nKey, cardKey, text }) => {
+  deleteListItemDraft.value = { listId, i18nKey, cardKey, text };
+  deleteListItemDialog.value?.showModal();
+};
+
+const openRemoveAllListItemsDialog = (listId) => {
+  const list = pageRoot.value?.querySelector(`ul[data-list-id="${CSS.escape(listId)}"]`);
+  if (!list) return;
+
+  const items = Array.from(list.querySelectorAll("li")).map((li) => ({
+    i18nKey: li.dataset.i18n || null,
+    cardKey: li.dataset.cmsListItem || null,
+  }));
+
+  removeAllListItemsDraft.value = { listId, items };
+  removeAllListItemsDialog.value?.showModal();
+};
+
 const closeDialogs = () => {
   if (imageDraft.value?.previewObjectUrl) {
     URL.revokeObjectURL(imageDraft.value.previewObjectUrl);
@@ -680,11 +876,19 @@ const closeDialogs = () => {
   projectDialog.value?.close();
   filterDialog.value?.close();
   deleteProjectsDialog.value?.close();
+  deleteProjectDialog.value?.close();
+  listItemDialog.value?.close();
+  deleteListItemDialog.value?.close();
+  removeAllListItemsDialog.value?.close();
   textDraft.value = null;
   imageDraft.value = null;
   projectDraft.value = null;
   filterDraft.value = null;
   deleteProjectsDraft.value = null;
+  deleteProjectDraft.value = null;
+  listItemDraft.value = null;
+  deleteListItemDraft.value = null;
+  removeAllListItemsDraft.value = null;
 };
 
 const handleImageFile = (event) => {
@@ -1279,6 +1483,214 @@ const removeAllEditableProjects = async () => {
     closeDialogs();
     await loadPreview();
     showStatus("All editable projects were removed from the live page.", "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isBusy.value = false;
+  }
+};
+
+const deleteSingleProject = async () => {
+  if (!deleteProjectDraft.value?.cardKey) return;
+
+  isBusy.value = true;
+  try {
+    const { cardKey, title } = deleteProjectDraft.value;
+
+    const { data: existing, error: fetchError } = await supabase
+      .from("website_cards")
+      .select("id, metadata")
+      .eq("section_key", "projects.list")
+      .eq("card_key", cardKey)
+      .maybeSingle();
+
+    if (fetchError) throw fetchError;
+    if (!existing) throw new Error("Project not found. It may have already been deleted.");
+
+    const storagePaths = (existing.metadata?.gallery || [])
+      .map((photo) => photo.storage_path)
+      .filter(Boolean);
+
+    if (storagePaths.length) {
+      const { error: storageError } = await supabase.storage.from("cms-media").remove(storagePaths);
+      if (storageError) {
+        console.warn("Could not remove all project photos from storage:", storageError.message);
+      }
+    }
+
+    const { error: deleteError } = await supabase.from("website_cards").delete().eq("id", existing.id);
+    if (deleteError) throw deleteError;
+
+    await logHistory({
+      action: "project.delete",
+      actionLabel: "Project deleted",
+      page: "projects",
+      summary: `Deleted project ${title}.`,
+      changes: {
+        title,
+        photosRemoved: String(storagePaths.length),
+      },
+    });
+
+    closeDialogs();
+    await loadPreview();
+    showStatus("Project deleted.", "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isBusy.value = false;
+  }
+};
+
+const saveListItem = async () => {
+  isBusy.value = true;
+  try {
+    const text = (listItemDraft.value.text || "").trim();
+    if (!text) throw new Error("Please enter the bullet text.");
+
+    const listId = listItemDraft.value.listId;
+    const page = selectedPage.value;
+    const content = { text };
+    const englishContent =
+      selectedLanguage.value === "sq" ? { text: await translateAlbanianToEnglish(text) } : null;
+    const translationsPayload = {
+      [selectedLanguage.value]: content,
+      ...(englishContent ? { en: englishContent } : {}),
+    };
+
+    const payload = {
+      section_key: "list_items.custom",
+      card_key: `list-item.${crypto.randomUUID()}`,
+      translations: translationsPayload,
+      category: listId,
+      sort_order: Math.floor(Date.now() / 1000),
+      is_published: true,
+      metadata: { page, list_id: listId },
+      updated_at: new Date().toISOString(),
+    };
+
+    const { error } = await supabase.from("website_cards").insert(payload);
+    if (error) throw error;
+
+    await logHistory({
+      action: "list_item.create",
+      actionLabel: "Bullet added",
+      page,
+      language: selectedLanguage.value,
+      summary: `Added bullet to ${listId}.`,
+      changes: { listId, text },
+    });
+
+    closeDialogs();
+    await loadPreview();
+    showStatus("Bullet added.", "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isBusy.value = false;
+  }
+};
+
+const deleteListItem = async () => {
+  if (!deleteListItemDraft.value) return;
+
+  isBusy.value = true;
+  try {
+    const { listId, i18nKey, cardKey, text } = deleteListItemDraft.value;
+    const page = selectedPage.value;
+
+    if (cardKey) {
+      const { error } = await supabase
+        .from("website_cards")
+        .delete()
+        .eq("section_key", "list_items.custom")
+        .eq("card_key", cardKey);
+      if (error) throw error;
+    } else if (i18nKey) {
+      const payload = {
+        section_key: "list_items.hidden",
+        card_key: i18nKey,
+        translations: {},
+        category: listId,
+        sort_order: 0,
+        is_published: true,
+        metadata: { page, list_id: listId, i18n_key: i18nKey },
+        updated_at: new Date().toISOString(),
+      };
+      const { error } = await supabase
+        .from("website_cards")
+        .upsert(payload, { onConflict: "section_key,card_key" });
+      if (error) throw error;
+    } else {
+      throw new Error("This bullet could not be identified.");
+    }
+
+    await logHistory({
+      action: "list_item.delete",
+      actionLabel: "Bullet removed",
+      page,
+      summary: `Removed bullet "${text}" from ${listId}.`,
+      changes: { listId, text },
+    });
+
+    closeDialogs();
+    await loadPreview();
+    showStatus("Bullet removed.", "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isBusy.value = false;
+  }
+};
+
+const removeAllListItems = async () => {
+  if (!removeAllListItemsDraft.value) return;
+
+  isBusy.value = true;
+  try {
+    const { listId, items } = removeAllListItemsDraft.value;
+    const page = selectedPage.value;
+
+    const customCardKeys = items.map((item) => item.cardKey).filter(Boolean);
+    const i18nKeys = items.map((item) => item.i18nKey).filter(Boolean);
+
+    if (customCardKeys.length) {
+      const { error } = await supabase
+        .from("website_cards")
+        .delete()
+        .eq("section_key", "list_items.custom")
+        .in("card_key", customCardKeys);
+      if (error) throw error;
+    }
+
+    if (i18nKeys.length) {
+      const hiddenRows = i18nKeys.map((key) => ({
+        section_key: "list_items.hidden",
+        card_key: key,
+        translations: {},
+        category: listId,
+        sort_order: 0,
+        is_published: true,
+        metadata: { page, list_id: listId, i18n_key: key },
+        updated_at: new Date().toISOString(),
+      }));
+      const { error } = await supabase
+        .from("website_cards")
+        .upsert(hiddenRows, { onConflict: "section_key,card_key" });
+      if (error) throw error;
+    }
+
+    await logHistory({
+      action: "list_items.delete_all",
+      actionLabel: "All bullets removed",
+      page,
+      summary: `Removed all bullets from ${listId}.`,
+      changes: { listId, removedCount: String(items.length) },
+    });
+
+    closeDialogs();
+    await loadPreview();
+    showStatus("All bullets removed from this list.", "success");
   } catch (error) {
     showStatus(error.message, "error");
   } finally {
