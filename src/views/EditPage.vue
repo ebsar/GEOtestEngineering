@@ -570,15 +570,29 @@ const extractBody = (documentText) => {
   return normalizeInternalLinks(parsed.body.innerHTML);
 };
 
+let loadPreviewRequestId = 0;
+
 const loadPreview = async () => {
+  const requestId = ++loadPreviewRequestId;
+  const requestedPage = selectedPage.value;
   isBusy.value = true;
-  const response = await fetch(`/static-pages/${selectedPage.value}.html`, {
+
+  const response = await fetch(`/static-pages/${requestedPage}.html`, {
     cache: "no-cache",
   });
-  pageHtml.value = extractBody(await response.text());
+  const html = extractBody(await response.text());
+  if (requestId !== loadPreviewRequestId) return;
+
+  pageHtml.value = html;
   await nextTick();
+  if (requestId !== loadPreviewRequestId) return;
+
   currentCmsOverrides = await loadCmsOverrides({ force: true });
+  if (requestId !== loadPreviewRequestId) return;
+
   await initSitePage(pageRoot.value, router, { forceCmsRefresh: false });
+  if (requestId !== loadPreviewRequestId) return;
+
   applyCmsContent(pageRoot.value, selectedLanguage.value, currentCmsOverrides);
   localStorage.setItem("geotest-language", selectedLanguage.value);
   addEditButtons();
