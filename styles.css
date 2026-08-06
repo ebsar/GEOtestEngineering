@@ -2145,95 +2145,6 @@ geotest-navbar-logo {
   overflow-wrap: anywhere;
 }
 
-.contact-motion {
-  position: relative;
-  width: min(430px, 100%);
-  height: 160px;
-  margin-top: 36px;
-  overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0 26%, transparent 26%),
-    linear-gradient(180deg, #7c5a3b 0 34%, #a77d55 34% 58%, #55473c 58% 100%);
-  border: 1px solid rgba(16, 32, 51, 0.12);
-  border-radius: 10px;
-  box-shadow: 0 20px 54px rgba(16, 32, 51, 0.11);
-}
-
-.contact-layer,
-.contact-core,
-.contact-scan,
-.contact-point {
-  position: absolute;
-  display: block;
-}
-
-.contact-layer {
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.26);
-}
-
-.layer-one {
-  top: 70px;
-}
-
-.layer-two {
-  top: 105px;
-}
-
-.layer-three {
-  top: 133px;
-}
-
-.contact-core {
-  top: 38px;
-  left: 50%;
-  width: 16px;
-  height: 108px;
-  background: linear-gradient(90deg, #68757f, #f8f8f8 48%, #6b747a);
-  border: 1px solid rgba(29, 29, 29, 0.28);
-  border-radius: 999px;
-  transform: translateX(-50%);
-}
-
-.contact-scan {
-  top: 40px;
-  left: calc(50% - 56px);
-  width: 112px;
-  height: 112px;
-  border: 1px solid rgba(18, 169, 214, 0.5);
-  border-radius: 50%;
-  opacity: 0;
-  animation: contactScanPulse 2.8s ease-out infinite;
-}
-
-.contact-point {
-  width: 8px;
-  height: 8px;
-  background: var(--logo-yellow);
-  border: 2px solid var(--logo-outline);
-  border-radius: 50%;
-  animation: contactPointFloat 2.4s ease-in-out infinite;
-}
-
-.point-one {
-  top: 80px;
-  left: 26%;
-}
-
-.point-two {
-  top: 116px;
-  left: 62%;
-  animation-delay: 0.28s;
-}
-
-.point-three {
-  top: 136px;
-  left: 78%;
-  animation-delay: 0.52s;
-}
-
 .contact-form {
   display: grid;
   gap: 18px;
@@ -2988,33 +2899,6 @@ geotest-logo-hero-reveal {
   }
 }
 
-@keyframes contactScanPulse {
-  0% {
-    opacity: 0;
-    transform: scale(0.45);
-  }
-
-  22% {
-    opacity: 0.68;
-  }
-
-  100% {
-    opacity: 0;
-    transform: scale(1.55);
-  }
-}
-
-@keyframes contactPointFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
 @keyframes whatImageRise {
   0% {
     opacity: 0;
@@ -3229,10 +3113,6 @@ geotest-logo-hero-reveal {
 
   .contact-copy h2 {
     max-width: 14ch;
-  }
-
-  .contact-motion {
-    width: 100%;
   }
 
   .service-detail-inner {
@@ -3780,11 +3660,6 @@ geotest-logo-hero-reveal {
     gap: 4px;
   }
 
-  .contact-motion {
-    height: 132px;
-    margin-top: 28px;
-  }
-
   .contact-form {
     gap: 15px;
     padding: 24px 18px;
@@ -4068,8 +3943,6 @@ geotest-logo-hero-reveal {
   .hero-orange-divider,
   .hero-tagline,
   .service-icon-item,
-  .contact-scan,
-  .contact-point,
   .what-we-do-section::before,
   .what-we-do-content h2,
   .what-we-do-copy,
