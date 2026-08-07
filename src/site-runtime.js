@@ -400,8 +400,11 @@ export const applyImageOverrides = (root = document, cmsOverrides = cmsOverrideC
 
   root.querySelectorAll("img[src]").forEach((image) => {
     const originalSrc = image.dataset.cmsOriginalSrc || normalizeAssetPath(image.getAttribute("src"));
-    const cmsKey = image.dataset.cmsImageKey ? `image:${image.dataset.cmsImageKey}` : originalSrc;
-    const override = cmsOverrides.images.get(cmsKey) || cmsOverrides.images.get(originalSrc);
+    // Images with an explicit key are page-scoped: never fall back to the shared
+    // src-based lookup, otherwise two pages using the same source file collide.
+    const override = image.dataset.cmsImageKey
+      ? cmsOverrides.images.get(`image:${image.dataset.cmsImageKey}`)
+      : cmsOverrides.images.get(originalSrc);
 
     image.dataset.cmsOriginalSrc = originalSrc;
     image.dataset.cmsImage = "true";

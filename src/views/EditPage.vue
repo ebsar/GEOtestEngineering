@@ -1064,12 +1064,12 @@ const getExistingInlineText = async (key) => {
   return data;
 };
 
-const getExistingImage = async (cardKey, originalSrc) => {
+const getExistingImage = async (cardKey) => {
   const { data, error } = await supabase
     .from("website_cards")
     .select("*")
     .eq("section_key", "inline_images")
-    .or(`card_key.eq.${cardKey},card_key.eq.${imageKey(originalSrc)}`)
+    .eq("card_key", cardKey)
     .limit(1)
     .maybeSingle();
 
@@ -1222,7 +1222,7 @@ const saveImage = async () => {
 
     const originalSrc = normalizeAssetPath(imageDraft.value.originalSrc);
     const cardKey = imageDraft.value.cardKey || imageKey(originalSrc);
-    const existing = await getExistingImage(cardKey, originalSrc);
+    const existing = await getExistingImage(cardKey);
     const { publicUrl: imageUrl, filePath } = await uploadCmsPhoto(imageDraft.value.file, selectedPage.value);
     const payload = {
       section_key: "inline_images",
