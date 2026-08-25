@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
 import StaticPage from "./views/StaticPage.vue";
 import EditPage from "./views/EditPage.vue";
+import { applySeo } from "./seo.js";
 import "./admin.css";
 
 const routes = [
@@ -35,6 +36,12 @@ const router = createRouter({
 
     return { top: 0 };
   },
+});
+
+// Keep the document head in sync with the active route so every page has a
+// unique title, description, canonical URL and social preview.
+router.afterEach((to) => {
+  applySeo(to.path);
 });
 
 createApp(App).use(router).mount("#app");

@@ -211,7 +211,7 @@ Editable sections:
 - Mission and Vision text.
 - Structure image `about-shtylla.png`.
 - Key Areas of Work title, text cards, and image `about-key-areas.png`.
-- Why Varaždin title, text, and image `about-varazdin.png`.
+- Why Rahovec title, text, and image `about-varazdin.png`.
 - Partner CTA title, two paragraphs, button text, and button URL.
 - Footer content.
 
