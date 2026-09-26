@@ -2,9 +2,10 @@ import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
 import StaticPage from "./views/StaticPage.vue";
-import EditPage from "./views/EditPage.vue";
 import { applySeo } from "./seo.js";
 import "./admin.css";
+
+const EditPage = () => import("./views/EditPage.vue");
 
 const routes = [
   { path: "/", component: StaticPage, props: { page: "home" } },

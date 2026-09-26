@@ -1,5 +1,4 @@
 import { translations } from "./translations.js";
-import { getSupabaseClient } from "./supabase.js";
 
 const geotestDotMap = [
   ["yellow", "blue", "blue", "blue"],
@@ -13,7 +12,8 @@ const geotestDotMap = [
 ];
 
 let cleanupHandlers = [];
-let cmsOverrideCache;
+const cmsOverrideCaches = new Map();
+let activeCmsOverrides;
 
 const addCleanup = (handler) => {
   cleanupHandlers.push(handler);
@@ -31,11 +31,7 @@ const normalizeAssetPath = (value = "") =>
     .replace(/^\/?public\//, "/")
     .replace(/^([^/])/, "/$1");
 
-export const loadCmsOverrides = async ({ force = false } = {}) => {
-  if (cmsOverrideCache && !force) {
-    return cmsOverrideCache;
-  }
-
+export const createCmsOverrides = (records = []) => {
   const overrides = {
     text: new Map(),
     images: new Map(),
@@ -45,59 +41,51 @@ export const loadCmsOverrides = async ({ force = false } = {}) => {
     hiddenListItems: new Set(),
   };
 
-  try {
-    const supabase = await getSupabaseClient();
-    const { data, error } = await supabase
-      .from("website_cards")
-      .select("*")
-      .in("section_key", [
-        "inline_text",
-        "inline_images",
-        "projects.list",
-        "projects.filters",
-        "list_items.custom",
-        "list_items.hidden",
-      ])
-      .eq("is_published", true)
-      .order("sort_order", { ascending: true });
+  records.forEach((item) => {
+    if (item.section_key === "inline_text" && item.card_key) {
+      overrides.text.set(item.card_key, item);
+    }
 
-    if (error) throw error;
+    if (item.section_key === "inline_images" && item.card_key) {
+      overrides.images.set(item.card_key, item);
+    }
 
-    (data || []).forEach((item) => {
-      if (item.section_key === "inline_text" && item.card_key) {
-        overrides.text.set(item.card_key, item);
-      }
+    if (item.section_key === "inline_images" && item.metadata?.original_src) {
+      overrides.images.set(normalizeAssetPath(item.metadata.original_src), item);
+    }
 
-      if (item.section_key === "inline_images" && item.card_key) {
-        overrides.images.set(item.card_key, item);
-      }
+    if (item.section_key === "projects.list") overrides.projects.push(item);
+    if (item.section_key === "projects.filters") overrides.projectFilters.push(item);
+    if (item.section_key === "list_items.custom") overrides.listItems.push(item);
 
-      if (item.section_key === "inline_images" && item.metadata?.original_src) {
-        overrides.images.set(normalizeAssetPath(item.metadata.original_src), item);
-      }
+    if (item.section_key === "list_items.hidden") {
+      const key = item.metadata?.i18n_key || item.card_key;
+      if (key) overrides.hiddenListItems.add(key);
+    }
+  });
 
-      if (item.section_key === "projects.list") {
-        overrides.projects.push(item);
-      }
+  return overrides;
+};
 
-      if (item.section_key === "projects.filters") {
-        overrides.projectFilters.push(item);
-      }
+const loadPublishedSnapshot = async () => {
+  localStorage.removeItem("geotest-cms-snapshot-v1");
+  const response = await fetch("/cms-snapshot.json", { cache: "no-store" });
+  if (!response.ok) throw new Error(`Snapshot request failed (${response.status}).`);
 
-      if (item.section_key === "list_items.custom") {
-        overrides.listItems.push(item);
-      }
+  const snapshot = await response.json();
+  if (!Array.isArray(snapshot?.records)) throw new Error("Published CMS snapshot is invalid.");
+  return snapshot.records;
+};
 
-      if (item.section_key === "list_items.hidden") {
-        const key = item.metadata?.i18n_key || item.card_key;
-        if (key) overrides.hiddenListItems.add(key);
-      }
-    });
-  } catch (error) {
-    console.warn("CMS overrides unavailable:", error.message);
+export const loadCmsOverrides = async ({ force = false } = {}) => {
+  if (cmsOverrideCaches.has("snapshot") && !force) {
+    return cmsOverrideCaches.get("snapshot");
   }
 
-  cmsOverrideCache = overrides;
+  const records = await loadPublishedSnapshot();
+  const overrides = createCmsOverrides(records);
+  cmsOverrideCaches.set("snapshot", overrides);
+  activeCmsOverrides = overrides;
   return overrides;
 };
 
@@ -221,7 +209,7 @@ const escapeHtml = (value = "") =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-const renderCmsProjects = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
+const renderCmsProjects = (root = document, language = "sq", cmsOverrides = activeCmsOverrides) => {
   const projectList = root.querySelector(".project-list-inner");
   const emptyMessage = root.querySelector("[data-project-empty]");
 
@@ -310,7 +298,7 @@ const renderCmsProjects = (root = document, language = "sq", cmsOverrides = cmsO
   });
 };
 
-const renderProjectFilters = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
+const renderProjectFilters = (root = document, language = "sq", cmsOverrides = activeCmsOverrides) => {
   const filterList = root.querySelector(".project-filter-list");
   if (!filterList) return;
 
@@ -344,7 +332,7 @@ const renderProjectFilters = (root = document, language = "sq", cmsOverrides = c
   });
 };
 
-const renderCmsListItems = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
+const renderCmsListItems = (root = document, language = "sq", cmsOverrides = activeCmsOverrides) => {
   root.querySelectorAll("ul[data-list-id]").forEach((list) => {
     const listId = list.dataset.listId;
 
@@ -367,7 +355,7 @@ const renderCmsListItems = (root = document, language = "sq", cmsOverrides = cms
   });
 };
 
-export const applyLanguage = (language, root = document, cmsOverrides = cmsOverrideCache) => {
+export const applyLanguage = (language, root = document, cmsOverrides = activeCmsOverrides) => {
   const dictionary = translations[language] || translations.en;
   document.documentElement.lang = language;
 
@@ -395,7 +383,7 @@ export const applyLanguage = (language, root = document, cmsOverrides = cmsOverr
   });
 };
 
-export const applyImageOverrides = (root = document, cmsOverrides = cmsOverrideCache) => {
+export const applyImageOverrides = (root = document, cmsOverrides = activeCmsOverrides) => {
   if (!cmsOverrides?.images) return;
 
   root.querySelectorAll("img[src]").forEach((image) => {
@@ -410,12 +398,14 @@ export const applyImageOverrides = (root = document, cmsOverrides = cmsOverrideC
     image.dataset.cmsImage = "true";
 
     if (override?.image_url) {
-      image.src = override.image_url;
+      const imageUrl = new URL(override.image_url, window.location.origin);
+      imageUrl.searchParams.set("cmsv", override.updated_at || "latest");
+      image.src = imageUrl.href;
     }
   });
 };
 
-export const applyCmsContent = (root = document, language = "sq", cmsOverrides = cmsOverrideCache) => {
+export const applyCmsContent = (root = document, language = "sq", cmsOverrides = activeCmsOverrides) => {
   applyLanguage(language, root, cmsOverrides);
   renderProjectFilters(root, language, cmsOverrides);
   renderCmsProjects(root, language, cmsOverrides);
@@ -439,6 +429,73 @@ const initLanguage = (root, cmsOverrides) => {
   }
 
   applyCmsContent(root, savedLanguage, cmsOverrides);
+};
+
+const contactMessages = {
+  sq: {
+    sending: "Duke dërguar...",
+    success: "Kërkesa u dërgua me sukses. Do t'ju kontaktojmë së shpejti.",
+    error: "Kërkesa nuk mund të dërgohej. Ju lutemi provoni përsëri.",
+  },
+  en: {
+    sending: "Sending...",
+    success: "Your request was sent successfully. We will contact you soon.",
+    error: "Your request could not be sent. Please try again.",
+  },
+};
+
+const initContactForm = (root) => {
+  const form = root.querySelector(".contact-form");
+  if (!(form instanceof HTMLFormElement)) return;
+
+  const submitButton = form.querySelector('button[type="submit"]');
+  const status = form.querySelector("[data-contact-status]");
+  let startedAt = Date.now();
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity() || !submitButton || submitButton.disabled) return;
+
+    const language = localStorage.getItem("geotest-language") || "sq";
+    const messages = contactMessages[language] || contactMessages.en;
+    const originalButtonText = submitButton.textContent;
+    const values = Object.fromEntries(new FormData(form).entries());
+
+    submitButton.disabled = true;
+    submitButton.textContent = messages.sending;
+    status?.classList.remove("is-success", "is-error");
+    if (status) status.textContent = "";
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...values, startedAt }),
+      });
+
+      if (!response.ok) throw new Error("Contact request failed.");
+
+      form.reset();
+      startedAt = Date.now();
+      if (status) {
+        status.textContent = messages.success;
+        status.classList.add("is-success");
+      }
+    } catch (error) {
+      console.error("Contact form submission failed:", error);
+      if (status) {
+        status.textContent = messages.error;
+        status.classList.add("is-error");
+      }
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent =
+        translations[language]?.["contact.submit"] || originalButtonText;
+    }
+  };
+
+  form.addEventListener("submit", onSubmit);
+  addCleanup(() => form.removeEventListener("submit", onSubmit));
 };
 
 const initNavigation = (root, router) => {
@@ -647,9 +704,14 @@ export const initSitePage = async (root, router, options = {}) => {
   if (!root) return;
 
   resetPageRuntime();
-  const cmsOverrides = await loadCmsOverrides({ force: options.forceCmsRefresh });
+  const cmsOverrides =
+    options.cmsOverrides ||
+    (await loadCmsOverrides({
+      force: options.forceCmsRefresh,
+    }));
   defineLogoElements();
   initLanguage(root, cmsOverrides);
+  initContactForm(root);
   initNavigation(root, router);
   initRevealMotion(root);
   initProjectSliders(root);

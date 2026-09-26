@@ -30,6 +30,9 @@ export const getSupabaseClient = async () => {
           persistSession: true,
           autoRefreshToken: true,
         },
+        global: {
+          fetch: (input, init = {}) => fetch(input, { ...init, cache: "no-store" }),
+        },
       }),
     );
   }

@@ -1,5 +1,6 @@
 <template>
-  <div ref="pageRoot" v-html="pageHtml"></div>
+  <p v-if="loadError" class="page-load-error" role="alert">Content is temporarily unavailable.</p>
+  <div v-show="isReady" ref="pageRoot" v-html="pageHtml"></div>
 </template>
 
 <script setup>
@@ -18,6 +19,8 @@ const emit = defineEmits(["page-loading"]);
 const router = useRouter();
 const pageRoot = ref(null);
 const pageHtml = ref("");
+const isReady = ref(false);
+const loadError = ref(false);
 
 const routeMap = new Map([
   ["index.html#home", "/#home"],
@@ -58,6 +61,8 @@ const extractBody = (documentText) => {
 
 const loadPage = async () => {
   emit("page-loading", true);
+  isReady.value = false;
+  loadError.value = false;
 
   try {
     const response = await fetch(`/static-pages/${props.page}.html`, {
@@ -71,6 +76,10 @@ const loadPage = async () => {
     pageHtml.value = extractBody(await response.text());
     await nextTick();
     await initSitePage(pageRoot.value, router);
+    isReady.value = true;
+  } catch (error) {
+    console.error("Could not load the published website content:", error);
+    loadError.value = true;
   } finally {
     window.setTimeout(() => emit("page-loading", false), 260);
   }

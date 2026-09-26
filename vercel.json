@@ -2,6 +2,26 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/cms-snapshot.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/cms-media/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",

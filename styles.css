@@ -2157,6 +2157,18 @@ geotest-navbar-logo {
   backdrop-filter: blur(14px);
 }
 
+.contact-honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2226,6 +2238,32 @@ geotest-navbar-logo {
   outline: none;
   transform: translateY(-2px);
   box-shadow: 0 16px 34px rgba(18, 169, 214, 0.22);
+}
+
+.contact-form button:disabled {
+  cursor: wait;
+  opacity: 0.68;
+  transform: none;
+}
+
+.contact-form-status {
+  min-height: 1.4em;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.contact-form-status:empty {
+  min-height: 0;
+}
+
+.contact-form-status.is-success {
+  color: #17633a;
+}
+
+.contact-form-status.is-error {
+  color: #a42c2c;
 }
 
 .projects-page-main {
@@ -2528,6 +2566,36 @@ geotest-navbar-logo {
 
 .footer-brand geotest-navbar-logo {
   width: 138px;
+}
+
+.footer-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-language-picker {
+  display: inline-flex;
+}
+
+.footer-language-picker select {
+  min-width: 62px;
+  min-height: 38px;
+  padding: 0 10px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: 1px solid rgba(16, 32, 51, 0.24);
+  border-radius: 5px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.footer-language-picker select:hover,
+.footer-language-picker select:focus-visible {
+  border-color: var(--logo-blue);
+  outline: none;
 }
 
 .footer-contact {

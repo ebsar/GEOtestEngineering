@@ -72,14 +72,6 @@
             <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
             <li><a href="contact.html" data-i18n="nav.contacts">Contacts</a></li>
           </ul>
-
-          <label class="language-picker" for="language-select">
-            <span class="language-picker-label">Website language</span>
-            <select id="language-select" name="language" aria-label="Website language">
-              <option value="en">English</option>
-              <option value="sq">Shqip</option>
-            </select>
-          </label>
         </div>
       </nav>
     </header>
@@ -112,7 +104,11 @@
             </ul>
           </div>
 
-          <form class="contact-form" action="mailto:geotestengineering.ks@gmail.com" method="post" enctype="text/plain">
+          <form class="contact-form" action="/api/contact" method="post">
+            <label class="contact-honeypot" aria-hidden="true">
+              Website
+              <input type="text" name="website" tabindex="-1" autocomplete="off" />
+            </label>
             <div class="form-row">
               <label>
                 <span data-i18n="contact.name">Name</span>
@@ -140,6 +136,7 @@
             </label>
 
             <button type="submit" data-i18n="contact.submit">Send request</button>
+            <p class="contact-form-status" data-contact-status role="status" aria-live="polite"></p>
           </form>
         </div>
       </section>
@@ -151,7 +148,15 @@
           <geotest-navbar-logo></geotest-navbar-logo>
         </a>
 
-        <a class="footer-contact" href="contact.html" data-i18n="footer.contact">Contact now</a>
+        <div class="footer-actions">
+          <label class="footer-language-picker" for="language-select">
+            <select id="language-select" name="language" aria-label="Website language">
+              <option value="sq">AL</option>
+              <option value="en">EN</option>
+            </select>
+          </label>
+          <a class="footer-contact" href="contact.html" data-i18n="footer.contact">Contact now</a>
+        </div>
       </div>
 
       <p class="footer-copy" data-i18n="footer.copy">© 2026 GEOtest Engineering. All rights reserved.</p>

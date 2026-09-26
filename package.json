@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build && node scripts/generate-static-pages.mjs",
+    "cms:sync": "node scripts/sync-cms-snapshot.mjs",
+    "build": "npm run cms:sync && vite build && node scripts/generate-static-pages.mjs",
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {

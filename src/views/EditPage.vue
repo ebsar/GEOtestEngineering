@@ -47,6 +47,9 @@
           </select>
           <button type="button" @click="openHistoryDialog">History</button>
           <button type="button" @click="refreshPreview">Refresh</button>
+          <button type="button" :disabled="isPublishing" @click="publishWebsite">
+            {{ isPublishing ? "Publishing..." : "Publish website" }}
+          </button>
           <button type="button" @click="signOut">Sign out</button>
         </div>
       </header>
@@ -377,10 +380,10 @@
 import { computed, nextTick, onMounted, reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { getSupabaseClient } from "../supabase.js";
+import { loadLiveCmsOverrides } from "../cms-live.js";
 import {
   applyCmsContent,
   initSitePage,
-  loadCmsOverrides,
 } from "../site-runtime.js";
 import { translations } from "../translations.js";
 
@@ -412,6 +415,7 @@ const session = ref(null);
 const selectedPage = ref("home");
 const selectedLanguage = ref(localStorage.getItem("geotest-language") || "sq");
 const isBusy = ref(false);
+const isPublishing = ref(false);
 const status = ref("");
 const statusType = ref("info");
 const textDraft = ref(null);
@@ -486,6 +490,16 @@ const logHistory = async ({ action, actionLabel, page, language = "shared", summ
   } catch (error) {
     console.warn("Could not write edit history:", error.message);
   }
+};
+
+const deletePreviousTextHistory = async (fieldKey) => {
+  const { error } = await supabase
+    .from("website_cards")
+    .delete()
+    .eq("section_key", "editor.history")
+    .contains("metadata", { changes: { field: fieldKey } });
+
+  if (error) throw error;
 };
 
 const loadHistory = async () => {
@@ -587,10 +601,10 @@ const loadPreview = async () => {
   await nextTick();
   if (requestId !== loadPreviewRequestId) return;
 
-  currentCmsOverrides = await loadCmsOverrides({ force: true });
+  currentCmsOverrides = await loadLiveCmsOverrides();
   if (requestId !== loadPreviewRequestId) return;
 
-  await initSitePage(pageRoot.value, router, { forceCmsRefresh: false });
+  await initSitePage(pageRoot.value, router, { cmsOverrides: currentCmsOverrides });
   if (requestId !== loadPreviewRequestId) return;
 
   applyCmsContent(pageRoot.value, selectedLanguage.value, currentCmsOverrides);
@@ -600,14 +614,39 @@ const loadPreview = async () => {
 };
 
 const refreshCmsContent = async () => {
-  await initSitePage(pageRoot.value, router, { forceCmsRefresh: true });
-  currentCmsOverrides = await loadCmsOverrides();
+  currentCmsOverrides = await loadLiveCmsOverrides();
+  await initSitePage(pageRoot.value, router, { cmsOverrides: currentCmsOverrides });
   addEditButtons();
 };
 
 const refreshPreview = async () => {
   await loadPreview();
   showStatus("Preview refreshed.", "success");
+};
+
+const publishWebsite = async () => {
+  if (!session.value?.access_token) {
+    showStatus("Please sign in again before publishing.", "error");
+    return;
+  }
+
+  isPublishing.value = true;
+  try {
+    const response = await fetch("/api/publish", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session.value.access_token}`,
+      },
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || "Could not publish the website.");
+
+    showStatus("Publishing started. The public website will update after deployment finishes.", "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  } finally {
+    isPublishing.value = false;
+  }
 };
 
 const addEditButtons = () => {
@@ -1016,6 +1055,20 @@ const uploadCmsPhoto = async (file, folder) => {
   };
 };
 
+const getCmsStoragePath = (record) => {
+  if (record?.metadata?.storage_path) return record.metadata.storage_path;
+  if (!record?.image_url) return "";
+
+  try {
+    const marker = "/storage/v1/object/public/cms-media/";
+    const pathname = new URL(record.image_url).pathname;
+    const markerIndex = pathname.indexOf(marker);
+    return markerIndex >= 0 ? decodeURIComponent(pathname.slice(markerIndex + marker.length)) : "";
+  } catch {
+    return "";
+  }
+};
+
 const convertImageToWebp = async (file) => {
   if (file.type === "image/webp") return file;
 
@@ -1143,6 +1196,11 @@ const translateAlbanianHtmlToEnglish = async (html = "") => {
 };
 
 const saveText = async () => {
+  const confirmed = window.confirm(
+    "Replace this text? The current text will be removed only after the new text is saved successfully.",
+  );
+  if (!confirmed) return;
+
   isBusy.value = true;
   try {
     const shouldAutoTranslateText = selectedLanguage.value === "sq";
@@ -1185,6 +1243,8 @@ const saveText = async () => {
     const { error } = await query;
     if (error) throw error;
 
+    await deletePreviousTextHistory(textDraft.value.key);
+
     logHistory({
       action: "text.update",
       actionLabel: "Text updated",
@@ -1193,11 +1253,6 @@ const saveText = async () => {
       summary: `Updated ${textDraft.value.key}.`,
       changes: {
         field: textDraft.value.key,
-        before: truncateHistoryValue(
-          existing?.translations?.[selectedLanguage.value]?.html ||
-            existing?.translations?.[selectedLanguage.value]?.text ||
-            "",
-        ),
         after: truncateHistoryValue(textDraft.value.value),
         autoTranslatedEnglish: shouldAutoTranslateText ? "yes" : "no",
       },
@@ -1214,6 +1269,11 @@ const saveText = async () => {
 };
 
 const saveImage = async () => {
+  const confirmed = window.confirm(
+    "Replace this photo? The current photo will be deleted only after the new photo is saved successfully.",
+  );
+  if (!confirmed) return;
+
   isBusy.value = true;
   try {
     if (!imageDraft.value.file) {
@@ -1243,7 +1303,25 @@ const saveImage = async () => {
       ? supabase.from("website_cards").update(payload).eq("id", existing.id)
       : supabase.from("website_cards").insert(payload);
     const { error } = await query;
-    if (error) throw error;
+    if (error) {
+      const { error: rollbackError } = await supabase.storage.from("cms-media").remove([filePath]);
+      if (rollbackError) {
+        console.warn("Could not remove the unsuccessful replacement upload:", rollbackError.message);
+      }
+      throw error;
+    }
+
+    const previousStoragePath = getCmsStoragePath(existing);
+    let previousPhotoRemoved = true;
+    if (previousStoragePath && previousStoragePath !== filePath) {
+      const { error: removeError } = await supabase.storage
+        .from("cms-media")
+        .remove([previousStoragePath]);
+      if (removeError) {
+        previousPhotoRemoved = false;
+        console.warn("The new image is live, but the previous file could not be removed:", removeError.message);
+      }
+    }
 
     logHistory({
       action: "image.update",
@@ -1260,7 +1338,12 @@ const saveImage = async () => {
 
     closeDialogs();
     await refreshCmsContent();
-    showStatus("Image saved and fitted into the existing frame.", "success");
+    showStatus(
+      previousPhotoRemoved
+        ? "Image saved. The previous photo was removed."
+        : "Image saved, but the previous storage file could not be removed.",
+      previousPhotoRemoved ? "success" : "error",
+    );
   } catch (error) {
     showStatus(error.message, "error");
   } finally {
